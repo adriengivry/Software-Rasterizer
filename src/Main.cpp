@@ -23,7 +23,7 @@ int SDL_main(int argc, char** argv)
 		SDL_LOG("Closed");
 	}
 
-	system("pause");
+	system("PAUSE");
 
 	return EXIT_SUCCESS;
 }
