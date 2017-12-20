@@ -34,12 +34,10 @@ inline void Vec3::Normalize()
 
 inline Vec3 Vec3::operator+(const Vec3& p_other) const
 {
-	Vec3 temp(this->x + p_other.x, this->y + p_other.y, this->z + p_other.z);
-	return temp;
+	return Vec3(this->x + p_other.x, this->y + p_other.y, this->z + p_other.z);
 }
 
 inline Vec3 Vec3::operator*(const float& p_scale) const
 {
-	Vec3 temp(p_scale * this->x, p_scale * this->y, p_scale * this->z);
-	return temp;
+	return Vec3(p_scale * this->x, p_scale * this->y, p_scale * this->z);
 }
