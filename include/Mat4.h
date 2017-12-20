@@ -1,6 +1,8 @@
 #pragma once
 #include "Vec4.h"
 #include <SDL_stdinc.h>
+#include <iostream>
+
 struct Mat4
 {
 	float m_matrix[4][4];
@@ -10,6 +12,9 @@ struct Mat4
 	Mat4 operator*(const Mat4& p_other);
 	Vec4 operator*(const Vec4& p_other);
     static Mat4 CreateTransformMatrix(const Vec3& p_rotation, const Vec3& p_position, const Vec3& p_scale);
+	void SetNull();
+	void SetIdentity();
+	void DisplayData() const;
 };
 
 inline Mat4::Mat4(Vec4& p_vec4)
@@ -43,36 +48,26 @@ inline Mat4::Mat4(Vec4& p_vec4)
 
 inline Mat4::Mat4()
 {
-	for (int i = 0; i < 4; i++)
-	{
-		for (int j = 0; j < 4; j++)
-		{
-			if (i == j)
-				this->m_matrix[i][j] = 1;
-			else
-			{
-				this->m_matrix[i][j] = 0;
-			}
-		}
-	}
+	SetIdentity();
 }
 
 inline Mat4 Mat4::operator*(const Mat4& p_other)
 {
-	float multsum = 0;
-	Mat4 multiply;
-	for (int i = 0; i < 4; i++)
+	Mat4 toReturn;
+
+	for (uint8_t row = 0; row < 4; ++row)
 	{
-		for (int j = 0; j < 4; j++)
+		for (uint8_t col = 0; col < 4; ++col)
 		{
-			for (int k = 0; k < 4; k++)
+			float value = 0;
+			for (uint8_t u = 0; u < 4; ++u)
 			{
-				multsum = multsum + this->m_matrix[i][k] * p_other.m_matrix[k][j];
+				value += m_matrix[row][u] * p_other.m_matrix[u][col];
 			}
-			multiply.m_matrix[i][j] = multsum;
+			toReturn.m_matrix[row][col] = value;
 		}
 	}
-	return multiply;
+	return toReturn;
 }
 
 inline Vec4 Mat4::operator*(const Vec4& p_other)
@@ -133,4 +128,39 @@ inline Mat4 Mat4::CreateTransformMatrix(const Vec3& p_rotation, const Vec3& p_po
 	transform.m_matrix[3][2] = p_scale.z;
 
 	return transform;
+}
+
+inline void Mat4::SetNull()
+{
+	for (uint16_t row = 0; row < 4; ++row)
+		for (uint16_t col = 0; col < 4; ++col)
+			m_matrix[row][col] = 0;
+}
+
+inline void Mat4::SetIdentity()
+{
+	for (int i = 0; i < 4; i++)
+	{
+		for (int j = 0; j < 4; j++)
+		{
+			if (i == j)
+				this->m_matrix[i][j] = 1;
+			else
+			{
+				this->m_matrix[i][j] = 0;
+			}
+		}
+	}
+}
+
+inline void Mat4::DisplayData() const
+{
+	for (uint16_t row = 0; row < 4; ++row)
+	{
+		for (uint16_t col = 0; col < 4; ++col)
+		{
+			std::cout << m_matrix[row][col] << " ";
+		}
+		std::cout << std::endl;
+	}
 }
