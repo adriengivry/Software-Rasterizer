@@ -19,7 +19,6 @@ int SDL_main(int argc, char** argv)
 		SDL_LOG("Initialization succeed");
 
 		// TODO Core of the program
-
 		SDL_Quit();
 		SDL_LOG("Closed");
 	}

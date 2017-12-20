@@ -76,11 +76,11 @@ inline Vec4 Mat4::operator*(const Vec4& p_other)
 	Vec4 multiply;
 	for (int i = 0; i < 4; i++)
 	{
-		for (int j = 0; j < 4; j++)
 		{
-			multVec = multVec + this->m_matrix[i][j] * p_other.x;
-			multVec = multVec + this->m_matrix[i][j] * p_other.y;
-			multVec = multVec + this->m_matrix[i][j] * p_other.z;
+			multVec = multVec + this->m_matrix[i][0] * p_other.x;
+			multVec = multVec + this->m_matrix[i][1] * p_other.y;
+			multVec = multVec + this->m_matrix[i][2] * p_other.z;
+			multVec = multVec + this->m_matrix[i][3] * p_other.w;
 		}
 		if (i == 0)
 		{
@@ -93,6 +93,10 @@ inline Vec4 Mat4::operator*(const Vec4& p_other)
 		else if (i == 2)
 		{
 			multiply.z = multVec;
+		}
+		else if(i == 3)
+		{
+			multiply.w = multVec;
 		}
 		multVec = 0;
 	}
