@@ -7,8 +7,8 @@ struct Vec4
 	float y;
 	float z;
 	float w;
-	Vec4(const Vec3& p_vec3, const float p_w = 1.0f);
-	Vec4(const float p_x = 0, const float p_y = 0 , float p_z = 0, float p_w = 1.0f);
+	explicit Vec4(const Vec3& p_vec3, const float p_w = 1.0f);
+	explicit Vec4(const float p_x = 0, const float p_y = 0 , float p_z = 0, float p_w = 1.0f);
 	void Homogenize();
 	float Getmagnitude() const;
 	void Normalize();
@@ -16,7 +16,8 @@ struct Vec4
 	Vec4 operator*(const float& p_scale) const;
 };
 
-inline Vec4::Vec4(const Vec3& p_vec3, float p_w)
+
+inline Vec4::Vec4(const Vec3& p_vec3, const float p_w)
 {
 	this->x = p_vec3.x;
 	this->y = p_vec3.y;
@@ -24,7 +25,7 @@ inline Vec4::Vec4(const Vec3& p_vec3, float p_w)
 	this->w = p_w;
 }
 
-inline Vec4::Vec4(const float p_x, const float p_y, float p_z, float p_w)
+inline Vec4::Vec4(const float p_x, const float p_y, const float p_z, const float p_w)
 {
 	this->x = p_x;
 	this->y = p_y;
@@ -53,13 +54,10 @@ inline void Vec4::Normalize()
 
 inline Vec4 Vec4::operator+(const Vec4& p_other) const
 {
-
-	Vec4 temp2(this->x + p_other.x, this->y + p_other.y, this->z + p_other.z, 1);
-	return temp2;
+	return Vec4(this->x + p_other.x, this->y + p_other.y, this->z + p_other.z, 1);
 }
 
 inline Vec4 Vec4::operator*(const float& p_scale) const
 {
-	Vec4 temp2(p_scale * this->x, p_scale * this->y, p_scale * this->z, 1);
-	return temp2;
+	return Vec4(p_scale * this->x, p_scale * this->y, p_scale * this->z, 1);
 }
