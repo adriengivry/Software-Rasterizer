@@ -11,6 +11,6 @@ public:
     Mesh();
     ~Mesh();
     static Mesh* CreateCube();
-    static Mesh* CreateSphere(int latitudeCount, int longitudeCount)
+    static Mesh* CreateSphere(int latitudeCount, int longitudeCount);
 };
 
