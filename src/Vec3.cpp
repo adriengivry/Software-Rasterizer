@@ -3,9 +3,9 @@
 
 Vec3::Vec3(float _x, float _y, float _z)
 {
-	this->m_x = _x;
-	this->m_y = _y;
-	this->m_z = _z;
+	this->x = _x;
+	this->y = _y;
+	this->z = _z;
 }
 
 Vec3::~Vec3()

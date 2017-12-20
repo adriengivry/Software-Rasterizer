@@ -5,9 +5,11 @@
 class Entity
 {
 public:
-	Mesh* mesh;
-	Mat4 transformation;
 	Entity();
 	~Entity();
+
+private:
+	Mesh* m_mesh;
+	Mat4 m_transformation;
 };
 

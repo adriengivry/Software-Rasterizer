@@ -5,8 +5,10 @@
 class Scene
 {
 public:
-	std::vector<Entity> entities;
 	Scene();
 	~Scene();
+
+private:
+	std::vector<Entity> m_entities;
 };
 

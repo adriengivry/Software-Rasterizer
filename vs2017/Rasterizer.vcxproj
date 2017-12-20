@@ -19,7 +19,6 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\src\Color.cpp" />
     <ClCompile Include="..\src\Entity.cpp" />
     <ClCompile Include="..\src\Main.cpp" />
     <ClCompile Include="..\src\Mat4.cpp" />
@@ -28,7 +27,6 @@
     <ClCompile Include="..\src\Texture.cpp" />
     <ClCompile Include="..\src\Vec3.cpp" />
     <ClCompile Include="..\src\Vec4.cpp" />
-    <ClCompile Include="..\src\Vertex.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\Color.h" />

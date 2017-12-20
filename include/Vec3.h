@@ -2,13 +2,12 @@
 #include <xutility>
 #include <cmath>
 
-class Vec3
+struct Vec3
 {
-public:
-	float m_x;
-	float m_y;
-	float m_z;
-	Vec3(float _x, float _y, float _z);
+	float x;
+	float y;
+	float z;
+	explicit Vec3(float _x = 0, float _y = 0, float _z = 0);
 	~Vec3();
 	float GetMagnitude() const;
 	void Normalize();

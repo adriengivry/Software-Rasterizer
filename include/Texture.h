@@ -3,13 +3,15 @@
 
 class Texture
 {
-private:
-	unsigned int width;
-	unsigned int height;
-	Color* pixels;
 public:
-	Texture(unsigned int _width, unsigned int _height, unsigned char _r = 0, unsigned char _g = 0, unsigned char _b = 0, unsigned char _a = 255);
+	Texture(const uint16_t p_width, const uint16_t p_height, const uint8_t p_r = 0, const uint8_t p_g = 0, const uint8_t p_b = 0, const uint8_t p_a = 255);
 	~Texture();
-	void SetPixelColor(unsigned int x, unsigned int y, const Color& c);
+
+	void SetPixelColor(const uint16_t p_x, const uint16_t p_y, Color& p_color);
+	 
+private:
+	uint16_t m_width;
+	uint16_t m_height;
+	Color* m_pixels;
 };
 
