@@ -1,5 +1,4 @@
 #pragma once
-#include <cmath>
 
 struct Vec3
 {
@@ -13,7 +12,7 @@ struct Vec3
 	Vec3 operator*(const float& p_scale) const;
 };
 
-inline Vec3::Vec3(float p_x, float p_y, float p_z)
+inline Vec3::Vec3(const float p_x, const float p_y, const float p_z)
 {
 	this->x = p_x;
 	this->y = p_y;
