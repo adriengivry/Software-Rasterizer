@@ -112,7 +112,15 @@ inline Mat4 Mat4::CreateTransformMatrix(const Vec3& p_rotation, const Vec3& p_po
 	//set Rotation First
 	Transform.m_matrix[0][0] = cos(angleY) * cos(angleZ);
 	Transform.m_matrix[0][1] = -cos(angleY) * sin(angleZ);
-	Transform.m_matrix[0][2] = s
+	Transform.m_matrix[0][2] = sin(angleY);
+	
+	Transform.m_matrix[1][0] = sin(angleX) * sin(angleY) * sin(angleZ) + cos(angleX) * sin(angleZ);
+	Transform.m_matrix[1][1] = -sin(angleX) * sin(angleY) * sin(angleZ) + cos(angleX) * cos(angleZ);
+	Transform.m_matrix[1][2] = -sin(angleX) * cos(angleY);
+
+	Transform.m_matrix[2][0] = -cos(angleX) * sin(angleY) * cos(angleZ) + sin(angleX) * sin(angleZ);
+	Transform.m_matrix[2][1] = cos(angleX) * sin(angleY) * sin(angleZ) + sin(angleX) * cos(angleZ);
+	Transform.m_matrix[2][2] = cos(angleX) * cos(angleY);
 
 	//set Translation
 	Transform.m_matrix[0][3] = p_position.x;
