@@ -1,4 +1,4 @@
 #include "Entity.h"
 
-Entity::Entity() {}
+Entity::Entity() : m_mesh(nullptr) {}
 Entity::~Entity() {}

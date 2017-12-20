@@ -1,16 +1,17 @@
 #pragma once
-#include "Vec3.h"
 #include <vector>
 #include "Vertex.h"
 
 class Mesh
 {
 public:
-    std::vector<Vertex> vertices;
-    std::vector<int> indices;
     Mesh();
     ~Mesh();
     static Mesh* CreateCube();
-    static Mesh* CreateSphere(int latitudeCount, int longitudeCount);
+    static Mesh* CreateSphere(int p_latitudeCount, int p_longitudeCount);
+
+private:
+	std::vector<Vertex> m_vertices;
+	std::vector<uint32_t> m_indices;
 };
 

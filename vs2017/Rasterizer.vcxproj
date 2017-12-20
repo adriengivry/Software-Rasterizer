@@ -32,7 +32,6 @@
     <ClInclude Include="..\include\Color.h" />
     <ClInclude Include="..\include\Entity.h" />
     <ClInclude Include="..\include\Mat4.h" />
-    <ClInclude Include="..\include\Matrix.h" />
     <ClInclude Include="..\include\Mesh.h" />
     <ClInclude Include="..\include\Scene.h" />
     <ClInclude Include="..\include\Texture.h" />
@@ -41,7 +40,7 @@
     <ClInclude Include="..\include\Vertex.h" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="..\doc\TODO.txt" />
+    <Text Include="..\doc\coding_conventions.txt" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>

@@ -53,9 +53,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\include\Matrix.h">
-      <Filter>Header Files\Tools</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\Mat4.h">
       <Filter>Header Files\Tools</Filter>
     </ClInclude>
@@ -85,7 +82,7 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="..\doc\TODO.txt">
+    <Text Include="..\doc\coding_conventions.txt">
       <Filter>Resource Files</Filter>
     </Text>
   </ItemGroup>
