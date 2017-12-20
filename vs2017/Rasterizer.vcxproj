@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -19,10 +19,28 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\src\Color.cpp" />
+    <ClCompile Include="..\src\Entity.cpp" />
     <ClCompile Include="..\src\Main.cpp" />
+    <ClCompile Include="..\src\Mat4.cpp" />
+    <ClCompile Include="..\src\Mesh.cpp" />
+    <ClCompile Include="..\src\Scene.cpp" />
+    <ClCompile Include="..\src\Texture.cpp" />
+    <ClCompile Include="..\src\Vec3.cpp" />
+    <ClCompile Include="..\src\Vec4.cpp" />
+    <ClCompile Include="..\src\Vertex.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\include\Color.h" />
+    <ClInclude Include="..\include\Entity.h" />
+    <ClInclude Include="..\include\Mat4.h" />
     <ClInclude Include="..\include\Matrix.h" />
+    <ClInclude Include="..\include\Mesh.h" />
+    <ClInclude Include="..\include\Scene.h" />
+    <ClInclude Include="..\include\Texture.h" />
+    <ClInclude Include="..\include\Vec3.h" />
+    <ClInclude Include="..\include\Vec4.h" />
+    <ClInclude Include="..\include\Vertex.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>

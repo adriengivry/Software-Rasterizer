@@ -22,8 +22,6 @@ int SDL_main(int argc, char** argv)
 		SDL_Quit();
 		SDL_LOG("Closed");
 	}
-
 	system("PAUSE");
-
 	return EXIT_SUCCESS;
 }
