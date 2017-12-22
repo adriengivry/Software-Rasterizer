@@ -43,7 +43,7 @@
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{137769a4-ad8c-4eb5-870b-da28c254b097}</ProjectGuid>
     <RootNamespace>Rasterizer</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
