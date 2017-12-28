@@ -1,7 +1,7 @@
 #include <SDL.h>
 #include <cstdlib>
 #include <iostream>
-#include "Mat4.h"
+#include "../include/Rasterizer.h"
 
 #define SDL_INIT_SUCCESS 0
 #define SDL_LOG(logMessage) std::cout << "[SDL] " << logMessage << std::endl
@@ -22,6 +22,7 @@ int SDL_main(int argc, char** argv)
 		SDL_Quit();
 		SDL_LOG("Closed");
 	}
+	std::cout << DEG_TO_RAD << std::endl;
 	system("PAUSE");
 	return EXIT_SUCCESS;
 }

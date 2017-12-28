@@ -22,6 +22,7 @@
     <ClCompile Include="..\src\Entity.cpp" />
     <ClCompile Include="..\src\Main.cpp" />
     <ClCompile Include="..\src\Mesh.cpp" />
+    <ClCompile Include="..\src\Rasterizer.cpp" />
     <ClCompile Include="..\src\Scene.cpp" />
     <ClCompile Include="..\src\Texture.cpp" />
   </ItemGroup>
@@ -30,6 +31,7 @@
     <ClInclude Include="..\include\Entity.h" />
     <ClInclude Include="..\include\Mat4.h" />
     <ClInclude Include="..\include\Mesh.h" />
+    <ClInclude Include="..\include\Rasterizer.h" />
     <ClInclude Include="..\include\Scene.h" />
     <ClInclude Include="..\include\Texture.h" />
     <ClInclude Include="..\include\Vec3.h" />

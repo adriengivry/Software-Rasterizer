@@ -42,6 +42,9 @@
     <ClCompile Include="..\src\Texture.cpp">
       <Filter>Source Files\Components</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\Rasterizer.cpp">
+      <Filter>Source Files\Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\Mat4.h">
@@ -69,6 +72,9 @@
       <Filter>Header Files\Components</Filter>
     </ClInclude>
     <ClInclude Include="..\include\Vertex.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Rasterizer.h">
       <Filter>Header Files\Components</Filter>
     </ClInclude>
   </ItemGroup>
