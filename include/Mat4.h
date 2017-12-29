@@ -1,6 +1,5 @@
 #pragma once
 #include "Vec4.h"
-#include <SDL_stdinc.h>
 #include <iostream>
 
 struct Mat4
@@ -109,27 +108,24 @@ inline Mat4 Mat4::CreateTransformMatrix(const Vec3& p_rotation, const Vec3& p_po
 	const float angleY = p_rotation.y * M_PI / 180;
 	const float angleZ = p_rotation.z * M_PI / 180;
 	Mat4 transform;
-	//set Rotation First
-	transform.m_matrix[0][0] = cos(angleY) * cos(angleZ);
-	transform.m_matrix[0][1] = -cos(angleY) * sin(angleZ);
-	transform.m_matrix[0][2] = sin(angleY);
-	
-	transform.m_matrix[1][0] = sin(angleX) * sin(angleY) * sin(angleZ) + cos(angleX) * sin(angleZ);
-	transform.m_matrix[1][1] = -sin(angleX) * sin(angleY) * sin(angleZ) + cos(angleX) * cos(angleZ);
-	transform.m_matrix[1][2] = -sin(angleX) * cos(angleY);
+	Mat4 transform;
+	//set Rotation/Scaling First
+	transform.m_matrix[0][0] = p_scale.x * (cos(angleY) * cos(angleZ) + sin(angleY) * sin(angleX) * sin(angleZ));
+	transform.m_matrix[0][1] = p_scale.y * (-cos(angleY) * sin(angleZ) + sin(angleY) * sin(angleX) * cos(angleZ));
+	transform.m_matrix[0][2] = p_scale.z * (sin(angleY) * cos(angleX));
 
-	transform.m_matrix[2][0] = -cos(angleX) * sin(angleY) * cos(angleZ) + sin(angleX) * sin(angleZ);
-	transform.m_matrix[2][1] = cos(angleX) * sin(angleY) * sin(angleZ) + sin(angleX) * cos(angleZ);
-	transform.m_matrix[2][2] = cos(angleX) * cos(angleY);
+	transform.m_matrix[1][0] = p_scale.x * (cos(angleX) * cos(angleZ));
+	transform.m_matrix[1][1] = p_scale.y * (cos(angleX) * cos(angleZ));
+	transform.m_matrix[1][2] = p_scale.z * (-sin(angleX));
+
+	transform.m_matrix[2][0] = p_scale.x * (-sin(angleY) * cos(angleZ) + cos(angleY) * sin(angleX) * sin(angleZ));
+	transform.m_matrix[2][1] = p_scale.y * (sin(angleY) * sin(angleZ) + cos(angleY) * sin(angleX) * cos(angleZ));
+	transform.m_matrix[2][2] = p_scale.z * (cos(angleY) * cos(angleX));
 
 	//set Translation
 	transform.m_matrix[0][3] = p_position.x;
 	transform.m_matrix[1][3] = p_position.y;
 	transform.m_matrix[2][3] = p_position.z;
-	//set Scaling
-	transform.m_matrix[3][0] = p_scale.x;
-	transform.m_matrix[3][1] = p_scale.y;
-	transform.m_matrix[3][2] = p_scale.z;
 
 	return transform;
 }

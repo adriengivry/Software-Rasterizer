@@ -4,7 +4,7 @@
 class Texture
 {
 public:
-	Texture(const uint16_t p_width, const uint16_t p_height, const uint8_t p_r = 0, const uint8_t p_g = 0, const uint8_t p_b = 0, const uint8_t p_a = 255);
+	Texture(const uint16_t p_width, const uint16_t p_height);
 	~Texture();
 
 	void SetPixelColor(const uint16_t p_x, const uint16_t p_y, Color& p_color);

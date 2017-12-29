@@ -1,9 +1,9 @@
 #include "../include/Texture.h"
 
-Texture::Texture(const uint16_t p_width, const uint16_t p_height, const uint8_t p_r, const uint8_t p_g, const uint8_t p_b, const uint8_t p_a) :
+Texture::Texture(const uint16_t p_width, const uint16_t p_height) :
 	m_width(p_width),
 	m_height(p_height),
-	m_pixels(new Color(p_r, p_g, p_b, p_a)) {}
+	m_pixels(new Color(0, 0, 0, 255)) {}
 
 Texture::~Texture() {}
 
