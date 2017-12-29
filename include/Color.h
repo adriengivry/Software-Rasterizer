@@ -28,12 +28,12 @@ struct Color
 
 inline uint32_t Color::CovertTo32() const
 {
-	uint32_t r = (uint32_t)(r * 255);
-	uint32_t g = (uint32_t)(g * 255);
-	uint32_t b = (uint32_t)(b * 255);
-	uint32_t a = (uint32_t)(a * 255);
+	uint32_t r1 = (uint32_t)(r * 255);
+	uint32_t g1 = (uint32_t)(g * 255);
+	uint32_t b1 = (uint32_t)(b * 255);
+	uint32_t a1 = (uint32_t)(a * 255);
 
-	return (a << 24) | (r << 16) | (g << 8) | b;
+	return (a1 << 24) | (r1 << 16) | (g1 << 8) | b1;
 }
 
 inline Color Color::operator+(const Color& p_color) const

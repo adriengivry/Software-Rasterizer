@@ -1,7 +1,7 @@
 #pragma once
-#include <cmath>
+#define _USE_MATH_DEFINES
+#include <math.h>
 #define DEG_TO_RAD 3.1415926535f/180.0f
-#define M_PI 3.1415926535f
 
 struct Vec3
 {

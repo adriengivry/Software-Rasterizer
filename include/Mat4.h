@@ -108,7 +108,6 @@ inline Mat4 Mat4::CreateTransformMatrix(const Vec3& p_rotation, const Vec3& p_po
 	const float angleY = p_rotation.y * M_PI / 180;
 	const float angleZ = p_rotation.z * M_PI / 180;
 	Mat4 transform;
-	Mat4 transform;
 	//set Rotation/Scaling First
 	transform.m_matrix[0][0] = p_scale.x * (cos(angleY) * cos(angleZ) + sin(angleY) * sin(angleX) * sin(angleZ));
 	transform.m_matrix[0][1] = p_scale.y * (-cos(angleY) * sin(angleZ) + sin(angleY) * sin(angleX) * cos(angleZ));
