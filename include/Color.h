@@ -3,48 +3,73 @@
 
 struct Color
 {
-	uint8_t r, g, b, a;
-	Color(uint8_t p_r, uint8_t p_g, uint8_t p_b, uint8_t p_a)
+	float r, g, b, a;
+	Color(const float p_r, const float p_g, const float p_b, const float p_a)
 	{
-		if (p_r > 255)
-			p_r = 255;
-		else if (p_g > 255)
-			p_g = 255;
-		else if (p_b > 255)
-			p_b = 255;
-		else if (p_a > 255)
-			p_a = 255;
-	
-		r = p_r;
-		g = p_g;
-		b = p_b;
-		a = p_a;
+		this->r = p_r;
+		this->g = p_g;
+		this->b = p_b;
+		this->a = p_a;
 	}
-	uint32_t CovertTo32() const;
+	uint32_t CovertTo32();
 	Color operator+(const Color& p_color) const;
 	Color operator-(const Color& p_color) const;
-	Color operator*(const uint8_t p_scale) const;
+	Color operator*(const float p_scale) const;
+	Color operator/(float p_scale) const;
+	Color operator=(const Color& p_color);
 };
 
-inline uint32_t Color::CovertTo32() const
+inline uint32_t Color::CovertTo32()
 {
-	uint32_t r1 = (uint32_t)(r * 255);
-	uint32_t g1 = (uint32_t)(g * 255);
-	uint32_t b1 = (uint32_t)(b * 255);
-	uint32_t a1 = (uint32_t)(a * 255);
-
-	return (a1 << 24) | (r1 << 16) | (g1 << 8) | b1;
+	if (r < 0)
+	{
+		this->r = 0;
+	}
+	else if (g < 0)
+	{
+		this->g = 0;
+	}
+	else if (b < 0)
+	{
+		this->b = 0;
+	}
+	else if (a < 0)
+	{
+		this->a = 0;
+	}
+	uint32_t r1 = (uint32_t)(this->r);
+	uint32_t g1 = (uint32_t)(this->g);
+	uint32_t b1 = (uint32_t)(this->b);
+	uint32_t a1 = (uint32_t)(this->a);
+	return (b1 << 24) | (g1 << 16) | (r1 << 8) | a1;
 }
 
 inline Color Color::operator+(const Color& p_color) const
 {
-	return Color(r + p_color.r, g + p_color.g, b + p_color.g, a + p_color.a);
+	return Color(this->r + p_color.r, this->g + p_color.g, this->b + p_color.b, this->a + p_color.a);
 }
 inline Color Color::operator-(const Color& p_color) const
 {
-	return Color(r - p_color.r, g - p_color.g, b - p_color.g, a - p_color.a);
+	return Color(this->r - p_color.r, this->g - p_color.g, this->b - p_color.b, this->a - p_color.a);
 }
-inline Color Color::operator*(const uint8_t p_scale) const
+inline Color Color::operator*(const float p_scale) const
 {
-	return Color(p_scale * r, p_scale * g, p_scale * b, p_scale * a);
+	return Color(p_scale * this->r, p_scale * this->g, p_scale * this->b, p_scale * this->a);
+}
+
+inline Color Color::operator/(float p_scale) const
+{
+	if (p_scale <= 0)
+	{
+		p_scale = 1;
+	}
+	return Color(this->r / p_scale, this->g / p_scale, this->b / p_scale, this->a / p_scale);
+}
+
+inline Color Color::operator=(const Color & p_color)
+{
+	this->r = p_color.r;
+	this->g = p_color.g;
+	this->b = p_color.b;
+	this->a = p_color.a;
 }

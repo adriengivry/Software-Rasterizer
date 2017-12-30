@@ -5,13 +5,14 @@ Texture::Texture(const uint16_t p_width, const uint16_t p_height) :
 	m_height(p_height),
 	m_pixels(new Color(0, 0, 0, 255))
 {
-	m_pixelBuffer = new uint32_t[m_width, m_height];
+	m_pixelBuffer = new uint32_t[m_width * m_height];
 	ClearBuffer();
 }
 
 Texture::~Texture() 
 {
 	delete m_pixelBuffer;
+	delete m_pixels;
 }
 
 void Texture::SetPixelColor(const uint16_t p_x, const uint16_t p_y, Color& p_color)
@@ -24,7 +25,7 @@ void Texture::SetPixelColor(const uint16_t p_x, const uint16_t p_y, Color& p_col
 	{
 		return;
 	}
-	m_pixelBuffer[p_y * m_width + p_x] = p_color.CovertTo32();
+		m_pixelBuffer[p_y * m_width + p_x] = p_color.CovertTo32();
 }
 
 uint16_t Texture::GetWidth()
@@ -49,5 +50,5 @@ uint32_t* Texture::GetPixelBuffer()
 
 void Texture::ClearBuffer()
 {
-	SDL_memset(m_pixelBuffer, 0x00000000, m_width * m_height * sizeof(uint32_t));
+	SDL_memset(m_pixelBuffer, 0, m_width * m_height * sizeof(uint32_t));
 }
