@@ -11,6 +11,7 @@ struct Mat4
 	Mat4 operator*(const Mat4& p_other);
 	Vec4 operator*(const Vec4& p_other);
     static Mat4 CreateTransformMatrix(const Vec3& p_rotation, const Vec3& p_position, const Vec3& p_scale);
+	static Vec3 ConvertToScreen(const Vec3& p_vector, float p_width, float p_height);
 	void SetNull();
 	void SetIdentity();
 	void DisplayData() const;
@@ -71,33 +72,26 @@ inline Mat4 Mat4::operator*(const Mat4& p_other)
 
 inline Vec4 Mat4::operator*(const Vec4& p_other)
 {
-	float multVec = 0;
+	float multVecX = 0;
+	float multVecY = 0;
+	float multVecZ = 0;
+	float multVecW = 0;
 	Vec4 multiply;
 	for (int i = 0; i < 4; i++)
 	{
 		{
-			multVec = multVec + this->m_matrix[i][0] * p_other.x;
-			multVec = multVec + this->m_matrix[i][1] * p_other.y;
-			multVec = multVec + this->m_matrix[i][2] * p_other.z;
-			multVec = multVec + this->m_matrix[i][3] * p_other.w;
+			multVecX = multVecX + this->m_matrix[i][0] * p_other.x;
+			multVecY = multVecY + this->m_matrix[i][1] * p_other.y;
+			multVecZ = multVecZ + this->m_matrix[i][2] * p_other.z;
+			multVecW = multVecW + this->m_matrix[i][3] * p_other.w;
 		}
-		if (i == 0)
+		if (i == 3)
 		{
-			multiply.x = multVec;
+			multiply.x = multVecX;
+			multiply.y = multVecY;
+			multiply.z = multVecZ;
+			multiply.w = multVecW;
 		}
-		else if (i == 1)
-		{
-			multiply.y = multVec;
-		}
-		else if (i == 2)
-		{
-			multiply.z = multVec;
-		}
-		else if(i == 3)
-		{
-			multiply.w = multVec;
-		}
-		multVec = 0;
 	}
 	return multiply;
 }
@@ -127,6 +121,14 @@ inline Mat4 Mat4::CreateTransformMatrix(const Vec3& p_rotation, const Vec3& p_po
 	transform.m_matrix[2][3] = p_position.z;
 
 	return transform;
+}
+
+inline Vec3 Mat4::ConvertToScreen(const Vec3& p_vector, float p_width, float p_height)
+{
+	float widthHalf = p_width / 2.0f;
+	float heightHalf = p_height / 2.0f;
+	Vec3 converted(((p_vector.x / 5.0f) + 1) * widthHalf, p_height - ((p_vector.y / 5.0f) + 1) * heightHalf, p_vector.z);
+	return converted;
 }
 
 inline void Mat4::SetNull()

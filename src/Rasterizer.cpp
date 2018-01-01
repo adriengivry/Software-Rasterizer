@@ -1,68 +1,29 @@
 #include "../include/Rasterizer.h"
 
-Rasterizer::Rasterizer(Texture & p_texture) :
-	m_window(nullptr),
-	m_renderer(nullptr),
-	m_texture(nullptr),
-	m_rtexture(p_texture)
+Rasterizer::Rasterizer(Texture& p_texture, SDL_Renderer& p_renderer, SDL_Texture& p_texture1) :
+	m_rtexture(p_texture),
+	m_renderer(p_renderer),
+	m_texture(p_texture1),
+	m_wireFrame(false)
 {}
 
 Rasterizer::~Rasterizer()
-{
-	SDL_DestroyTexture(m_texture);
-	SDL_DestroyWindow(m_window);
-	SDL_DestroyRenderer(m_renderer);
-	SDL_Quit();
-}
+{}
 
 void Rasterizer::RenderScene(Scene * p_pScene)
 {
-
+	
 }
-void Rasterizer::Init()
-{
-	SDL_Init(SDL_INIT_VIDEO);
-	m_window = SDL_CreateWindow
-	(
-		"Rasterizer",
-		SDL_WINDOWPOS_CENTERED,
-		SDL_WINDOWPOS_CENTERED,
-		m_rtexture.GetWidth(),
-		m_rtexture.GetHeight(),
-		0
-	);
-
-	m_renderer = SDL_CreateRenderer
-	(
-		m_window,
-		-1,
-		SDL_RENDERER_ACCELERATED
-	);
-
-	SDL_SetRenderDrawBlendMode(m_renderer, SDL_BLENDMODE_BLEND);
-
-	m_texture = SDL_CreateTexture
-	(
-		m_renderer,
-		SDL_PIXELFORMAT_ARGB32,
-		SDL_TEXTUREACCESS_STREAMING,
-		m_rtexture.GetWidth(),
-		m_rtexture.GetHeight()
-	);
-
-	SDL_SetTextureBlendMode(m_texture, SDL_BLENDMODE_BLEND);
-}
-
 void Rasterizer::update()
 {
-	SDL_UpdateTexture(m_texture, nullptr, m_rtexture.GetPixelBuffer(), m_rtexture.GetWidth() * sizeof(uint32_t));
-	SDL_RenderCopy(m_renderer, m_texture, nullptr, nullptr);
-	SDL_RenderPresent(m_renderer);
+	SDL_UpdateTexture(&m_texture, nullptr, m_rtexture.GetPixelBuffer(), m_rtexture.GetWidth() * sizeof(uint32_t));
+	SDL_RenderCopy(&m_renderer, &m_texture, nullptr, nullptr);
+	SDL_RenderPresent(&m_renderer);
 	m_rtexture.ClearBuffer();
-	SDL_RenderClear(m_renderer);
+	SDL_RenderClear(&m_renderer);
 }
 
-void Rasterizer::drawLine(float p_x1, float p_y1, float p_x2, float p_y2, Color& p_color1, Color& p_color2)
+void Rasterizer::drawLine(const float p_x1,const float p_y1,const float p_x2,const float p_y2, Color& p_color1, Color& p_color2)
 {
 	float dx = p_x2 - p_x1;
 	float dy = p_y2 - p_y1;
@@ -137,5 +98,56 @@ void Rasterizer::drawLine(float p_x1, float p_y1, float p_x2, float p_y2, Color&
 			}
 			++index;
 		}
+	}
+}
+
+void Rasterizer::drawTriangle(Vertex p_v0, Vertex p_v1, Vertex p_v2)
+{
+
+	Vertex v0(Mat4::ConvertToScreen(p_v0.position, m_rtexture.GetWidth(), m_rtexture.GetHeight()));
+	Vertex v1(Mat4::ConvertToScreen(p_v1.position, m_rtexture.GetWidth(), m_rtexture.GetHeight()));
+	Vertex v2(Mat4::ConvertToScreen(p_v2.position, m_rtexture.GetWidth(), m_rtexture.GetHeight()));
+
+	if (m_wireFrame)
+	{
+		drawLine(v0.position.x, v0.position.y, v1.position.x, v1.position.y, v0.color, v1.color);
+		drawLine(v1.position.x, v1.position.y, v2.position.x, v2.position.y, v1.color, v2.color);
+		drawLine(v2.position.x, v2.position.y, v0.position.x, v0.position.y, v2.color, v0.color);
+	}
+	else
+	{
+		bool uniColor = false;
+		Color colorV0 = p_v0.color;
+		Color colorV1 = p_v1.color;
+		Color colorV2 = p_v2.color;
+		if (colorV0 == colorV1 && colorV0 == colorV2)
+		{
+			uniColor = true;
+		}
+		Triangle triangle(v0, v1, v2);
+		AABB box = triangle.getAABB();
+
+		int minX = std::max((int)box.minPoint.x, 0);
+		int minY = std::max((int)box.minPoint.y, 0);
+		int maxX = std::min((int)box.maxPoint.x, m_rtexture.GetWidth() - 1);
+		int maxY = std::min((int)box.maxPoint.y, m_rtexture.GetHeight() - 1);
+		Vertex positions(0, 0, 0);
+		for (positions.position.y = minY; positions.position.y <= maxY; positions.position.y++)
+		{
+			for (positions.position.x = minX; positions.position.x <= maxX; positions.position.x++)
+			{
+				Vec3 barycent(triangle.Barycentric(v0, v1, v2, positions));
+
+				if (barycent.x >= 0 && barycent.y >= 0 && barycent.x + barycent.y < 1 && uniColor)
+				{
+					m_rtexture.SetPixelColor(positions.position.x, positions.position.y, colorV0);
+				}
+				else if (barycent.x >= 0 && barycent.y >= 0 && barycent.x + barycent.y < 1 && !uniColor)
+				{
+					m_rtexture.SetPixelColor(positions.position.x, positions.position.y, ((colorV1 * barycent.y) + (colorV2 * barycent.x) + (colorV0 * barycent.z)));
+				}
+			}
+		}
+
 	}
 }

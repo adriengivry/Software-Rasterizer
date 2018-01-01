@@ -19,21 +19,26 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\src\Display.cpp" />
     <ClCompile Include="..\src\Entity.cpp" />
     <ClCompile Include="..\src\Main.cpp" />
     <ClCompile Include="..\src\Mesh.cpp" />
     <ClCompile Include="..\src\Rasterizer.cpp" />
     <ClCompile Include="..\src\Scene.cpp" />
     <ClCompile Include="..\src\Texture.cpp" />
+    <ClCompile Include="..\src\Triangle.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\Color.h" />
+    <ClInclude Include="..\include\Display.h" />
     <ClInclude Include="..\include\Entity.h" />
     <ClInclude Include="..\include\Mat4.h" />
     <ClInclude Include="..\include\Mesh.h" />
     <ClInclude Include="..\include\Rasterizer.h" />
     <ClInclude Include="..\include\Scene.h" />
     <ClInclude Include="..\include\Texture.h" />
+    <ClInclude Include="..\include\Triangle.h" />
+    <ClInclude Include="..\include\Vec2.h" />
     <ClInclude Include="..\include\Vec3.h" />
     <ClInclude Include="..\include\Vec4.h" />
     <ClInclude Include="..\include\Vertex.h" />

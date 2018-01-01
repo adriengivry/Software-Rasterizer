@@ -14,6 +14,7 @@ struct Vec4
 	void Normalize();
 	Vec4 operator+(const Vec4& p_other) const;
 	Vec4 operator*(const float& p_scale) const;
+	Vec4 operator=(const Vec4& p_other);
 };
 
 
@@ -60,4 +61,13 @@ inline Vec4 Vec4::operator+(const Vec4& p_other) const
 inline Vec4 Vec4::operator*(const float& p_scale) const
 {
 	return Vec4(p_scale * this->x, p_scale * this->y, p_scale * this->z, 1);
+}
+
+inline Vec4 Vec4::operator=(const Vec4 & p_other)
+{
+	this->x = p_other.x;
+	this->y = p_other.y;
+	this->z = p_other.z;
+	this->w = p_other.w;
+	return *this;
 }

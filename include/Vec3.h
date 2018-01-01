@@ -2,6 +2,8 @@
 #define _USE_MATH_DEFINES
 #include <math.h>
 #define DEG_TO_RAD 3.1415926535f/180.0f
+#define WINDOW_WIDTH 1024
+#define WINDOW_HEIGHT 768
 
 struct Vec3
 {
@@ -9,10 +11,13 @@ struct Vec3
 	float y;
 	float z;
 	explicit Vec3(float p_x = 0, float p_y = 0, float p_z = 0);
+	Vec3(const Vec3& p_other);
 	float GetMagnitude() const;
 	void Normalize();
 	Vec3 operator+(const Vec3& p_other) const;
+	Vec3 operator-(const Vec3& p_other) const;
 	Vec3 operator*(const float& p_scale) const;
+	Vec3 operator=(const Vec3& p_other);
 };
 
 inline Vec3::Vec3(const float p_x, const float p_y, const float p_z)
@@ -20,6 +25,13 @@ inline Vec3::Vec3(const float p_x, const float p_y, const float p_z)
 	this->x = p_x;
 	this->y = p_y;
 	this->z = p_z;
+}
+
+inline Vec3::Vec3(const Vec3 & p_other)
+{
+	this->x = p_other.x;
+	this->y = p_other.y;
+	this->z = p_other.z;
 }
 
 inline float Vec3::GetMagnitude() const
@@ -39,7 +51,20 @@ inline Vec3 Vec3::operator+(const Vec3& p_other) const
 	return Vec3(this->x + p_other.x, this->y + p_other.y, this->z + p_other.z);
 }
 
+inline Vec3 Vec3::operator-(const Vec3 & p_other) const
+{
+	return Vec3(this->x - p_other.x, this->y - p_other.y, this->z - p_other.z);
+}
+
 inline Vec3 Vec3::operator*(const float& p_scale) const
 {
 	return Vec3(p_scale * this->x, p_scale * this->y, p_scale * this->z);
+}
+
+inline Vec3 Vec3::operator=(const Vec3 & p_other)
+{
+	this->x = p_other.x;
+	this->y = p_other.y;
+	this->z = p_other.z;
+	return *this;
 }
