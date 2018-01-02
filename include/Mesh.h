@@ -8,10 +8,11 @@ public:
     Mesh();
     ~Mesh();
     static Mesh* CreateCube();
+	static Mesh* CreateCube2();
     static Mesh* CreateSphere(int p_latitudeCount, int p_longitudeCount);
 	static Mesh* CreateTriangle();
-	std::vector<Vertex> GetVertices();
-	std::vector<uint32_t> GetIndices();
+	std::vector<Vertex>& GetVertices();
+	std::vector<uint32_t>& GetIndices();
 
 	void SetVertex(const Vertex p_vertex);
 	void SetIndex(const uint32_t p_index);

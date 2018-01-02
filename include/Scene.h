@@ -2,14 +2,8 @@
 #include <vector>
 #include "Entity.h"
 
-class Scene
+struct Scene
 {
-public:
 	Scene();
-	~Scene();
-	std::vector<Entity> GetEntity();
-
-private:
-	std::vector<Entity> m_entities;
+	std::vector<Entity*> m_entities;
 };
-

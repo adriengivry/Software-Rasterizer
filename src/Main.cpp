@@ -36,6 +36,7 @@ int SDL_main(int argc, char** argv)
 {
 	Display display;
 	display.init();
+	display.initScene();
 	unsigned int lastTicks = SDL_GetTicks();
 	while (gameRunning)
 	{
@@ -48,7 +49,6 @@ int SDL_main(int argc, char** argv)
 
 		unsigned int ticks = SDL_GetTicks();
 		unsigned int ticksDiff = ticks - lastTicks;
-		
 		if (ticksDiff == 0)
 			continue;
 		

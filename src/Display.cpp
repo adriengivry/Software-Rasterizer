@@ -1,6 +1,6 @@
 #include "../include/Display.h"
 
-Display::Display() : m_pRasterizer{nullptr}, m_pWindow(nullptr), m_pRenderer(nullptr), m_pTexture(nullptr), m_prTexture(nullptr)
+Display::Display() : m_pRasterizer{nullptr}, m_pWindow(nullptr), m_pRenderer(nullptr), m_pTexture(nullptr), m_prTexture(nullptr), m_pScene(nullptr), m_pEntity(nullptr), ytransfrom(0)
 {}
 
 Display::~Display()
@@ -10,6 +10,12 @@ Display::~Display()
 	SDL_DestroyWindow(m_pWindow);
 	delete m_pRasterizer;
 	delete m_prTexture;
+	delete m_pScene;
+	for (int i = 0; i < 2; ++i)
+	{
+		delete m_pEntity[i];
+	}
+	delete m_pEntity;
 }
 
 void Display::update()
@@ -28,6 +34,28 @@ void Display::init()
 	m_pRasterizer = new Rasterizer(*m_prTexture, *m_pRenderer, *m_pTexture);
 }
 
+void Display::initScene()
+{
+	m_pScene = new Scene();
+	m_pEntity = new Entity*[2];
+	for (int i = 0; i < 2; ++i)
+	{
+		m_pEntity[i] = new Entity();
+	}
+	m_pEntity[0]->SetMesh(*Mesh::CreateCube2());
+	m_pEntity[1]->SetMesh(*Mesh::CreateSphere(20, 20));
+	for (int i = 0; i < m_pEntity[0]->GetMesh()->GetVertices().size(); i++)
+	{
+		m_pEntity[0]->GetMesh()->GetVertices()[i].SetColor(255, 0, 0, 255);
+	}
+	for (int i = 0; i < m_pEntity[1]->GetMesh()->GetVertices().size(); i++)
+	{
+		m_pEntity[1]->GetMesh()->GetVertices()[i].SetColor(255, 0, 0, 255);
+	}
+	m_pScene->m_entities.push_back(m_pEntity[0]);
+	m_pScene->m_entities.push_back(m_pEntity[1]);
+}
+
 void Display::RenderScene(Scene * p_pScene)
 {
 	m_pRasterizer->RenderScene(p_pScene);
@@ -35,11 +63,14 @@ void Display::RenderScene(Scene * p_pScene)
 
 void Display::drawLine()
 {
-	Vertex V0(0, 0, 0);
-	V0.SetColor(255, 0 , 0 ,255);
-	Vertex V1(-2, 3, 0);
-	Vertex V2(2, 4, 0);
-	V1.SetColor(0, 255, 0, 255);
-	V2.SetColor(0, 0, 255, 255);
-	m_pRasterizer->drawTriangle(V0, V1, V2);
+	m_pRasterizer->BeginDraw();
+	Mat3Dto2D::model = Mat4::CreateRotation(45, ytransfrom, 0);
+	for (int i = 0; i < m_pScene->m_entities[0]->GetMesh()->GetIndices().size() - 3; i++)
+	{
+		m_pRasterizer->drawTriangleSpan(m_pScene->m_entities[0]->GetMesh()->GetVertices()[m_pScene->m_entities[0]->GetMesh()->GetIndices()[i]], m_pScene->m_entities[0]->GetMesh()->GetVertices()[m_pScene->m_entities[0]->GetMesh()->GetIndices()[i + 1]],
+			m_pScene->m_entities[0]->GetMesh()->GetVertices()[m_pScene->m_entities[0]->GetMesh()->GetIndices()[i + 2]]);
+	}
+	ytransfrom += 1.0f;
+
+	m_pRasterizer->EndDraw();
 }

@@ -5,20 +5,11 @@ Mesh::~Mesh() {}
 
 Mesh* Mesh::CreateCube()
 {
-	uint16_t index, indexA, indexB;
+	int index, indexA, indexB;
 	float x, y, z;
 	float yAngle = -90.0f * DEG_TO_RAD;
 	float xAngle = 90.0f * DEG_TO_RAD;
 	Mesh* Cube = new Mesh();
-	if (!Cube->m_vertices.empty())
-	{
-		Cube->m_vertices.clear();
-	}
-	else if (!Cube->m_indices.empty())
-	{
-		Cube->m_indices.clear();
-	}
-
 	//Make the first face, Rotation center should be placed at x = 0, y = 0, z = 0
 	x = -0.5f;
 	y = 0.5f;
@@ -37,9 +28,20 @@ Mesh* Mesh::CreateCube()
 	//draw sides first
 	for (index = 0; index < 8; index++)
 	{
-		indexA = (index == 7) ? -1 : index;
-		indexB = (index == 6) ? -2 : index;
-		indexB = (index == 7) ? -1 : index;
+		if (index == 6)
+		{
+			indexB = -2;
+		}
+		else if (index == 7)
+		{
+			indexA = -1;
+			indexB = -2;
+		}
+		else
+		{
+			indexA = index;
+			indexB = index;
+		}
 		Cube->m_indices.push_back(index);
 		Cube->m_indices.push_back(indexA + 1);
 		Cube->m_indices.push_back(indexB + 2);
@@ -60,26 +62,68 @@ Mesh* Mesh::CreateCube()
 	return Cube;
 }
 
+Mesh * Mesh::CreateCube2()
+{
+	Mesh* Cube = new Mesh();
+	Cube->m_vertices.push_back(Vertex(-1.0, -1.0, -1.0));
+	Cube->m_vertices.push_back(Vertex(1.0, -1.0, -1.0));
+	Cube->m_vertices.push_back(Vertex(1.0, 1.0, -1.0));
+	Cube->m_vertices.push_back(Vertex(-1.0, 1.0, -1.0));
+	Cube->m_vertices.push_back(Vertex(-1.0, -1.0, 1.0));
+	Cube->m_vertices.push_back(Vertex(1.0, -1.0, 1.0));
+	Cube->m_vertices.push_back(Vertex(1.0, 1.0, 1.0));
+	Cube->m_vertices.push_back(Vertex(-1.0, 1.0, 1.0));
+
+	Cube->m_indices.push_back(0);
+	Cube->m_indices.push_back(1);
+	Cube->m_indices.push_back(3);
+	Cube->m_indices.push_back(3);
+	Cube->m_indices.push_back(1);
+	Cube->m_indices.push_back(2);
+	Cube->m_indices.push_back(1);
+	Cube->m_indices.push_back(5);
+	Cube->m_indices.push_back(2);
+	Cube->m_indices.push_back(2);
+	Cube->m_indices.push_back(5);
+	Cube->m_indices.push_back(6);
+	Cube->m_indices.push_back(5);
+	Cube->m_indices.push_back(4);
+	Cube->m_indices.push_back(6);
+	Cube->m_indices.push_back(6);
+	Cube->m_indices.push_back(4);
+	Cube->m_indices.push_back(7);
+	Cube->m_indices.push_back(4);
+	Cube->m_indices.push_back(0);
+	Cube->m_indices.push_back(7);
+	Cube->m_indices.push_back(7);
+	Cube->m_indices.push_back(0);
+	Cube->m_indices.push_back(3);
+	Cube->m_indices.push_back(3);
+	Cube->m_indices.push_back(2);
+	Cube->m_indices.push_back(7);
+	Cube->m_indices.push_back(7);
+	Cube->m_indices.push_back(2);
+	Cube->m_indices.push_back(6);
+	Cube->m_indices.push_back(4);
+	Cube->m_indices.push_back(5);
+	Cube->m_indices.push_back(0);
+	Cube->m_indices.push_back(0);
+	Cube->m_indices.push_back(5);
+	Cube->m_indices.push_back(1);
+	return Cube;
+}
+
 Mesh* Mesh::CreateSphere(int p_latitudeCount, int p_longitudeCount)
 {
-	uint16_t i, j, k, l;
+	int i, j, k, l;
 	float x, y, z, preXZ;
-	uint16_t pitch = p_longitudeCount + 1;
+	int pitch = p_longitudeCount + 1;
 
 	//Calculate angles to be used for X and Y, it depends on the nbr of Lines for Latitudes and Longitudes
 	float yAngle = (180.0f / (float)pitch) * DEG_TO_RAD;
 	float xAngle = (360.0f / (float)p_latitudeCount) * DEG_TO_RAD;
 
 	Mesh* Sphere = new Mesh();
-	if (!Sphere->m_vertices.empty())
-	{
-		Sphere->m_vertices.clear();
-	}
-	else if (!Sphere->m_indices.empty())
-	{
-		Sphere->m_indices.clear();
-	}
-
 	//It's easier to calculate a sphere from top to bottom.
 	for (i = 0; i <= pitch; i++)
 	{
@@ -150,12 +194,12 @@ Mesh* Mesh::CreateTriangle()
 	return Triangle;
 }
 
-std::vector<Vertex> Mesh::GetVertices()
+std::vector<Vertex>& Mesh::GetVertices()
 {
 	return m_vertices;
 }
 
-std::vector<uint32_t> Mesh::GetIndices()
+std::vector<uint32_t>& Mesh::GetIndices()
 {
 	return m_indices;
 }

@@ -28,13 +28,13 @@ struct Vertex
 		color.g = p_g;
 		color.b = p_b;
 	}
-	void VertexTransform(Mat4 p_transform)
+	void VertexTransform(Mat4& p_transform)
 	{
 		Vec4 vector4(position);
-		vector4 = p_transform * vector4;
-		position.x = vector4.x;
-		position.y = vector4.y;
-		position.z = vector4.z;
+		Vec4 vector = p_transform * vector4;
+		position.x = (vector.x / (vector.w));
+		position.y = (vector.y / (vector.w));
+		position.z = vector.z / vector.w;
 	}
 };
 

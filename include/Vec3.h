@@ -14,9 +14,12 @@ struct Vec3
 	Vec3(const Vec3& p_other);
 	float GetMagnitude() const;
 	void Normalize();
+	float dot(const Vec3& p_other)const;
+	Vec3 Cross(const Vec3& p_other)const;
 	Vec3 operator+(const Vec3& p_other) const;
 	Vec3 operator-(const Vec3& p_other) const;
 	Vec3 operator*(const float& p_scale) const;
+	Vec3 operator/(const float& p_scale) const;
 	Vec3 operator=(const Vec3& p_other);
 };
 
@@ -46,6 +49,16 @@ inline void Vec3::Normalize()
 	this->z = this->z / this->GetMagnitude();
 }
 
+inline float Vec3::dot(const Vec3 & p_other) const
+{
+	return (x * p_other.x + y * p_other.y + z * p_other.z);
+}
+
+inline Vec3 Vec3::Cross(const Vec3 & p_other) const
+{
+	return Vec3(y * p_other.z - z * p_other.y, z* p_other.x - x * p_other.z, x * p_other.y - y * p_other.x);
+}
+
 inline Vec3 Vec3::operator+(const Vec3& p_other) const
 {
 	return Vec3(this->x + p_other.x, this->y + p_other.y, this->z + p_other.z);
@@ -59,6 +72,11 @@ inline Vec3 Vec3::operator-(const Vec3 & p_other) const
 inline Vec3 Vec3::operator*(const float& p_scale) const
 {
 	return Vec3(p_scale * this->x, p_scale * this->y, p_scale * this->z);
+}
+
+inline Vec3 Vec3::operator/(const float & p_scale) const
+{
+	return Vec3(this->x / p_scale, this->y / p_scale, this->z / p_scale);
 }
 
 inline Vec3 Vec3::operator=(const Vec3 & p_other)
