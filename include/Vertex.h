@@ -39,18 +39,14 @@ struct Vertex
 	}
 	Vertex LightTransform(Mat4& p_transform)
 	{
-		Vec4 normal4 = p_transform * Vec4(normal);
-		normal4.Normalize();
-		this->normal = normal4;
+		this->normal = (p_transform * this->normal);
+		normal.Normalize();
 		return *this;
 	}
 	Vertex VertexTransform(Mat4& p_transform)
 	{
 		Vec4 vector4 = p_transform * Vec4(position);
 		vector4.Homogenize();
-		Vec4 normal4 = p_transform * Vec4(normal);
-		normal4.Normalize();
-		this->normal = normal4;
 		this->position = Vec3(vector4.x, vector4.y, vector4.z);
 		return *this;
 	}
@@ -70,6 +66,5 @@ struct Vertex
 		this->color = p_other.color;
 		return *this;
 	}
-	//Vec4 BeforeHomogen()
 };
 
