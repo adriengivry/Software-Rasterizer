@@ -13,7 +13,6 @@ public:
 
 	void SetMesh(const Mesh& p_mesh);
 	void SetMatrix(const Mat4& p_matrix);
-	void MultiplyMesh();
 private:
 	Mesh* m_mesh;
 	Mat4 m_transformation;

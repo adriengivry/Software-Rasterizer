@@ -1,4 +1,6 @@
-#include <math.h>
+#pragma once
+#include <cmath>
+
 struct Vec2
 {
 	float x;

@@ -41,24 +41,40 @@ inline uint32_t Color::CovertTo32()
 	{
 		this->a = 0;
 	}
-	uint32_t r1 = (uint32_t)(this->r);
-	uint32_t g1 = (uint32_t)(this->g);
-	uint32_t b1 = (uint32_t)(this->b);
-	uint32_t a1 = (uint32_t)(this->a);
+	if (r >= 255)
+	{
+		this->r = 255;
+	}
+	else if (g >= 255)
+	{
+		this->g = 0;
+	}
+	else if (b >= 255)
+	{
+		this->b = 255;
+	}
+	else if (a >= 255)
+	{
+		this->a = 255;
+	}
+	const uint32_t r1 = static_cast<uint32_t>(this->r);
+	const uint32_t g1 = static_cast<uint32_t>(this->g);
+	const uint32_t b1 = static_cast<uint32_t>(this->b);
+	const uint32_t a1 = static_cast<uint32_t>(this->a);
 	return (b1 << 24) | (g1 << 16) | (r1 << 8) | a1;
 }
 
 inline Color Color::operator+(const Color& p_color) const
 {
-	return Color(this->r + p_color.r, this->g + p_color.g, this->b + p_color.b, this->a + p_color.a);
+	return Color(this->r + p_color.r, this->g + p_color.g, this->b + p_color.b, 255);
 }
 inline Color Color::operator-(const Color& p_color) const
 {
-	return Color(this->r - p_color.r, this->g - p_color.g, this->b - p_color.b, this->a - p_color.a);
+	return Color(this->r - p_color.r, this->g - p_color.g, this->b - p_color.b, 255);
 }
 inline Color Color::operator*(const float p_scale) const
 {
-	return Color(p_scale * this->r, p_scale * this->g, p_scale * this->b, p_scale * this->a);
+	return Color(p_scale * this->r, p_scale * this->g, p_scale * this->b, 255);
 }
 
 inline Color Color::operator/(float p_scale) const
@@ -67,7 +83,7 @@ inline Color Color::operator/(float p_scale) const
 	{
 		p_scale = 1;
 	}
-	return Color(this->r / p_scale, this->g / p_scale, this->b / p_scale, this->a / p_scale);
+	return Color(this->r / p_scale, this->g / p_scale, this->b / p_scale, 255);
 }
 
 inline Color Color::operator=(const Color & p_color)

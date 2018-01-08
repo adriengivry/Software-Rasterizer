@@ -77,39 +77,67 @@ Mesh * Mesh::CreateCube2()
 	Cube->m_indices.push_back(0);
 	Cube->m_indices.push_back(1);
 	Cube->m_indices.push_back(3);
+
 	Cube->m_indices.push_back(3);
 	Cube->m_indices.push_back(1);
 	Cube->m_indices.push_back(2);
+	
 	Cube->m_indices.push_back(1);
 	Cube->m_indices.push_back(5);
 	Cube->m_indices.push_back(2);
+	
 	Cube->m_indices.push_back(2);
 	Cube->m_indices.push_back(5);
 	Cube->m_indices.push_back(6);
+	
 	Cube->m_indices.push_back(5);
 	Cube->m_indices.push_back(4);
 	Cube->m_indices.push_back(6);
+	
 	Cube->m_indices.push_back(6);
 	Cube->m_indices.push_back(4);
 	Cube->m_indices.push_back(7);
+	
 	Cube->m_indices.push_back(4);
 	Cube->m_indices.push_back(0);
 	Cube->m_indices.push_back(7);
+	
 	Cube->m_indices.push_back(7);
 	Cube->m_indices.push_back(0);
 	Cube->m_indices.push_back(3);
+	
 	Cube->m_indices.push_back(3);
 	Cube->m_indices.push_back(2);
 	Cube->m_indices.push_back(7);
+	
 	Cube->m_indices.push_back(7);
 	Cube->m_indices.push_back(2);
 	Cube->m_indices.push_back(6);
+	
 	Cube->m_indices.push_back(4);
 	Cube->m_indices.push_back(5);
 	Cube->m_indices.push_back(0);
+	
 	Cube->m_indices.push_back(0);
 	Cube->m_indices.push_back(5);
 	Cube->m_indices.push_back(1);
+	
+	for (uint16_t i = 0; i < Cube->m_indices.size() - 2; i+= 3)
+	{
+		Vec3 Normal;
+		Vec3 p1(Cube->m_vertices[Cube->m_indices[i + 1]].position - Cube->m_vertices[Cube->m_indices[i]].position);
+		Vec3 p2(Cube->m_vertices[Cube->m_indices[i + 2]].position - Cube->m_vertices[Cube->m_indices[i]].position);
+		Normal = p1.Cross(p2);
+		Normal.Normalize();
+		Cube->m_vertices[Cube->m_indices[i]].normal = Cube->m_vertices[Cube->m_indices[i]].normal + Vec4(Normal, 0);
+		Cube->m_vertices[Cube->m_indices[i + 1]].normal = Cube->m_vertices[Cube->m_indices[i + 1]].normal + Vec4(Normal, 0);
+		Cube->m_vertices[Cube->m_indices[i + 2]].normal = Cube->m_vertices[Cube->m_indices[i + 2]].normal + Vec4(Normal, 0);
+	}
+	
+	for (uint16_t i = 0; i < Cube->m_vertices.size(); ++i)
+	{
+		Cube->m_vertices[i].normal.Normalize();
+	}
 	return Cube;
 }
 

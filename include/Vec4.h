@@ -12,7 +12,9 @@ struct Vec4
 	void Homogenize();
 	float Getmagnitude() const;
 	void Normalize();
+	Vec4 Cross(const Vec4& p_other) const;
 	Vec4 operator+(const Vec4& p_other) const;
+	float operator*(const Vec4& p_other) const;
 	Vec4 operator*(const float& p_scale) const;
 	Vec4 operator=(const Vec4& p_other);
 	Vec4& operator/=(const float p_scale);
@@ -37,9 +39,12 @@ inline Vec4::Vec4(const float p_x, const float p_y, const float p_z, const float
 
 inline void Vec4::Homogenize()
 {
-	this->x = this->x / this->w;
-	this->y = this->y / this->w;
-	this->z = this->z / this->w;
+	if (this->w != 0)
+	{
+		this->x = this->x / this->w;
+		this->y = this->y / this->w;
+		this->z = this->z / this->w;
+	}
 }
 
 inline float Vec4::Getmagnitude() const
@@ -54,9 +59,19 @@ inline void Vec4::Normalize()
 	this->z /= this->Getmagnitude();
 }
 
+inline Vec4 Vec4::Cross(const Vec4 & p_other) const
+{
+	return Vec4(this->y * p_other.z - this->z * p_other.y, this->z * p_other.x - this->x * p_other.z, this->x * p_other.y - this->y * p_other.x, this->w);
+}
+
 inline Vec4 Vec4::operator+(const Vec4& p_other) const
 {
 	return Vec4(this->x + p_other.x, this->y + p_other.y, this->z + p_other.z, this->z + p_other.z);
+}
+
+inline float Vec4::operator*(const Vec4 & p_other) const
+{
+	return (this->x * p_other.x + this->y * p_other.y + this->z * p_other.z);
 }
 
 inline Vec4 Vec4::operator*(const float& p_scale) const

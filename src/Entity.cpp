@@ -27,12 +27,3 @@ void Entity::SetMatrix(const Mat4& p_matrix)
 {
 	m_transformation = p_matrix;
 }
-
-void Entity::MultiplyMesh()
-{
-	if (m_mesh != nullptr)
-	{
-		for (int i = 0; i < m_mesh->GetVertices().size(); i++)
-			m_mesh->GetVertices()[i].VertexTransform(m_transformation);
-	}
-}

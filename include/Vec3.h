@@ -1,6 +1,7 @@
 #pragma once
-#define _USE_MATH_DEFINES
 #include <math.h>
+#include <sdl_stdinc.h>
+//#define M_PI 3.1415926535f
 #define DEG_TO_RAD 3.1415926535f/180.0f
 #define WINDOW_WIDTH 1024
 #define WINDOW_HEIGHT 768
@@ -21,6 +22,7 @@ struct Vec3
 	Vec3 operator*(const float& p_scale) const;
 	Vec3 operator/(const float& p_scale) const;
 	Vec3 operator=(const Vec3& p_other);
+	Vec3& operator+=(const Vec3& p_other);
 };
 
 inline Vec3::Vec3(const float p_x, const float p_y, const float p_z)
@@ -56,7 +58,7 @@ inline float Vec3::dot(const Vec3 & p_other) const
 
 inline Vec3 Vec3::Cross(const Vec3 & p_other) const
 {
-	return Vec3(y * p_other.z - z * p_other.y, z* p_other.x - x * p_other.z, x * p_other.y - y * p_other.x);
+	return Vec3(this->y * p_other.z - this->z * p_other.y, this->z* p_other.x - this->x * p_other.z, this->x * p_other.y - this->y * p_other.x);
 }
 
 inline Vec3 Vec3::operator+(const Vec3& p_other) const
@@ -84,5 +86,13 @@ inline Vec3 Vec3::operator=(const Vec3 & p_other)
 	this->x = p_other.x;
 	this->y = p_other.y;
 	this->z = p_other.z;
+	return *this;
+}
+
+inline Vec3 & Vec3::operator+=(const Vec3 & p_other)
+{
+	this->x += p_other.x;
+	this->y += p_other.y;
+	this->z += p_other.z;
 	return *this;
 }
