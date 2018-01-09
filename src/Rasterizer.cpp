@@ -123,7 +123,7 @@ void Rasterizer::update()
 		m_zBuffer[i] = std::numeric_limits<float>::max();
 }
 
-void Rasterizer::drawLine(const float p_x1,const float p_y1,const float p_x2,const float p_y2, Color& p_color1, Color& p_color2)
+void Rasterizer::drawLine(const float p_x1,const float p_y1,const float p_x2,const float p_y2, Color p_color1, Color p_color2)
 {
 	float dx = p_x2 - p_x1;
 	float dy = p_y2 - p_y1;
@@ -131,7 +131,7 @@ void Rasterizer::drawLine(const float p_x1,const float p_y1,const float p_x2,con
 	float dy1 = fabs(p_y2 - p_y1);
 	if (dx == 0.0f && dy == 0.0f)
 	{
-		m_rtexture.SetPixelColor(p_x1, p_y1, p_color1);
+		m_rtexture.SetPixelColor(int(p_x1), int(p_y1), p_color1);
 		return;
 	}
 	float index = 0;
@@ -149,21 +149,21 @@ void Rasterizer::drawLine(const float p_x1,const float p_y1,const float p_x2,con
 			xMax = p_x1;
 		}
 		float slope = dy / dx;
-		for (uint16_t x = xMin; x <= xMax; x++)
+		for (float x = xMin; x <= xMax; x++)
 		{
 			float y = p_y1 + ((x - p_x1) * slope);
-			if (xMin == p_x1)
-			{
-				Color color = p_color1 * ((dx1 - index)/dx1);
-				Color color1 = p_color2 * (index/dx1);
-				m_rtexture.SetPixelColor(x, y, color + color1);
-			}
-			else if (xMin == p_x2)
-			{
-				Color color = p_color2 * ((dx1 - index)/dx1);
-				Color color1 = p_color1 * (index/dx1);
-				m_rtexture.SetPixelColor(x, y, color + color1);
-			}
+				if (xMin == p_x1)
+				{
+					Color color = p_color1 * ((dx1 - index) / dx1);
+					Color color1 = p_color2 * (index / dx1);
+					m_rtexture.SetPixelColor(int(x), int(y), color + color1);
+				}
+				else if (xMin == p_x2)
+				{
+					Color color = p_color2 * ((dx1 - index) / dx1);
+					Color color1 = p_color1 * (index / dx1);
+					m_rtexture.SetPixelColor(int(x), int(y), color + color1);
+				}
 			++index;
 	    }
 	}
@@ -181,21 +181,21 @@ void Rasterizer::drawLine(const float p_x1,const float p_y1,const float p_x2,con
 			yMax = p_y1;
 		}
 		float slope = dx / dy;
-		for (uint16_t y = yMin; y <= yMax; y++)
+		for (float y = yMin; y <= yMax; y++)
 		{
 			float x = p_x1 + ((y - p_y1) * slope);
-			if (yMin == p_y1)
-			{
-				Color color = ((p_color2 / dy1) * (index));
-				Color color1 = ((p_color1 / dy1) * (dy1 - index));
-				m_rtexture.SetPixelColor(x, y, (color + color1));
-			}
-			else if (yMin == p_y2)
-			{
-				Color color = ((p_color1 / dy1) * (index));
-				Color color1 = ((p_color2 / dy1) * (dy1 - index));
-				m_rtexture.SetPixelColor(x, y, (color + color1));
-			}
+				if (yMin == p_y1)
+				{
+					Color color = ((p_color2 / dy1) * (index));
+					Color color1 = ((p_color1 / dy1) * (dy1 - index));
+					m_rtexture.SetPixelColor(int(x), int(y), color + color1);
+				}
+				else if (yMin == p_y2)
+				{
+					Color color = ((p_color1 / dy1) * (index));
+					Color color1 = ((p_color2 / dy1) * (dy1 - index));
+					m_rtexture.SetPixelColor(int(x), int(y), color + color1);
+				}
 			++index;
 		}
 	}
@@ -309,52 +309,11 @@ void Rasterizer::drawTiangleWire(Vertex p_v0, Vertex p_v1, Vertex p_v2)
 	Vertex v0(Mat4::ConvertToScreen(p_v0.position, m_rtexture.GetWidth(), m_rtexture.GetHeight()));
 	Vertex v1(Mat4::ConvertToScreen(p_v1.position, m_rtexture.GetWidth(), m_rtexture.GetHeight()));
 	Vertex v2(Mat4::ConvertToScreen(p_v2.position, m_rtexture.GetWidth(), m_rtexture.GetHeight()));
-	Triangle triangle(v0, v1, v2);
-	AABB box = triangle.getAABB();
-	int minX = std::max((int)box.minPoint.x, 0);
-	int minY = std::max((int)box.minPoint.y, 0);
-	int maxX = std::min((int)box.maxPoint.x, m_rtexture.GetWidth() - 1);
-	int maxY = std::min((int)box.maxPoint.y, m_rtexture.GetHeight() - 1);
-	Vertex positions(0, 0, 0);
-	for (positions.position.y = minY; positions.position.y <= maxY; positions.position.y++)
-	{
-		for (positions.position.x = minX; positions.position.x <= maxX; positions.position.x++)
-		{
-			Vec3 bary(triangle.Barycentric(v0, v1, v2, positions));
-			if (bary.x >= 0 && bary.x <= 0.0001 && bary.y >= 0.0 && bary.y <= 1.0)
-			{
+	
 
-				positions.position.z = 0;
-				positions.position.z = v0.position.z * bary.z + (v1.position.z) * bary.y + bary.x * (v2.position.z);
-				if (m_zBuffer[int(positions.position.x + positions.position.y * WINDOW_WIDTH)] > positions.position.z)
-				{
-					m_zBuffer[int(positions.position.x + positions.position.y * WINDOW_WIDTH)] = positions.position.z;
-					m_rtexture.SetPixelColor((positions.position.x), (positions.position.y), (p_v0.color * bary.z + p_v1.color * bary.y + p_v2.color * bary.x));
-				}
-			}
-			if (bary.y == 0.0f && bary.y <= 0.0001 && bary.x >= 0.0 && bary.x <= 1.0)
-			{
-
-				positions.position.z = 0;
-				positions.position.z = v0.position.z * bary.z + (v1.position.z) * bary.y + bary.x * (v2.position.z);
-				if (m_zBuffer[int(positions.position.x + positions.position.y * WINDOW_WIDTH)] > positions.position.z)
-				{
-					m_zBuffer[int(positions.position.x + positions.position.y * WINDOW_WIDTH)] = positions.position.z;
-					m_rtexture.SetPixelColor((positions.position.x), (positions.position.y), (p_v0.color * bary.z + p_v1.color * bary.y + p_v2.color * bary.x));
-				}
-			}
-			if (bary.x > 0 && bary.y > 0 && bary.x + bary.y >= 0.99 && bary.x + bary.y <= 1.0)
-			{
-				positions.position.z = 0;
-				positions.position.z = v0.position.z * bary.z + (v1.position.z) * bary.y + bary.x * (v2.position.z);
-				if (m_zBuffer[int(positions.position.x + positions.position.y * WINDOW_WIDTH)] > positions.position.z)
-				{
-					m_zBuffer[int(positions.position.x + positions.position.y * WINDOW_WIDTH)] = positions.position.z;
-					m_rtexture.SetPixelColor((positions.position.x), (positions.position.y), (p_v0.color * bary.z + p_v1.color * bary.y + p_v2.color * bary.x));
-				}
-			}
-		}
-	}
+	drawLine(v0.position.x, v0.position.y, v1.position.x, v1.position.y, p_v0.color, p_v1.color);
+	drawLine(v1.position.x, v1.position.y, v2.position.x, v2.position.y, p_v1.color, p_v2.color);
+	drawLine(v2.position.x, v2.position.y, v0.position.x, v0.position.y, p_v2.color, p_v0.color);
 }
 
 void Rasterizer::drawTriangleSphere(Vertex p_v0, Vertex p_v1, Vertex p_v2)
