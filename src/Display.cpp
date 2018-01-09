@@ -72,6 +72,6 @@ void Display::RenderScene()
 {
 	Mat4 matrix = (Mat4::CreateTranslation(0, 0, -5) * Mat4::CreateRotation(45, 45, 0));
 	m_pScene->m_entities[0]->SetMatrix(matrix);
-	m_pRasterizer.RenderScenewire(m_pScene);
+	m_pRasterizer.RenderScene3(m_pScene);
 	yturn++;
 }

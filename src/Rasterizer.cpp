@@ -439,11 +439,11 @@ void Rasterizer::ClearBuffer()
 
 Color Rasterizer::PhongColor(Vertex p_position, Vec3 p_normal, Vertex p_light, Vec3 p_lightcomp, Color p_color)
 {
-	Vec3 lightDir(p_light.position - p_position.position);
+	Vec3 lightDir(p_position.position);
 	lightDir.Normalize();
 	Vec3 lightDirneg = (lightDir * -1);
 	Vec3 reflect = lightDirneg - (p_normal * (2.0f * (p_normal.dot(lightDirneg))));
-	Vec3 viewDir = (p_position.position * -1);
+	Vec3 viewDir = (p_position.position);
 	viewDir.Normalize();
 
 	float lambert = std::max(lightDir.dot(p_normal), 0.0f);
