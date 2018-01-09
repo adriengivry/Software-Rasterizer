@@ -65,14 +65,14 @@ Mesh* Mesh::CreateCube()
 Mesh * Mesh::CreateCube2()
 {
 	Mesh* Cube = new Mesh();
-	Cube->m_vertices.push_back(Vertex(-1.0, -1.0, -1.0));
-	Cube->m_vertices.push_back(Vertex(1.0, -1.0, -1.0));
-	Cube->m_vertices.push_back(Vertex(1.0, 1.0, -1.0));
-	Cube->m_vertices.push_back(Vertex(-1.0, 1.0, -1.0));
-	Cube->m_vertices.push_back(Vertex(-1.0, -1.0, 1.0));
-	Cube->m_vertices.push_back(Vertex(1.0, -1.0, 1.0));
-	Cube->m_vertices.push_back(Vertex(1.0, 1.0, 1.0));
-	Cube->m_vertices.push_back(Vertex(-1.0, 1.0, 1.0));
+	Cube->m_vertices.push_back(Vertex(-0.5, -0.5, -0.5));
+	Cube->m_vertices.push_back(Vertex(0.5, -0.5, -0.5));
+	Cube->m_vertices.push_back(Vertex(0.5, 0.5, -0.5));
+	Cube->m_vertices.push_back(Vertex(-0.5, 0.5, -0.5));
+	Cube->m_vertices.push_back(Vertex(-0.5, -0.5, 0.5));
+	Cube->m_vertices.push_back(Vertex(0.5, -0.5, 0.5));
+	Cube->m_vertices.push_back(Vertex(0.5, 0.5, 0.5));
+	Cube->m_vertices.push_back(Vertex(-0.5, 0.5, 0.5));
 
 	Cube->m_indices.push_back(0);
 	Cube->m_indices.push_back(1);

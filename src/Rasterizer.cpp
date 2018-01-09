@@ -46,15 +46,15 @@ void Rasterizer::RenderScene(Scene * p_pScene)
 }
 void Rasterizer::RenderScene2(Scene * p_pScene)
 {
-	Mat4 lightproject = Mat4::CreatePerspective(60, float(m_rtexture.GetWidth()) / float(m_rtexture.GetHeight()), 0.1f, 100.0f);
+	
 	Vertex lightposition = p_pScene->m_lights[0]->GetPosition();
 	Vec3 Lightcomp(p_pScene->m_lights[0]->GetAmbient(), p_pScene->m_lights[0]->GetDiffuse(), p_pScene->m_lights[0]->GetSpecular());
-	lightposition.VertexTransform(lightproject);
-	Vertex light(Mat4::ConvertToScreen(lightposition.position, m_rtexture.GetWidth(), m_rtexture.GetHeight()));
+	lightposition.VertexTransform(Mat4::CreatePerspective(60, float(m_rtexture.GetWidth()) / float(m_rtexture.GetHeight()), 0.1f, 100.0f));
+	//Vertex lightlast(Mat4::ConvertToScreen(lightposition.position, m_rtexture.GetWidth(), m_rtexture.GetHeight()));
 	for (uint16_t j = 0; j < p_pScene->m_entities.size(); j++)
 	{
 		Mat4 normalMatrix = p_pScene->m_entities[j]->GetMatrix();
-		Mat4 projection = lightproject * normalMatrix;
+		Mat4 projection = Mat4::CreatePerspective(60, float(m_rtexture.GetWidth()) / float(m_rtexture.GetHeight()), 0.1f, 100.0f) * normalMatrix;
 		for (int i = 0; i < p_pScene->m_entities[j]->GetMesh()->GetIndices().size() - 2; i += 3)
 		{
 			Vertex v0 = (p_pScene->m_entities[j]->GetMesh()->GetVertices()[p_pScene->m_entities[j]->GetMesh()->GetIndices()[i]]);
@@ -67,7 +67,7 @@ void Rasterizer::RenderScene2(Scene * p_pScene)
 			v1.LightTransform(normalMatrix);
 			v2.LightTransform(normalMatrix);
 			
-			drawTriangle2(v0, v1, v2, light, Lightcomp);
+			drawTriangle2(v0, v1, v2, lightposition, Lightcomp);
 		}
 	}
 }
@@ -94,6 +94,24 @@ void Rasterizer::RenderScene3(Scene * p_pScene)
 		}
 	}
 }
+void Rasterizer::RenderScenewire(Scene * p_pScene)
+{
+	for (uint16_t j = 0; j < p_pScene->m_entities.size(); j++)
+	{
+		Mat4 normalMatrix = p_pScene->m_entities[j]->GetMatrix();
+		Mat4 positionMatrix = Mat4::CreatePerspective(60, float(m_rtexture.GetWidth()) / float(m_rtexture.GetHeight()), 0.1f, 100.0f) * normalMatrix;
+		for (int i = 0; i < p_pScene->m_entities[j]->GetMesh()->GetIndices().size() - 2; i +=3)
+		{
+			Vertex v0 = (p_pScene->m_entities[j]->GetMesh()->GetVertices()[p_pScene->m_entities[j]->GetMesh()->GetIndices()[i]]);
+			Vertex v1 = (p_pScene->m_entities[j]->GetMesh()->GetVertices()[p_pScene->m_entities[j]->GetMesh()->GetIndices()[i + 1]]);
+			Vertex v2 = (p_pScene->m_entities[j]->GetMesh()->GetVertices()[p_pScene->m_entities[j]->GetMesh()->GetIndices()[i + 2]]);
+			v0.VertexTransform(positionMatrix);
+			v1.VertexTransform(positionMatrix);
+			v2.VertexTransform(positionMatrix);
+			drawTiangleWire(v0, v1, v2);
+		}
+	}
+}
 void Rasterizer::update()
 {
 	SDL_UpdateTexture(&m_texture, nullptr, m_rtexture.GetPixelBuffer(), m_rtexture.GetWidth() * sizeof(uint32_t));
@@ -105,7 +123,7 @@ void Rasterizer::update()
 		m_zBuffer[i] = std::numeric_limits<float>::max();
 }
 
-void Rasterizer::drawLine(const float p_x1,const float p_y1,const float p_x2,const float p_y2, Color& p_color1, Color& p_color2)
+void Rasterizer::drawLine(const float p_x1,const float p_y1,const float p_x2,const float p_y2, Color p_color1, Color p_color2)
 {
 	float dx = p_x2 - p_x1;
 	float dy = p_y2 - p_y1;
@@ -113,7 +131,7 @@ void Rasterizer::drawLine(const float p_x1,const float p_y1,const float p_x2,con
 	float dy1 = fabs(p_y2 - p_y1);
 	if (dx == 0.0f && dy == 0.0f)
 	{
-		m_rtexture.SetPixelColor(p_x1, p_y1, p_color1);
+		m_rtexture.SetPixelColor(int(p_x1), int(p_y1), p_color1);
 		return;
 	}
 	float index = 0;
@@ -131,21 +149,21 @@ void Rasterizer::drawLine(const float p_x1,const float p_y1,const float p_x2,con
 			xMax = p_x1;
 		}
 		float slope = dy / dx;
-		for (uint16_t x = xMin; x <= xMax; x++)
+		for (float x = xMin; x <= xMax; x++)
 		{
 			float y = p_y1 + ((x - p_x1) * slope);
-			if (xMin == p_x1)
-			{
-				Color color = p_color1 * ((dx1 - index)/dx1);
-				Color color1 = p_color2 * (index/dx1);
-				m_rtexture.SetPixelColor(x, y, color + color1);
-			}
-			else if (xMin == p_x2)
-			{
-				Color color = p_color2 * ((dx1 - index)/dx1);
-				Color color1 = p_color1 * (index/dx1);
-				m_rtexture.SetPixelColor(x, y, color + color1);
-			}
+				if (xMin == p_x1)
+				{
+					Color color = p_color1 * ((dx1 - index) / dx1);
+					Color color1 = p_color2 * (index / dx1);
+					m_rtexture.SetPixelColor(int(x), int(y), color + color1);
+				}
+				else if (xMin == p_x2)
+				{
+					Color color = p_color2 * ((dx1 - index) / dx1);
+					Color color1 = p_color1 * (index / dx1);
+					m_rtexture.SetPixelColor(int(x), int(y), color + color1);
+				}
 			++index;
 	    }
 	}
@@ -163,21 +181,21 @@ void Rasterizer::drawLine(const float p_x1,const float p_y1,const float p_x2,con
 			yMax = p_y1;
 		}
 		float slope = dx / dy;
-		for (uint16_t y = yMin; y <= yMax; y++)
+		for (float y = yMin; y <= yMax; y++)
 		{
 			float x = p_x1 + ((y - p_y1) * slope);
-			if (yMin == p_y1)
-			{
-				Color color = ((p_color2 / dy1) * (index));
-				Color color1 = ((p_color1 / dy1) * (dy1 - index));
-				m_rtexture.SetPixelColor(x, y, (color + color1));
-			}
-			else if (yMin == p_y2)
-			{
-				Color color = ((p_color1 / dy1) * (index));
-				Color color1 = ((p_color2 / dy1) * (dy1 - index));
-				m_rtexture.SetPixelColor(x, y, (color + color1));
-			}
+				if (yMin == p_y1)
+				{
+					Color color = ((p_color2 / dy1) * (index));
+					Color color1 = ((p_color1 / dy1) * (dy1 - index));
+					m_rtexture.SetPixelColor(int(x), int(y), color + color1);
+				}
+				else if (yMin == p_y2)
+				{
+					Color color = ((p_color1 / dy1) * (index));
+					Color color1 = ((p_color2 / dy1) * (dy1 - index));
+					m_rtexture.SetPixelColor(int(x), int(y), color + color1);
+				}
 			++index;
 		}
 	}
@@ -243,7 +261,6 @@ void Rasterizer::drawTriangle2(Vertex p_v0, Vertex p_v1, Vertex p_v2, Vertex p_l
 								bary.z * p_v0.normal.z + bary.y * p_v1.normal.z + bary.x * p_v2.normal.z);
 
 					normal.Normalize();
-
 					Color finalColor = this->BlinnPhongColor(positions, normal, p_lightPosition, p_lightcomp, (p_v0.color * bary.z + p_v1.color * bary.y + p_v2.color * bary.x));
 					m_rtexture.SetPixelColor(int(positions.position.x), int(positions.position.y), finalColor);
 				}
@@ -287,9 +304,16 @@ void Rasterizer::drawTriangle3(Vertex p_v0, Vertex p_v1, Vertex p_v2, Vertex p_l
 	}
 }
 
-
 void Rasterizer::drawTiangleWire(Vertex p_v0, Vertex p_v1, Vertex p_v2)
 {
+	Vertex v0(Mat4::ConvertToScreen(p_v0.position, m_rtexture.GetWidth(), m_rtexture.GetHeight()));
+	Vertex v1(Mat4::ConvertToScreen(p_v1.position, m_rtexture.GetWidth(), m_rtexture.GetHeight()));
+	Vertex v2(Mat4::ConvertToScreen(p_v2.position, m_rtexture.GetWidth(), m_rtexture.GetHeight()));
+	
+
+	drawLine(v0.position.x, v0.position.y, v1.position.x, v1.position.y, p_v0.color, p_v1.color);
+	drawLine(v1.position.x, v1.position.y, v2.position.x, v2.position.y, p_v1.color, p_v2.color);
+	drawLine(v2.position.x, v2.position.y, v0.position.x, v0.position.y, p_v2.color, p_v0.color);
 }
 
 void Rasterizer::drawTriangleSphere(Vertex p_v0, Vertex p_v1, Vertex p_v2)
@@ -428,7 +452,7 @@ Color Rasterizer::PhongColor(Vertex p_position, Vec3 p_normal, Vertex p_light, V
 	if (lambert > 0.0)
 	{
 		float specAngle = std::max(reflect.dot(viewDir), 0.0f);
-		specAngle *= DEG_TO_RAD;
+		//specAngle *= DEG_TO_RAD;
 		specular = powf(specAngle, 16.0);
 	}
 	Color amb = p_color * (p_lightcomp.x * 0.8);
@@ -441,26 +465,27 @@ Color Rasterizer::PhongColor(Vertex p_position, Vec3 p_normal, Vertex p_light, V
 Color Rasterizer::BlinnPhongColor(Vertex p_position, Vec3 p_normal, Vertex p_lightPosition, Vec3 p_lightcomp,
 	Color p_color)
 {
-	Vec3 lightDir(p_lightPosition.position - p_position.position);
+	Vertex position1(Mat4::ScreenToView(p_position.position, m_rtexture.GetWidth(), m_rtexture.GetHeight()));
+	Vec3 lightDir(position1.position);
 	lightDir.Normalize();
 
 	float lambert = std::max(lightDir.dot(p_normal), 0.0f);
 	float specular = 0.0f;
 
+	if (lambert > 0.0f)
+	{
+		Vec3 viewDir = (position1.position);
+		viewDir.Normalize();
 
-	Vec3 viewDir = (p_position.position * -1);
-	viewDir.Normalize();
+		Vec3 halfDir = (lightDir + viewDir);
+		halfDir.Normalize();
 
-	Vec3 halfDir = (lightDir + viewDir);
-	halfDir.Normalize();
-
-	float specAngle = std::max(halfDir.dot(p_normal), 0.0f);
-	specAngle *= DEG_TO_RAD;
-	specular = powf(specAngle, 16.0);
-
-	Color amb = p_color * (p_lightcomp.x * 0.8);
-	Color diff = p_color * (p_lightcomp.y * lambert * 0.8);
-	Color spec = Color(255, 255, 255) * (p_lightcomp.z * specular);
+		float specAngle = std::max(halfDir.dot(p_normal), 0.0f);
+		specular = powf(specAngle,16.0);
+	}
+	Color amb = p_color * (p_lightcomp.x * 0.6);
+	Color diff = p_color * (p_lightcomp.y * lambert * 0.3);
+	Color spec = p_color * (p_lightcomp.z * specular);
 	Color total = amb + diff + spec;
 	return total;
 }
