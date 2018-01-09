@@ -11,7 +11,7 @@ struct Mat4
 	Mat4(const Vec4& p_vec4);
 	Mat4(const Mat4& p_mat4);
 	Mat4 operator*(const Mat4& p_other);
-	Vec4 operator*(const Vec4& p_other);
+	Vec4 operator*(const Vec4& p_other) const;
 	static Mat4 CreatePerspective(const float p_fov, const float p_aspectRatio,const float p_zNear,const float p_zFar);
 	static Mat4 CreateTranslation(const float p_x, const float p_y, const float p_z);
 	static Mat4 CreateView(const float p_eyeX, const float p_eyeY, const float p_eyeZ,const float p_lookX, const float p_lookY, const float p_lookZ, const float p_upX, const float p_upY, const float p_upZ);
@@ -93,7 +93,7 @@ inline Mat4 Mat4::operator*(const Mat4& p_other)
 	return toReturn;
 }
 
-inline Vec4 Mat4::operator*(const Vec4& p_other)
+inline Vec4 Mat4::operator*(const Vec4& p_other) const
 {
 	float multVec = 0;
 	Vec4 multiply;

@@ -250,7 +250,7 @@ void Rasterizer::drawTriangle2(Vertex p_v0, Vertex p_v1, Vertex p_v2, Vertex p_l
 		for (positions.position.x = minX; positions.position.x <= maxX; positions.position.x++)
 		{
 			Vec3 bary(triangle.Barycentric(v0, v1, v2, positions));
-			if (bary.x >= 0 && bary.y >= 0 && bary.x + bary.y <= 1)
+			if (bary.x >= 0 && bary.y >= 0 && bary.x + bary.y < 1)
 			{
 				positions.position.z = v0.position.z * bary.z + v1.position.z * bary.y + bary.x * v2.position.z;
 				if (m_zBuffer[int(positions.position.x + positions.position.y * WINDOW_WIDTH)] > positions.position.z)
@@ -323,9 +323,9 @@ void Rasterizer::drawTriangleSphere(Vertex p_v0, Vertex p_v1, Vertex p_v2)
 	Vec4 v00(p_v0.position);
 	Vec4 v01(p_v1.position);
 	Vec4 v02(p_v2.position);
-	v00 = pvm * v00;
-	v01 = pvm * v01;
-	v02 = pvm * v02;
+	//v00 = pvm * v00;
+	//v01 = pvm * v01;
+	//v02 = pvm * v02;
 
 	if (v00.w != 0)
 		v00 /= v00.w;
@@ -384,9 +384,9 @@ void Rasterizer::drawTriangleSpan(Vertex p_v0, Vertex p_v1, Vertex p_v2)
 	//v01 = pvm * v01;
 	//v02 = pvm * v02;
 
-	v00 = pvm * v00;
-	v01 = pvm * v01;
-	v02 = pvm * v02;
+	//v00 = pvm * v00;
+	//v01 = pvm * v01;
+	//v02 = pvm * v02;
 	if (v00.w != 0)
 		v00 /= v00.w;
 	
@@ -439,11 +439,14 @@ void Rasterizer::ClearBuffer()
 
 Color Rasterizer::PhongColor(Vertex p_position, Vec3 p_normal, Vertex p_light, Vec3 p_lightcomp, Color p_color)
 {
-	Vec3 lightDir(p_position.position);
+	Vec3 lightDir(p_light.position - p_position.position);
 	lightDir.Normalize();
 	Vec3 lightDirneg = (lightDir * -1);
+
 	Vec3 reflect = lightDirneg - (p_normal * (2.0f * (p_normal.dot(lightDirneg))));
-	Vec3 viewDir = (p_position.position);
+	reflect.Normalize();
+
+	Vec3 viewDir = (p_position.position *-1);
 	viewDir.Normalize();
 
 	float lambert = std::max(lightDir.dot(p_normal), 0.0f);
@@ -452,12 +455,11 @@ Color Rasterizer::PhongColor(Vertex p_position, Vec3 p_normal, Vertex p_light, V
 	if (lambert > 0.0)
 	{
 		float specAngle = std::max(reflect.dot(viewDir), 0.0f);
-		//specAngle *= DEG_TO_RAD;
-		specular = powf(specAngle, 16.0);
+		specular = powf(specAngle, 6.0);
 	}
-	Color amb = p_color * (p_lightcomp.x * 0.8);
-	Color diff = p_color * (p_lightcomp.y * lambert * 0.8);
-	Color spec = Color(255, 255, 255) * (p_lightcomp.z * specular * 0.3);
+	Color amb = p_color * (p_lightcomp.x * 0.3);
+	Color diff = p_color * (p_lightcomp.y * lambert * 0.4);
+	Color spec = p_color * (p_lightcomp.z * specular);
 	Color total = amb + diff + spec;
 	return total;
 }
@@ -466,7 +468,7 @@ Color Rasterizer::BlinnPhongColor(Vertex p_position, Vec3 p_normal, Vertex p_lig
 	Color p_color)
 {
 	Vertex position1(Mat4::ScreenToView(p_position.position, m_rtexture.GetWidth(), m_rtexture.GetHeight()));
-	Vec3 lightDir(position1.position);
+	Vec3 lightDir(p_lightPosition.position - position1.position);
 	lightDir.Normalize();
 
 	float lambert = std::max(lightDir.dot(p_normal), 0.0f);
@@ -474,19 +476,20 @@ Color Rasterizer::BlinnPhongColor(Vertex p_position, Vec3 p_normal, Vertex p_lig
 
 	if (lambert > 0.0f)
 	{
-		Vec3 viewDir = (position1.position);
+		Vec3 viewDir = (position1.position *-1);
 		viewDir.Normalize();
 
 		Vec3 halfDir = (lightDir + viewDir);
 		halfDir.Normalize();
 
 		float specAngle = std::max(halfDir.dot(p_normal), 0.0f);
-		specular = powf(specAngle,16.0);
+		
+		specular = powf(specAngle, 16.0);
 	}
-	Color amb = p_color * (p_lightcomp.x * 0.6);
-	Color diff = p_color * (p_lightcomp.y * lambert * 0.3);
-	Color spec = p_color * (p_lightcomp.z * specular);
-	Color total = amb + diff + spec;
+	Color amb = p_color * (p_lightcomp.x);
+	Color diff = p_color * (p_lightcomp.y * lambert );
+	Color spec = Color(255, 255, 255) * (p_lightcomp.z * specular);
+	Color total = amb + spec;
 	return total;
 }
 
