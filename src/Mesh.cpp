@@ -76,52 +76,52 @@ Mesh * Mesh::CreateCube2()
 	Cube->m_vertices.push_back(Vertex(0.5, 0.5, 0.5));
 	Cube->m_vertices.push_back(Vertex(-0.5, 0.5, 0.5));
 
-	Cube->m_indices.push_back(0);
 	Cube->m_indices.push_back(1);
+	Cube->m_indices.push_back(0);
 	Cube->m_indices.push_back(3);
 
 	Cube->m_indices.push_back(3);
+	Cube->m_indices.push_back(2);
 	Cube->m_indices.push_back(1);
-	Cube->m_indices.push_back(2);
-	
-	Cube->m_indices.push_back(1);
-	Cube->m_indices.push_back(5);
-	Cube->m_indices.push_back(2);
-	
-	Cube->m_indices.push_back(2);
-	Cube->m_indices.push_back(5);
-	Cube->m_indices.push_back(6);
 	
 	Cube->m_indices.push_back(5);
 	Cube->m_indices.push_back(4);
+	Cube->m_indices.push_back(7);
+	
+	Cube->m_indices.push_back(7);
 	Cube->m_indices.push_back(6);
+	Cube->m_indices.push_back(5);
 	
 	Cube->m_indices.push_back(6);
-	Cube->m_indices.push_back(4);
 	Cube->m_indices.push_back(7);
-	
-	Cube->m_indices.push_back(4);
-	Cube->m_indices.push_back(0);
-	Cube->m_indices.push_back(7);
-	
-	Cube->m_indices.push_back(7);
-	Cube->m_indices.push_back(0);
 	Cube->m_indices.push_back(3);
 	
 	Cube->m_indices.push_back(3);
 	Cube->m_indices.push_back(2);
-	Cube->m_indices.push_back(7);
-	
-	Cube->m_indices.push_back(7);
-	Cube->m_indices.push_back(2);
 	Cube->m_indices.push_back(6);
 	
-	Cube->m_indices.push_back(4);
 	Cube->m_indices.push_back(5);
+	Cube->m_indices.push_back(4);
 	Cube->m_indices.push_back(0);
 	
 	Cube->m_indices.push_back(0);
+	Cube->m_indices.push_back(1);
 	Cube->m_indices.push_back(5);
+	
+	Cube->m_indices.push_back(0);
+	Cube->m_indices.push_back(4);
+	Cube->m_indices.push_back(7);
+	
+	Cube->m_indices.push_back(7);
+	Cube->m_indices.push_back(3);
+	Cube->m_indices.push_back(0);
+	
+	Cube->m_indices.push_back(1);
+	Cube->m_indices.push_back(5);
+	Cube->m_indices.push_back(6);
+	
+	Cube->m_indices.push_back(6);
+	Cube->m_indices.push_back(2);
 	Cube->m_indices.push_back(1);
 	
 	for (uint16_t i = 0; i < Cube->m_indices.size() - 2; i+= 3)

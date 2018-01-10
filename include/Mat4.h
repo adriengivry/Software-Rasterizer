@@ -300,7 +300,7 @@ namespace Toolbox
 	{
 		float widthHalf = p_width / 2.0f;
 		float heightHalf = p_height / 2.0f;
-		return Vec3(((p_vector.x / widthHalf) - 1) * 5.0f, (((p_vector.y - p_height) / -heightHalf) - 1) * 5.0f, p_vector.z);
+		return Vec3(((p_vector.x / widthHalf) - 1) * 5.0f, ((((p_vector.y - p_height)  * -1) / heightHalf) - 1) * 5.0f, p_vector.z);
 	}
 
 	inline void Mat4::SetNull()
