@@ -21,6 +21,8 @@
   <ItemGroup>
     <ClCompile Include="..\src\Display.cpp" />
     <ClCompile Include="..\src\Entity.cpp" />
+    <ClCompile Include="..\src\EntityManager.cpp" />
+    <ClCompile Include="..\src\EventManager.cpp" />
     <ClCompile Include="..\src\Light.cpp" />
     <ClCompile Include="..\src\Main.cpp" />
     <ClCompile Include="..\src\Mesh.cpp" />
@@ -28,22 +30,32 @@
     <ClCompile Include="..\src\Scene.cpp" />
     <ClCompile Include="..\src\Texture.cpp" />
     <ClCompile Include="..\src\Triangle.cpp" />
+    <ClCompile Include="..\src\UserInterface.cpp" />
+    <ClCompile Include="..\src\Window.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\Color.h" />
+    <ClInclude Include="..\include\IComponent.h" />
     <ClInclude Include="..\include\Display.h" />
     <ClInclude Include="..\include\Entity.h" />
+    <ClInclude Include="..\include\EntityManager.h" />
+    <ClInclude Include="..\include\EventManager.h" />
     <ClInclude Include="..\include\Light.h" />
+    <ClInclude Include="..\include\IManager.h" />
     <ClInclude Include="..\include\Mat4.h" />
     <ClInclude Include="..\include\Mesh.h" />
+    <ClInclude Include="..\include\IObject.h" />
     <ClInclude Include="..\include\Rasterizer.h" />
     <ClInclude Include="..\include\Scene.h" />
+    <ClInclude Include="..\include\SharedContext.h" />
     <ClInclude Include="..\include\Texture.h" />
     <ClInclude Include="..\include\Triangle.h" />
+    <ClInclude Include="..\include\UserInterface.h" />
     <ClInclude Include="..\include\Vec2.h" />
     <ClInclude Include="..\include\Vec3.h" />
     <ClInclude Include="..\include\Vec4.h" />
     <ClInclude Include="..\include\Vertex.h" />
+    <ClInclude Include="..\include\Window.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\doc\coding_conventions.txt" />
@@ -133,11 +145,11 @@
       <WarningLevel>Level1</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\dependencies\SDL2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\dependencies\SDL2\include;$(ProjectDir)..\dependencies\SDL2_ttf\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>$(ProjectDir)..\dependencies\SDL2\lib\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)..\dependencies\SDL2\lib\;$(ProjectDir)..\dependencies\SDL2_ttf\lib\x64\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -164,13 +176,13 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\dependencies\SDL2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\dependencies\SDL2\include;$(ProjectDir)..\dependencies\SDL2_ttf\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>$(ProjectDir)..\dependencies\SDL2\lib\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)..\dependencies\SDL2\lib\;$(ProjectDir)..\dependencies\SDL2_ttf\lib\x64\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
