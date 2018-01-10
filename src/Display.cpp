@@ -1,13 +1,15 @@
 #include "../include/Display.h"
 
+using namespace Toolbox;
+
 Display::Display() :
+m_pScene(nullptr), 
+m_pEntity(nullptr), 
+m_pLight(nullptr), 
 m_pWindow(SDL_CreateWindow("Rasterizer", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WINDOW_WIDTH, WINDOW_HEIGHT, 0)), 
 m_pRenderer(SDL_CreateRenderer(m_pWindow, -1, SDL_RENDERER_ACCELERATED)), 
 m_pTexture(SDL_CreateTexture(m_pRenderer, SDL_PIXELFORMAT_ARGB32, SDL_TEXTUREACCESS_STREAMING, WINDOW_WIDTH, WINDOW_HEIGHT)), 
-m_prTexture(new Texture(WINDOW_WIDTH, WINDOW_HEIGHT)), 
-m_pScene(nullptr), 
-m_pEntity(nullptr), 
-m_pLight(nullptr),
+m_prTexture(new Texture(WINDOW_WIDTH, WINDOW_HEIGHT)),
 m_pRasterizer(*m_prTexture, *m_pRenderer, *m_pTexture),
 yturn(0)
 {}
@@ -28,12 +30,12 @@ Display::~Display()
 	delete m_pLight;
 }
 
-void Display::update()
+void Display::Update()
 {
-	m_pRasterizer.update();
+	m_pRasterizer.Update();
 }
 
-void Display::init()
+void Display::Init()
 {
 	//m_prTexture = new Texture(WINDOW_WIDTH, WINDOW_HEIGHT);
 	//m_pWindow = SDL_CreateWindow("Rasterizer", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WINDOW_WIDTH, WINDOW_HEIGHT, 0);
@@ -44,7 +46,7 @@ void Display::init()
 	//m_pRasterizer = new Rasterizer(*m_prTexture, *m_pRenderer, *m_pTexture);
 }
 
-void Display::initScene()
+void Display::InitScene()
 {
 	m_pScene = new Scene();
 	m_pLight = new Light(0, 0, 0);

@@ -1,5 +1,6 @@
 #include "../include/Rasterizer.h"
-#include <math.h>
+
+using namespace Toolbox;
 
 namespace Mat3Dto2D
 {
@@ -40,7 +41,7 @@ void Rasterizer::RenderScene(Scene * p_pScene)
 			//v0.VertexTransform(positionMatrix, normalMatrix);
 			//v1.VertexTransform(positionMatrix, normalMatrix);
 			//v2.VertexTransform(positionMatrix, normalMatrix);
-			drawTriangle(v0, v1, v2);
+			DrawTriangle(v0, v1, v2);
 		}
 	}
 }
@@ -69,7 +70,7 @@ void Rasterizer::RenderScene2(Scene * p_pScene)
 			v1.NormalTransform(normalMatrixTrans);
 			v2.NormalTransform(normalMatrixTrans);
 			
-			drawTriangle2(v0, v1, v2, lightposition, Lightcomp);
+			DrawTriangle2(v0, v1, v2, lightposition, Lightcomp);
 		}
 	}
 }
@@ -94,7 +95,7 @@ void Rasterizer::RenderScene3(Scene * p_pScene)
 			v0.VertexTransform(projection1);
 			v1.VertexTransform(projection1);
 			v2.VertexTransform(projection1);
-			drawTriangle3(v0, v1, v2, light1, light2, light3, lightposition, Lightcomp);
+			DrawTriangle3(v0, v1, v2, light1, light2, light3, lightposition, Lightcomp);
 		}
 	}
 }
@@ -112,11 +113,11 @@ void Rasterizer::RenderScenewire(Scene * p_pScene)
 			v0.VertexTransform(positionMatrix);
 			v1.VertexTransform(positionMatrix);
 			v2.VertexTransform(positionMatrix);
-			drawTiangleWire(v0, v1, v2);
+			DrawTiangleWire(v0, v1, v2);
 		}
 	}
 }
-void Rasterizer::update()
+void Rasterizer::Update()
 {
 	SDL_UpdateTexture(&m_texture, nullptr, m_rtexture.GetPixelBuffer(), m_rtexture.GetWidth() * sizeof(uint32_t));
 	SDL_RenderCopy(&m_renderer, &m_texture, nullptr, nullptr);
@@ -127,7 +128,7 @@ void Rasterizer::update()
 		m_zBuffer[i] = std::numeric_limits<float>::max();
 }
 
-void Rasterizer::drawLine(const float p_x1,const float p_y1,const float p_x2,const float p_y2, Color p_color1, Color p_color2)
+void Rasterizer::DrawLine(const float p_x1,const float p_y1,const float p_x2,const float p_y2, Color p_color1, Color p_color2)
 {
 	float dx = p_x2 - p_x1;
 	float dy = p_y2 - p_y1;
@@ -205,7 +206,7 @@ void Rasterizer::drawLine(const float p_x1,const float p_y1,const float p_x2,con
 	}
 }
 
-void Rasterizer::drawTriangle(Vertex p_v0, Vertex p_v1, Vertex p_v2)
+void Rasterizer::DrawTriangle(Vertex p_v0, Vertex p_v1, Vertex p_v2)
 {
 	Vertex v0(Mat4::ConvertToScreen(p_v0.position, m_rtexture.GetWidth(), m_rtexture.GetHeight()));
 	Vertex v1(Mat4::ConvertToScreen(p_v1.position, m_rtexture.GetWidth(), m_rtexture.GetHeight()));
@@ -236,7 +237,7 @@ void Rasterizer::drawTriangle(Vertex p_v0, Vertex p_v1, Vertex p_v2)
 	}
 }
 
-void Rasterizer::drawTriangle2(Vertex p_v0, Vertex p_v1, Vertex p_v2, Vertex p_lightPosition, Vec3 p_lightcomp)
+void Rasterizer::DrawTriangle2(Vertex p_v0, Vertex p_v1, Vertex p_v2, Vertex p_lightPosition, Vec3 p_lightcomp)
 {
 	Vertex v0(Mat4::ConvertToScreen(p_v0.position, m_rtexture.GetWidth(), m_rtexture.GetHeight()));
 	Vertex v1(Mat4::ConvertToScreen(p_v1.position, m_rtexture.GetWidth(), m_rtexture.GetHeight()));
@@ -244,10 +245,10 @@ void Rasterizer::drawTriangle2(Vertex p_v0, Vertex p_v1, Vertex p_v2, Vertex p_l
 
 	Triangle triangle(v0, v1, v2);
 	AABB box = triangle.getAABB();
-	int minX = std::max((int)box.minPoint.x, 0);
-	int minY = std::max((int)box.minPoint.y, 0);
-	int maxX = std::min((int)box.maxPoint.x, m_rtexture.GetWidth() - 1);
-	int maxY = std::min((int)box.maxPoint.y, m_rtexture.GetHeight() - 1);
+	int minX = std::max(static_cast<int>(box.minPoint.x), 0);
+	int minY = std::max(static_cast<int>(box.minPoint.y), 0);
+	int maxX = std::min(static_cast<int>(box.maxPoint.x), m_rtexture.GetWidth() - 1);
+	int maxY = std::min(static_cast<int>(box.maxPoint.y), m_rtexture.GetHeight() - 1);
 	Vertex positions(0, 0, 0);
 	for (positions.position.y = minY; positions.position.y <= maxY; positions.position.y++)
 	{
@@ -273,7 +274,7 @@ void Rasterizer::drawTriangle2(Vertex p_v0, Vertex p_v1, Vertex p_v2, Vertex p_l
 	}
 }
 
-void Rasterizer::drawTriangle3(Vertex p_v0, Vertex p_v1, Vertex p_v2, Vertex p_light1, Vertex p_light2, Vertex p_light3, Vertex p_lightPosition, Vec3 p_lightcomp)
+void Rasterizer::DrawTriangle3(Vertex p_v0, Vertex p_v1, Vertex p_v2, Vertex p_light1, Vertex p_light2, Vertex p_light3, Vertex p_lightPosition, Vec3 p_lightcomp)
 {
 	Color c0 = this->PhongColor(p_light1, Vec3(p_light1.normal.x, p_light1.normal.y, p_light1.normal.z), p_lightPosition, p_lightcomp, p_v0.color);
 	Color c1 = this->PhongColor(p_light2, Vec3(p_light2.normal.x, p_light2.normal.y, p_light2.normal.z), p_lightPosition, p_lightcomp, p_v1.color);
@@ -308,19 +309,19 @@ void Rasterizer::drawTriangle3(Vertex p_v0, Vertex p_v1, Vertex p_v2, Vertex p_l
 	}
 }
 
-void Rasterizer::drawTiangleWire(Vertex p_v0, Vertex p_v1, Vertex p_v2)
+void Rasterizer::DrawTiangleWire(Vertex p_v0, Vertex p_v1, Vertex p_v2)
 {
 	Vertex v0(Mat4::ConvertToScreen(p_v0.position, m_rtexture.GetWidth(), m_rtexture.GetHeight()));
 	Vertex v1(Mat4::ConvertToScreen(p_v1.position, m_rtexture.GetWidth(), m_rtexture.GetHeight()));
 	Vertex v2(Mat4::ConvertToScreen(p_v2.position, m_rtexture.GetWidth(), m_rtexture.GetHeight()));
 	
 
-	drawLine(v0.position.x, v0.position.y, v1.position.x, v1.position.y, p_v0.color, p_v1.color);
-	drawLine(v1.position.x, v1.position.y, v2.position.x, v2.position.y, p_v1.color, p_v2.color);
-	drawLine(v2.position.x, v2.position.y, v0.position.x, v0.position.y, p_v2.color, p_v0.color);
+	DrawLine(v0.position.x, v0.position.y, v1.position.x, v1.position.y, p_v0.color, p_v1.color);
+	DrawLine(v1.position.x, v1.position.y, v2.position.x, v2.position.y, p_v1.color, p_v2.color);
+	DrawLine(v2.position.x, v2.position.y, v0.position.x, v0.position.y, p_v2.color, p_v0.color);
 }
 
-void Rasterizer::drawTriangleSphere(Vertex p_v0, Vertex p_v1, Vertex p_v2)
+void Rasterizer::DrawTriangleSphere(Vertex p_v0, Vertex p_v1, Vertex p_v2)
 {
 	model = Mat4::CreateTranslation(0, 0, 3);
 	Mat4 pvm = projection * view * SphereModel;
@@ -345,9 +346,9 @@ void Rasterizer::drawTriangleSphere(Vertex p_v0, Vertex p_v1, Vertex p_v2)
 	Vertex v2(Mat4::ConvertToScreen(Vec3(v02.x, v02.y, v02.z), m_rtexture.GetWidth(), m_rtexture.GetHeight()));
 	if (m_wireFrame)
 	{
-		drawLine(v0.position.x, v0.position.y, v1.position.x, v1.position.y, v0.color, v1.color);
-		drawLine(v1.position.x, v1.position.y, v2.position.x, v2.position.y, v1.color, v2.color);
-		drawLine(v2.position.x, v2.position.y, v0.position.x, v0.position.y, v2.color, v0.color);
+		DrawLine(v0.position.x, v0.position.y, v1.position.x, v1.position.y, v0.color, v1.color);
+		DrawLine(v1.position.x, v1.position.y, v2.position.x, v2.position.y, v1.color, v2.color);
+		DrawLine(v2.position.x, v2.position.y, v0.position.x, v0.position.y, v2.color, v0.color);
 	}
 	else
 	{
@@ -378,7 +379,7 @@ void Rasterizer::drawTriangleSphere(Vertex p_v0, Vertex p_v1, Vertex p_v2)
 	}
 }
 
-void Rasterizer::drawTriangleSpan(Vertex p_v0, Vertex p_v1, Vertex p_v2)
+void Rasterizer::DrawTriangleSpan(Vertex p_v0, Vertex p_v1, Vertex p_v2)
 {
 	Mat4 pvm = projection * view * model;
 	Vec4 v00(p_v0.position);

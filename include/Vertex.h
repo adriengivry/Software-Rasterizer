@@ -1,10 +1,11 @@
 #pragma once
 #include "Mat4.h"
 #include "Color.h"
+
 struct Vertex
 {
-	Vec3 position;
-	Vec4 normal;
+	Toolbox::Vec3 position;
+	Toolbox::Vec4 normal;
 	Color color;
     Vertex(const float p_x, const float p_y, const float p_z)
     {
@@ -16,7 +17,7 @@ struct Vertex
 		normal.z = 0;
 		normal.w = 0;
     }
-	Vertex(const Vec3& p_position)
+	Vertex(const Toolbox::Vec3& p_position)
 	{
 		position.x = p_position.x;
 		position.y = p_position.y;
@@ -37,24 +38,24 @@ struct Vertex
 		color.g = p_g;
 		color.b = p_b;
 	}
-	Vertex NormalTransform(const Mat4& p_transform)
+	Vertex NormalTransform(const Toolbox::Mat4& p_transform)
 	{
 		this->normal = (p_transform * this->normal);
 		normal.Normalize();
 		return *this;
 	}
-	Vertex VertexTransform(const Mat4& p_transform)
+	Vertex VertexTransform(const Toolbox::Mat4& p_transform)
 	{
-		Vec4 vector4 = p_transform * Vec4(position);
+		Toolbox::Vec4 vector4 = p_transform * Toolbox::Vec4(position);
 		vector4.Homogenize();
-		this->position = Vec3(vector4.x, vector4.y, vector4.z);
+		this->position = Toolbox::Vec3(vector4.x, vector4.y, vector4.z);
 		return *this;
 	}
-	Vertex firstTransform(const Mat4& p_transform, const Mat4& p_normaltransform)
+	Vertex firstTransform(const Toolbox::Mat4& p_transform, const Toolbox::Mat4& p_normaltransform)
 	{
-		Vec4 vector4 = p_transform * Vec4(position);
-		Vec4 normal4 = p_normaltransform * normal;
-		Vertex temp(Vec3(vector4.x, vector4.y, vector4.z));
+		Toolbox::Vec4 vector4 = p_transform * Toolbox::Vec4(position);
+		Toolbox::Vec4 normal4 = p_normaltransform * normal;
+		Vertex temp(Toolbox::Vec3(vector4.x, vector4.y, vector4.z));
 		normal4.Normalize();
 		temp.normal = normal4;
 		return temp;

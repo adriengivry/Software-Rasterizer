@@ -1,4 +1,7 @@
 #include "../include/Triangle.h"
+
+using namespace Toolbox;
+
 Triangle::Triangle(Vertex p_v0, Vertex p_v1, Vertex p_v2) : m_v0(p_v0), m_v1(p_v1), m_v2(p_v2)
 {
 	m_V0 = Vec2(m_v2.position.x - m_v0.position.x, m_v2.position.y - m_v0.position.y);

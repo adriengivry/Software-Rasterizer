@@ -1,5 +1,7 @@
 #include "../include/Entity.h"
 
+using namespace Toolbox;
+
 Entity::Entity() : m_mesh(nullptr) {}
 Entity::~Entity() 
 {

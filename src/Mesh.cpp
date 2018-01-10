@@ -1,5 +1,7 @@
 #include "../include/Mesh.h"
 
+using namespace Toolbox;
+
 Mesh::Mesh() {}
 Mesh::~Mesh() {}
 

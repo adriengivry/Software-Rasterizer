@@ -6,9 +6,9 @@ class Display
 public:
 	Display();
 	~Display();
-	void update();
-	void init();
-	void initScene();
+	void Update();
+	void Init();
+	void InitScene();
 	void RenderScene();
 private:
 	Scene* m_pScene;

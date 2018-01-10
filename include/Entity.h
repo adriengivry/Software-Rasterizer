@@ -9,12 +9,12 @@ public:
 	~Entity();
 
 	Mesh* GetMesh();
-	Mat4& GetMatrix();
+	Toolbox::Mat4& GetMatrix();
 
 	void SetMesh(const Mesh& p_mesh);
-	void SetMatrix(const Mat4& p_matrix);
+	void SetMatrix(const Toolbox::Mat4& p_matrix);
 private:
 	Mesh* m_mesh;
-	Mat4 m_transformation;
+	Toolbox::Mat4 m_transformation;
 };
 

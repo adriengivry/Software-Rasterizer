@@ -1,5 +1,7 @@
 #include "../include/Light.h"
 
+using namespace Toolbox;
+
 Light::Light(const Vec3 & p_position) : m_position(p_position), m_ambientComponent(0.4f), m_diffuseComponent(0.3f), m_specularComponent(0.4f){}
 
 Light::~Light(){}

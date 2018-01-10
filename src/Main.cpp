@@ -35,8 +35,8 @@ static void HandleEvent(const SDL_Event &event)
 int main(int argc, char** argv)
 {
 	Display display;
-	display.init();
-	display.initScene();
+	display.Init();
+	display.InitScene();
 	while (gameRunning)
 	{
 		SDL_Event event;
@@ -44,7 +44,7 @@ int main(int argc, char** argv)
 			HandleEvent(event);
 
 		display.RenderScene();
-		display.update();
+		display.Update();
 	}
 	return 0;
 }
