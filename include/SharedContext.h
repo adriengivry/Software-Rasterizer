@@ -6,7 +6,9 @@
 struct SharedContext
 {
 	bool isRunning = true;
-	uint16_t fpsCounter = 0;
+	float lastTime = 0;
+	float currentTime = 0;
+	float fpsCounter = 0;
 	Scene* scene = nullptr;
 	Window* window = nullptr;
 };

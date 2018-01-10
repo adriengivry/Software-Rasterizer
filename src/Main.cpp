@@ -1,7 +1,8 @@
 #include <SDL.h>
+#include "SDL_ttf.h"
 #include <cstdlib>
 #include <iostream>
-#include "../include/Display.h"
+#include "Display.h"
 #undef main
 #define SDL_INIT_SUCCESS 0
 #define SDL_LOG(logMessage) std::cout << "[SDL] " << logMessage << std::endl
@@ -34,9 +35,15 @@ static void HandleEvent(const SDL_Event &event)
 
 int main(int argc, char** argv)
 {
+	if (SDL_Init(SDL_INIT_VIDEO) != SDL_INIT_SUCCESS)
+		SDL_LOG("Failed to Init");
+
+	TTF_Init();
+
 	Display display;
 	display.Init();
 	display.InitScene();
+
 	while (gameRunning)
 	{
 		SDL_Event event;
@@ -46,5 +53,9 @@ int main(int argc, char** argv)
 		display.RenderScene();
 		display.Update();
 	}
+
+	TTF_Quit();
+	SDL_Quit();
+
 	return 0;
 }

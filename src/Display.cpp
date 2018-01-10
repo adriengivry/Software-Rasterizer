@@ -11,6 +11,7 @@ m_pRenderer(SDL_CreateRenderer(m_pWindow, -1, SDL_RENDERER_ACCELERATED)),
 m_pTexture(SDL_CreateTexture(m_pRenderer, SDL_PIXELFORMAT_ARGB32, SDL_TEXTUREACCESS_STREAMING, WINDOW_WIDTH, WINDOW_HEIGHT)), 
 m_prTexture(new Texture(WINDOW_WIDTH, WINDOW_HEIGHT)),
 m_pRasterizer(*m_prTexture, *m_pRenderer, *m_pTexture),
+m_userInterface(new UserInterface(*m_pWindow, *m_pRenderer, m_sharedContext)),
 yturn(0)
 {}
 
@@ -32,7 +33,11 @@ Display::~Display()
 
 void Display::Update()
 {
+	m_sharedContext.lastTime = m_sharedContext.currentTime;
 	m_pRasterizer.Update();
+	m_userInterface->Update();
+	m_sharedContext.currentTime = SDL_GetTicks();
+	m_sharedContext.fpsCounter = 1 / ((m_sharedContext.currentTime - m_sharedContext.lastTime) / 1000);
 }
 
 void Display::Init()
@@ -72,7 +77,7 @@ void Display::InitScene()
 
 void Display::RenderScene()
 {
-	Mat4 matrix = (Mat4::CreateTranslation(0, 0, -2) * Mat4::CreateRotation(45, 45, 0));
+	Mat4 matrix = (Mat4::CreateTranslation(0, 0, -8) * Mat4::CreateRotation(45, 45, 0));
 	m_pScene->m_entities[0]->SetMatrix(matrix);
 	m_pRasterizer.RenderScene2(m_pScene);
 	yturn++;
