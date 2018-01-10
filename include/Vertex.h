@@ -37,7 +37,7 @@ struct Vertex
 		color.g = p_g;
 		color.b = p_b;
 	}
-	Vertex LightTransform(const Mat4& p_transform)
+	Vertex NormalTransform(const Mat4& p_transform)
 	{
 		this->normal = (p_transform * this->normal);
 		normal.Normalize();
@@ -50,10 +50,10 @@ struct Vertex
 		this->position = Vec3(vector4.x, vector4.y, vector4.z);
 		return *this;
 	}
-	Vertex firstTransform(const Mat4& p_transform)
+	Vertex firstTransform(const Mat4& p_transform, const Mat4& p_normaltransform)
 	{
 		Vec4 vector4 = p_transform * Vec4(position);
-		Vec4 normal4 = p_transform * normal;
+		Vec4 normal4 = p_normaltransform * normal;
 		Vertex temp(Vec3(vector4.x, vector4.y, vector4.z));
 		normal4.Normalize();
 		temp.normal = normal4;

@@ -55,6 +55,8 @@ void Rasterizer::RenderScene2(Scene * p_pScene)
 	{
 		Mat4 normalMatrix = p_pScene->m_entities[j]->GetMatrix();
 		Mat4 projection = Mat4::CreatePerspective(60, float(m_rtexture.GetWidth()) / float(m_rtexture.GetHeight()), 0.1f, 100.0f) * normalMatrix;
+		Mat4 normalMatrixTrans = normalMatrix.CreateInverse();
+		normalMatrixTrans = normalMatrixTrans.CreateTranspose();
 		for (int i = 0; i < p_pScene->m_entities[j]->GetMesh()->GetIndices().size() - 2; i += 3)
 		{
 			Vertex v0 = (p_pScene->m_entities[j]->GetMesh()->GetVertices()[p_pScene->m_entities[j]->GetMesh()->GetIndices()[i]]);
@@ -63,9 +65,9 @@ void Rasterizer::RenderScene2(Scene * p_pScene)
 			v0.VertexTransform(projection);
 			v1.VertexTransform(projection);
 			v2.VertexTransform(projection);
-			v0.LightTransform(normalMatrix);
-			v1.LightTransform(normalMatrix);
-			v2.LightTransform(normalMatrix);
+			v0.NormalTransform(normalMatrixTrans);
+			v1.NormalTransform(normalMatrixTrans);
+			v2.NormalTransform(normalMatrixTrans);
 			
 			drawTriangle2(v0, v1, v2, lightposition, Lightcomp);
 		}
@@ -77,6 +79,8 @@ void Rasterizer::RenderScene3(Scene * p_pScene)
 	{
 		Mat4 normalMatrix = p_pScene->m_entities[j]->GetMatrix();
 		Mat4 projection1 = Mat4::CreatePerspective(60, float(m_rtexture.GetWidth()) / float(m_rtexture.GetHeight()), 0.1f, 100.0f) * normalMatrix;
+		Mat4 normalMatrixTrans = normalMatrix.CreateTranspose();
+		normalMatrixTrans = normalMatrixTrans.CreateInverse();
 		Vertex lightposition = p_pScene->m_lights[0]->GetPosition();
 		Vec3 Lightcomp(p_pScene->m_lights[0]->GetAmbient(), p_pScene->m_lights[0]->GetDiffuse(), p_pScene->m_lights[0]->GetSpecular());
 		for (int i = 0; i < p_pScene->m_entities[j]->GetMesh()->GetIndices().size() - 2; i += 3)
@@ -84,9 +88,9 @@ void Rasterizer::RenderScene3(Scene * p_pScene)
 			Vertex v0 = (p_pScene->m_entities[j]->GetMesh()->GetVertices()[p_pScene->m_entities[j]->GetMesh()->GetIndices()[i]]);
 			Vertex v1 = (p_pScene->m_entities[j]->GetMesh()->GetVertices()[p_pScene->m_entities[j]->GetMesh()->GetIndices()[i + 1]]);
 			Vertex v2 = (p_pScene->m_entities[j]->GetMesh()->GetVertices()[p_pScene->m_entities[j]->GetMesh()->GetIndices()[i + 2]]);
-			Vertex light1 = v0.firstTransform(normalMatrix);
-			Vertex light2 = v1.firstTransform(normalMatrix);
-			Vertex light3 = v2.firstTransform(normalMatrix);
+			Vertex light1 = v0.firstTransform(normalMatrix, normalMatrixTrans);
+			Vertex light2 = v1.firstTransform(normalMatrix, normalMatrixTrans);
+			Vertex light3 = v2.firstTransform(normalMatrix, normalMatrixTrans);
 			v0.VertexTransform(projection1);
 			v1.VertexTransform(projection1);
 			v2.VertexTransform(projection1);
@@ -291,7 +295,7 @@ void Rasterizer::drawTriangle3(Vertex p_v0, Vertex p_v1, Vertex p_v2, Vertex p_l
 		for (positions.position.x = minX; positions.position.x <= maxX; positions.position.x++)
 		{
 			Vec3 bary(triangle.Barycentric(v0, v1, v2, positions));
-			if (bary.x >= 0 && bary.y >= 0 && bary.x + bary.y < 1)
+			if (bary.x >= 0 && bary.y >= 0 && bary.x + bary.y <= 1)
 			{
 				positions.position.z = v0.position.z * bary.z + (v1.position.z) * bary.y + bary.x * (v2.position.z);
 				if (m_zBuffer[int(positions.position.x + positions.position.y * WINDOW_WIDTH)] > positions.position.z)
@@ -439,14 +443,14 @@ void Rasterizer::ClearBuffer()
 
 Color Rasterizer::PhongColor(Vertex p_position, Vec3 p_normal, Vertex p_light, Vec3 p_lightcomp, Color p_color)
 {
-	Vec3 lightDir(p_light.position - p_position.position);
+	Vec3 lightDir(p_light.position.x - p_position.position.x , p_light.position.y - p_position.position.y, p_light.position.z - p_position.position.z);
 	lightDir.Normalize();
-	Vec3 lightDirneg = (lightDir * -1);
+	Vec3 lightDirneg(-lightDir.x, -lightDir.y, -lightDir.z);
 
-	Vec3 reflect = lightDirneg - (p_normal * (2.0f * (p_normal.dot(lightDirneg))));
-	reflect.Normalize();
+	Vec3 reflect = (p_normal * (2.0f * (p_normal.dot(lightDirneg)))) - lightDirneg;
+	//reflect.Normalize();
 
-	Vec3 viewDir = (p_position.position *-1);
+	Vec3 viewDir(-p_position.position.x, -p_position.position.y, -p_position.position.z);
 	viewDir.Normalize();
 
 	float lambert = std::max(lightDir.dot(p_normal), 0.0f);
@@ -455,12 +459,12 @@ Color Rasterizer::PhongColor(Vertex p_position, Vec3 p_normal, Vertex p_light, V
 	if (lambert > 0.0)
 	{
 		float specAngle = std::max(reflect.dot(viewDir), 0.0f);
-		specular = powf(specAngle, 6.0);
+		specular = pow(specAngle, 10.0);
 	}
-	Color amb = p_color * (p_lightcomp.x * 0.3);
-	Color diff = p_color * (p_lightcomp.y * lambert * 0.4);
-	Color spec = p_color * (p_lightcomp.z * specular);
-	Color total = amb + diff + spec;
+	float amb = (p_lightcomp.x * 0.3);
+	float diff = (p_lightcomp.y * lambert * 0.4);
+	float spec = (p_lightcomp.z * specular);
+	Color total =  p_color * (amb + diff + spec);
 	return total;
 }
 
@@ -468,7 +472,7 @@ Color Rasterizer::BlinnPhongColor(Vertex p_position, Vec3 p_normal, Vertex p_lig
 	Color p_color)
 {
 	Vertex position1(Mat4::ScreenToView(p_position.position, m_rtexture.GetWidth(), m_rtexture.GetHeight()));
-	Vec3 lightDir(p_lightPosition.position - position1.position);
+	Vec3 lightDir(position1.position *-1);
 	lightDir.Normalize();
 
 	float lambert = std::max(lightDir.dot(p_normal), 0.0f);
@@ -483,13 +487,12 @@ Color Rasterizer::BlinnPhongColor(Vertex p_position, Vec3 p_normal, Vertex p_lig
 		halfDir.Normalize();
 
 		float specAngle = std::max(halfDir.dot(p_normal), 0.0f);
-		
-		specular = powf(specAngle, 16.0);
+		specular = pow(specAngle, 14.0);
 	}
 	Color amb = p_color * (p_lightcomp.x);
-	Color diff = p_color * (p_lightcomp.y * lambert );
+	Color diff = p_color * (p_lightcomp.y * lambert);
 	Color spec = Color(255, 255, 255) * (p_lightcomp.z * specular);
-	Color total = amb + spec;
+	Color total = spec;
 	return total;
 }
 

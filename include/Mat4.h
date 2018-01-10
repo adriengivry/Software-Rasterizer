@@ -19,6 +19,7 @@ struct Mat4
 	static Mat4 CreateScale(const float p_xScale, const float p_yScale,const float p_zScale);
 	static Mat4 CreateFrustum(const float p_left, const float p_right,const float p_bottom,const float p_top,const float p_zNear, const float p_zFar);
 	Mat4 CreateInverse();
+	Mat4 CreateTranspose();
 	static Vec3 ConvertToScreen(const Vec3& p_vector,const float p_width, const float p_height);
 	static Vec3 ScreenToView(const Vec3& p_vector, const float p_width, const float p_height);
 	void SetNull();
@@ -201,6 +202,19 @@ inline Mat4 Mat4::CreateInverse()
 	inverse.m_matrix[3][3] = detInv * cof15;
 
 	return inverse;
+}
+
+inline Mat4 Mat4::CreateTranspose()
+{
+	Mat4 Transpose;
+	for(uint16_t i = 0; i < 4; i++)
+	{
+		for(uint16_t j = 0; j < 4; j++)
+		{
+			Transpose.m_matrix[i][j] = m_matrix[j][i];
+		}
+	}
+	return Transpose;
 }
 
 inline Mat4 Mat4::CreateTranslation(const float p_x, const float p_y,const float p_z)
