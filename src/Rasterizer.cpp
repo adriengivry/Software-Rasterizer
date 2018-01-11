@@ -444,11 +444,8 @@ void Rasterizer::ClearBuffer()
 
 Color Rasterizer::PhongColor(Vertex& p_position, Vec3& p_normal, Vertex& p_light, Vec3& p_lightcomp, Color& p_color)
 {
-	Vec3 lightDir(p_position.position *-1);
+	Vec3 lightDir(p_position.position);
 	lightDir.Normalize();
-
-	Vec3 reflect = lightDir - (p_normal * (2.0f * (p_normal.dot(lightDir))));
-	reflect.Normalize();
 
 	Vec3 viewDir = p_position.position *-1;
 	viewDir.Normalize();
@@ -458,12 +455,12 @@ Color Rasterizer::PhongColor(Vertex& p_position, Vec3& p_normal, Vertex& p_light
 
 	if (lambert > 0.0)
 	{
-		float specAngle = std::max(reflect.dot(viewDir), 0.0f);
-		specular = pow(specAngle, 4.0);
+		float specAngle = p_normal.dot((p_normal + lightDir) / 2.0f);
+		specular = powf(specAngle, 5.0);
 	}
-	Color amb = Color(180, 0, 0) *(p_lightcomp.x);
-	Color diff = Color(160, 0, 0) * (p_lightcomp.y * lambert );
-	Color spec = Color(180, 0, 0) * (p_lightcomp.z * specular);
+	Color amb = p_color * 0.3 *(p_lightcomp.x);
+	Color diff = p_color * 0.4 * (p_lightcomp.y * lambert);
+	Color spec = p_color * 0.7 * (p_lightcomp.z * specular);
 	Color total =  amb + diff + spec;
 	return total;
 }
@@ -489,9 +486,9 @@ Color Rasterizer::BlinnPhongColor(Vertex& p_position, Vec3& p_normal, Vertex& p_
 		float specAngle = std::max(halfDir.dot(p_normal), 0.0f);
 		specular = pow(specAngle, 16.0);
 	}
-	Color amb = Color(160, 0, 0) * (p_lightcomp.x);
-	Color diff = Color(180, 0, 0)* (p_lightcomp.y * lambert);
-	Color spec = Color(230, 0, 0) * (p_lightcomp.z * specular);
+	Color amb = p_color * 0.5 * (p_lightcomp.x);
+	Color diff = p_color * 0.7 * (p_lightcomp.y * lambert);
+	Color spec = p_color * 0.9 * (p_lightcomp.z * specular);
 	Color total = amb + diff + spec;
 	return total;
 }
