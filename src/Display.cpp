@@ -83,6 +83,10 @@ void Display::InitScene()
 		m_pEntity[i] = new Entity();
 	}
 	m_pEntity[0]->SetMesh(*Mesh::CreateCube2());
+	for (int i = 0; i < m_pEntity[0]->GetMesh()->GetVertices().size(); ++i)
+	{
+		m_pEntity[0]->GetMesh()->GetVertices()[i].color = RED;
+	}
 	m_pScene->m_entities.push_back(m_pEntity[0]);
 	//m_pScene->m_entities.push_back(m_pEntity[1]);
 	m_pScene->m_lights.push_back(m_pLight);
