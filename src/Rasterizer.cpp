@@ -128,7 +128,7 @@ void Rasterizer::Update()
 		m_zBuffer[i] = std::numeric_limits<float>::digits10;
 }
 
-void Rasterizer::DrawLine(const float p_x1,const float p_y1,const float p_x2,const float p_y2, Color& p_color1, Color& p_color2)
+void Rasterizer::DrawLine(const float p_x1, const float p_y1, const float p_x2, const float p_y2, Color& p_color1, Color& p_color2)
 {
 	float dx = p_x2 - p_x1;
 	float dy = p_y2 - p_y1;
@@ -255,7 +255,7 @@ void Rasterizer::DrawTriangle2(Vertex& p_v0, Vertex& p_v1, Vertex& p_v2, Vertex&
 		for (positions.position.x = minX; positions.position.x <= maxX; positions.position.x++)
 		{
 			Vec3 bary(triangle.Barycentric(v0, v1, v2, positions));
-			if (bary.x >= 0 && bary.y >= 0 && bary.x + bary.y < 1)
+			if (bary.x >= 0 && bary.y >= 0 && bary.x + bary.y <= 1)
 			{
 				positions.position.z = v0.position.z * bary.z + v1.position.z * bary.y + bary.x * v2.position.z;
 				if (m_zBuffer[int(positions.position.x + positions.position.y * WINDOW_WIDTH)] > positions.position.z)
@@ -487,11 +487,11 @@ Color Rasterizer::BlinnPhongColor(Vertex& p_position, Vec3& p_normal, Vertex& p_
 		halfDir.Normalize();
 
 		float specAngle = std::max(halfDir.dot(p_normal), 0.0f);
-		specular = powf(specAngle, 16.0);
+		specular = pow(specAngle, 16.0);
 	}
 	Color amb = Color(160, 0, 0) * (p_lightcomp.x);
 	Color diff = Color(180, 0, 0)* (p_lightcomp.y * lambert);
-	Color spec = Color(200, 0, 0) * (p_lightcomp.z * specular);
+	Color spec = Color(230, 0, 0) * (p_lightcomp.z * specular);
 	Color total = amb + diff + spec;
 	return total;
 }

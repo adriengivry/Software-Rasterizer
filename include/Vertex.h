@@ -7,6 +7,7 @@ struct Vertex
 	Toolbox::Vec3 position;
 	Toolbox::Vec4 normal;
 	Color color;
+	float u, v;
     Vertex(const float p_x, const float p_y, const float p_z)
     {
 		position.x = p_x;

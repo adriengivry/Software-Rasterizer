@@ -1,10 +1,13 @@
 #pragma once
 #include "Color.h"
 #include <SDL.h>
+#include <string>
+
 class Texture
 {
 public:
 	Texture(const uint16_t p_width, const uint16_t p_height);
+	Texture(std::string path);
 	~Texture();
 
 	void SetPixelColor(const uint16_t p_x, const uint16_t p_y, Color& p_color);

@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include "Vertex.h"
+#include "Texture.h"
 
 class Mesh
 {
@@ -20,5 +21,6 @@ public:
 private:
 	std::vector<Vertex> m_vertices;
 	std::vector<uint32_t> m_indices;
+	Texture* m_pTexture;
 };
 

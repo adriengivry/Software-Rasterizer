@@ -9,6 +9,11 @@ Texture::Texture(const uint16_t p_width, const uint16_t p_height) :
 	ClearBuffer();
 }
 
+Texture::Texture(std::string path)
+{
+	
+}
+
 Texture::~Texture() 
 {
 	delete m_pixelBuffer;

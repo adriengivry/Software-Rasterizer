@@ -21,8 +21,8 @@ namespace Toolbox
 		Vec3 Cross(const Vec3& p_other)const;
 		Vec3 operator+(const Vec3& p_other) const;
 		Vec3 operator-(const Vec3& p_other) const;
-		Vec3 operator*(const float& p_scale) const;
-		Vec3 operator/(const float& p_scale) const;
+		Vec3 operator*(const float p_scale) const;
+		Vec3 operator/(const float p_scale) const;
 		Vec3 operator=(const Vec3& p_other);
 		Vec3& operator+=(const Vec3& p_other);
 	};
@@ -73,12 +73,12 @@ namespace Toolbox
 		return Vec3(this->x - p_other.x, this->y - p_other.y, this->z - p_other.z);
 	}
 
-	inline Vec3 Vec3::operator*(const float& p_scale) const
+	inline Vec3 Vec3::operator*(const float p_scale) const
 	{
 		return Vec3(p_scale * this->x, p_scale * this->y, p_scale * this->z);
 	}
 
-	inline Vec3 Vec3::operator/(const float & p_scale) const
+	inline Vec3 Vec3::operator/(const float p_scale) const
 	{
 		return Vec3(this->x / p_scale, this->y / p_scale, this->z / p_scale);
 	}

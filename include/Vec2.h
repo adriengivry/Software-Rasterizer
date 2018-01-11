@@ -13,7 +13,7 @@ namespace Toolbox
 		void Normalize();
 		Vec2 operator+(const Vec2& p_other) const;
 		Vec2 operator-(const Vec2& p_other) const;
-		Vec2 operator*(const float& p_scale) const;
+		Vec2 operator*(const float p_scale) const;
 		float operator*(const Vec2& p_other) const;
 
 	};
@@ -51,7 +51,7 @@ namespace Toolbox
 		return Vec2(this->x - p_other.x, this->y - p_other.y);
 	}
 
-	inline Vec2 Vec2::operator*(const float & p_scale) const
+	inline Vec2 Vec2::operator*(const float p_scale) const
 	{
 		return Vec2(this->x * p_scale, this->y * p_scale);
 	}

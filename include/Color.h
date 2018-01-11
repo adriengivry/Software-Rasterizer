@@ -27,35 +27,35 @@ inline uint32_t Color::CovertTo32()
 {
 	if (r < 0)
 	{
-		this->r = 0;
+		this->r = 0.0f;
 	}
 	else if (g < 0)
 	{
-		this->g = 0;
+		this->g = 0.0f;
 	}
 	else if (b < 0)
 	{
-		this->b = 0;
+		this->b = 0.0f;
 	}
 	else if (a < 0)
 	{
-		this->a = 0;
+		this->a = 0.0f;
 	}
-	if (r >= 255)
+	if (r >= 254.99f)
 	{
-		this->r = 255;
+		this->r = 254.99f;
 	}
-	else if (g >= 255)
+	else if (g >= 254.99f)
 	{
-		this->g = 0;
+		this->g = 254.99f;
 	}
-	else if (b >= 255)
+	else if (b >= 254.99f)
 	{
-		this->b = 255;
+		this->b = 254.99f;
 	}
-	else if (a >= 255)
+	else if (a >= 254.99f)
 	{
-		this->a = 255;
+		this->a = 254.99f;
 	}
 	const uint32_t r1 = static_cast<uint32_t>(this->r);
 	const uint32_t g1 = static_cast<uint32_t>(this->g);
