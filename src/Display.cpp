@@ -39,6 +39,27 @@ void Display::Update()
 	m_sharedContext.currentTime = SDL_GetTicks();
 	m_sharedContext.deltaTime = (m_sharedContext.currentTime - m_sharedContext.lastTime) / 1000;
 	m_sharedContext.fpsCounter = 1.f / m_sharedContext.deltaTime;
+	if (SDL_GetTicks() / 1000 > 5.f)
+	{
+		m_sharedContext.fpsValues[m_sharedContext.fpsValuesBuffer++] = m_sharedContext.fpsCounter;
+		if (m_sharedContext.fpsValuesBuffer > 100)
+			m_sharedContext.fpsValuesBuffer = 0;
+
+		uint16_t fpsSum = 0;
+		uint8_t valuesCounter = 0;
+		for (auto fpsValue : m_sharedContext.fpsValues)
+		{
+			if (fpsValue != 0)
+			{
+				fpsSum += fpsValue;
+				++valuesCounter;
+			}
+		}
+
+		m_sharedContext.averageFps = fpsSum / valuesCounter;
+		m_sharedContext.minFps = m_sharedContext.fpsCounter < m_sharedContext.minFps ? m_sharedContext.fpsCounter : m_sharedContext.minFps;
+		m_sharedContext.maxFps = m_sharedContext.fpsCounter > m_sharedContext.maxFps ? m_sharedContext.fpsCounter : m_sharedContext.maxFps;
+	}
 }
 
 void Display::Init()

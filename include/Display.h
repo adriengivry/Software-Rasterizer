@@ -1,6 +1,7 @@
 #pragma once
 #include "Rasterizer.h"
 #include "UserInterface.h"
+#include <numeric>
 
 class Display
 {
