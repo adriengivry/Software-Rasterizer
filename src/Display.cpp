@@ -61,15 +61,6 @@ void Display::InitScene()
 		m_pEntity[i] = new Entity();
 	}
 	m_pEntity[0]->SetMesh(*Mesh::CreateCube2());
-	m_pEntity[1]->SetMesh(*Mesh::CreateSphere(20, 20));
-	for (int i = 0; i < m_pEntity[0]->GetMesh()->GetVertices().size(); i++)
-	{
-		m_pEntity[0]->GetMesh()->GetVertices()[i].SetColor(255, 0, 0, 255);
-	}
-	for (int i = 0; i < m_pEntity[1]->GetMesh()->GetVertices().size(); i++)
-	{
-		m_pEntity[1]->GetMesh()->GetVertices()[i].SetColor(0, 0, 255, 255);
-	}
 	m_pScene->m_entities.push_back(m_pEntity[0]);
 	//m_pScene->m_entities.push_back(m_pEntity[1]);
 	m_pScene->m_lights.push_back(m_pLight);
@@ -77,8 +68,8 @@ void Display::InitScene()
 
 void Display::RenderScene()
 {
-	Mat4 matrix = (Mat4::CreateTranslation(0, 0, -6) * Mat4::CreateRotation(45, 45, 0));
+	Mat4 matrix = (Mat4::CreateTranslation(0, 0, -6) * Mat4::CreateRotation(45, yturn, 0));
 	m_pScene->m_entities[0]->SetMatrix(matrix);
-	m_pRasterizer.RenderScene2(m_pScene);
+	m_pRasterizer.RenderScene3(m_pScene);
 	yturn++;
 }

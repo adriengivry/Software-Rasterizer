@@ -1,6 +1,5 @@
-#include <SDL.h>
+#include "SDL.h"
 #include "SDL_ttf.h"
-#include <cstdlib>
 #include <iostream>
 #include "Display.h"
 #undef main
@@ -33,7 +32,7 @@ static void HandleEvent(const SDL_Event &event)
 	}
 }
 
-int main(int argc, char** argv)
+int main(int argc, char* argv[])
 {
 	if (SDL_Init(SDL_INIT_VIDEO) != SDL_INIT_SUCCESS)
 		SDL_LOG("Failed to Init");
