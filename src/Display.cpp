@@ -37,7 +37,8 @@ void Display::Update()
 	m_pRasterizer.Update();
 	m_userInterface->Update();
 	m_sharedContext.currentTime = SDL_GetTicks();
-	m_sharedContext.fpsCounter = 1 / ((m_sharedContext.currentTime - m_sharedContext.lastTime) / 1000);
+	m_sharedContext.deltaTime = (m_sharedContext.currentTime - m_sharedContext.lastTime) / 1000;
+	m_sharedContext.fpsCounter = 1.f / m_sharedContext.deltaTime;
 }
 
 void Display::Init()
@@ -70,6 +71,6 @@ void Display::RenderScene()
 {
 	Mat4 matrix = (Mat4::CreateTranslation(0, 0, -6) * Mat4::CreateRotation(45, yturn, 0));
 	m_pScene->m_entities[0]->SetMatrix(matrix);
-	m_pRasterizer.RenderScene3(m_pScene);
-	yturn++;
+	m_pRasterizer.RenderScene2(m_pScene);
+	yturn += m_sharedContext.deltaTime * 90;
 }

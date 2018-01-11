@@ -2,7 +2,7 @@
 
 using namespace Toolbox;
 
-Triangle::Triangle(Vertex p_v0, Vertex p_v1, Vertex p_v2) : m_v0(p_v0), m_v1(p_v1), m_v2(p_v2)
+Triangle::Triangle(Vertex& p_v0, Vertex& p_v1, Vertex& p_v2) : m_v0(p_v0), m_v1(p_v1), m_v2(p_v2)
 {
 	m_V0 = Vec2(m_v2.position.x - m_v0.position.x, m_v2.position.y - m_v0.position.y);
 	m_V1 = Vec2(m_v1.position.x - m_v0.position.x, m_v1.position.y - m_v0.position.y);
@@ -14,7 +14,7 @@ Triangle::Triangle(Vertex p_v0, Vertex p_v1, Vertex p_v2) : m_v0(p_v0), m_v1(p_v
 }
 	
 
-Vec3 Triangle::Barycentric(Vertex p_v0, Vertex p_v1, Vertex p_v2, Vertex p_point)
+Vec3 Triangle::Barycentric(Vertex& p_v0, Vertex& p_v1, Vertex& p_v2, Vertex& p_point)
 {
 	Vec2 V2(p_point.position.x - p_v0.position.x, p_point.position.y - p_v0.position.y);
 	float d02 = (m_V0 * V2);
@@ -45,7 +45,7 @@ float Triangle::getArea()
 	return (m_v0.position.x * m_v1.position.y) - (m_v1.position.x * m_v0.position.y) + (m_v1.position.x * m_v2.position.y) - (m_v2.position.x * m_v1.position.y) + (m_v2.position.x * m_v0.position.y) - (m_v0.position.x * m_v2.position.y);
 }
 
-float Triangle::CrossProduct(Vertex p_v0, Vertex p_v1, Vertex p_v2)
+float Triangle::CrossProduct(Vertex& p_v0, Vertex& p_v1, Vertex& p_v2)
 {
 	return (p_v1.position.x - p_v0.position.x) * (p_v2.position.y - p_v0.position.y) - (p_v1.position.y - p_v0.position.y) * (p_v2.position.x - p_v0.position.x);
 }

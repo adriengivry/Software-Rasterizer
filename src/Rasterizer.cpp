@@ -128,7 +128,7 @@ void Rasterizer::Update()
 		m_zBuffer[i] = std::numeric_limits<float>::digits10;
 }
 
-void Rasterizer::DrawLine(const float p_x1,const float p_y1,const float p_x2,const float p_y2, Color p_color1, Color p_color2)
+void Rasterizer::DrawLine(const float p_x1,const float p_y1,const float p_x2,const float p_y2, Color& p_color1, Color& p_color2)
 {
 	float dx = p_x2 - p_x1;
 	float dy = p_y2 - p_y1;
@@ -206,7 +206,7 @@ void Rasterizer::DrawLine(const float p_x1,const float p_y1,const float p_x2,con
 	}
 }
 
-void Rasterizer::DrawTriangle(Vertex p_v0, Vertex p_v1, Vertex p_v2)
+void Rasterizer::DrawTriangle(Vertex& p_v0, Vertex& p_v1, Vertex& p_v2)
 {
 	Vertex v0(Mat4::ConvertToScreen(p_v0.position, m_rtexture.GetWidth(), m_rtexture.GetHeight()));
 	Vertex v1(Mat4::ConvertToScreen(p_v1.position, m_rtexture.GetWidth(), m_rtexture.GetHeight()));
@@ -237,7 +237,7 @@ void Rasterizer::DrawTriangle(Vertex p_v0, Vertex p_v1, Vertex p_v2)
 	}
 }
 
-void Rasterizer::DrawTriangle2(Vertex p_v0, Vertex p_v1, Vertex p_v2, Vertex p_lightPosition, Vec3 p_lightcomp)
+void Rasterizer::DrawTriangle2(Vertex& p_v0, Vertex& p_v1, Vertex& p_v2, Vertex& p_lightPosition, Vec3& p_lightcomp)
 {
 	Vertex v0(Mat4::ConvertToScreen(p_v0.position, m_rtexture.GetWidth(), m_rtexture.GetHeight()));
 	Vertex v1(Mat4::ConvertToScreen(p_v1.position, m_rtexture.GetWidth(), m_rtexture.GetHeight()));
@@ -274,7 +274,7 @@ void Rasterizer::DrawTriangle2(Vertex p_v0, Vertex p_v1, Vertex p_v2, Vertex p_l
 	}
 }
 
-void Rasterizer::DrawTriangle3(Vertex p_v0, Vertex p_v1, Vertex p_v2, Vertex p_light1, Vertex p_light2, Vertex p_light3, Vertex p_lightPosition, Vec3 p_lightcomp)
+void Rasterizer::DrawTriangle3(Vertex& p_v0, Vertex& p_v1, Vertex& p_v2, Vertex& p_light1, Vertex& p_light2, Vertex& p_light3, Vertex& p_lightPosition, Vec3& p_lightcomp)
 {
 	Color c0 = this->PhongColor(p_light1, Vec3(p_light1.normal.x, p_light1.normal.y, p_light1.normal.z), p_lightPosition, p_lightcomp, p_v0.color);
 	Color c1 = this->PhongColor(p_light2, Vec3(p_light2.normal.x, p_light2.normal.y, p_light2.normal.z), p_lightPosition, p_lightcomp, p_v1.color);
@@ -309,7 +309,7 @@ void Rasterizer::DrawTriangle3(Vertex p_v0, Vertex p_v1, Vertex p_v2, Vertex p_l
 	}
 }
 
-void Rasterizer::DrawTiangleWire(Vertex p_v0, Vertex p_v1, Vertex p_v2)
+void Rasterizer::DrawTiangleWire(Vertex& p_v0, Vertex& p_v1, Vertex& p_v2)
 {
 	Vertex v0(Mat4::ConvertToScreen(p_v0.position, m_rtexture.GetWidth(), m_rtexture.GetHeight()));
 	Vertex v1(Mat4::ConvertToScreen(p_v1.position, m_rtexture.GetWidth(), m_rtexture.GetHeight()));
@@ -321,7 +321,7 @@ void Rasterizer::DrawTiangleWire(Vertex p_v0, Vertex p_v1, Vertex p_v2)
 	DrawLine(v2.position.x, v2.position.y, v0.position.x, v0.position.y, p_v2.color, p_v0.color);
 }
 
-void Rasterizer::DrawTriangleSphere(Vertex p_v0, Vertex p_v1, Vertex p_v2)
+void Rasterizer::DrawTriangleSphere(Vertex& p_v0, Vertex& p_v1, Vertex& p_v2)
 {
 	model = Mat4::CreateTranslation(0, 0, 3);
 	Mat4 pvm = projection * view * SphereModel;
@@ -379,7 +379,7 @@ void Rasterizer::DrawTriangleSphere(Vertex p_v0, Vertex p_v1, Vertex p_v2)
 	}
 }
 
-void Rasterizer::DrawTriangleSpan(Vertex p_v0, Vertex p_v1, Vertex p_v2)
+void Rasterizer::DrawTriangleSpan(Vertex& p_v0, Vertex& p_v1, Vertex& p_v2)
 {
 	Mat4 pvm = projection * view * model;
 	Vec4 v00(p_v0.position);
@@ -442,7 +442,7 @@ void Rasterizer::ClearBuffer()
 		m_zBuffer[i] = -std::numeric_limits<float>::max();
 }
 
-Color Rasterizer::PhongColor(Vertex p_position, Vec3 p_normal, Vertex p_light, Vec3 p_lightcomp, Color p_color)
+Color Rasterizer::PhongColor(Vertex& p_position, Vec3& p_normal, Vertex& p_light, Vec3& p_lightcomp, Color& p_color)
 {
 	Vec3 lightDir(p_position.position *-1);
 	lightDir.Normalize();
@@ -468,8 +468,8 @@ Color Rasterizer::PhongColor(Vertex p_position, Vec3 p_normal, Vertex p_light, V
 	return total;
 }
 
-Color Rasterizer::BlinnPhongColor(Vertex p_position, Vec3 p_normal, Vertex p_lightPosition, Vec3 p_lightcomp,
-	Color p_color)
+Color Rasterizer::BlinnPhongColor(Vertex& p_position, Vec3& p_normal, Vertex& p_lightPosition, Vec3& p_lightcomp,
+	Color& p_color)
 {
 	Vertex position1(Mat4::ScreenToView(p_position.position, m_rtexture.GetWidth(), m_rtexture.GetHeight()));
 	Vec3 lightDir(p_lightPosition.position - p_position.position);

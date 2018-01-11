@@ -19,7 +19,7 @@ struct Color
 	Color operator-(const Color& p_color) const;
 	Color operator*(const float p_scale) const;
 	Color operator/(float p_scale) const;
-	Color operator=(const Color& p_color);
+	Color& operator=(const Color& p_color);
 	bool operator==(const Color& p_color);
 };
 
@@ -86,7 +86,7 @@ inline Color Color::operator/(float p_scale) const
 	return Color(this->r / p_scale, this->g / p_scale, this->b / p_scale, 255);
 }
 
-inline Color Color::operator=(const Color & p_color)
+inline Color& Color::operator=(const Color & p_color)
 {
 	this->r = p_color.r;
 	this->g = p_color.g;
