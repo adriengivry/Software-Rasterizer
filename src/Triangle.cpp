@@ -6,10 +6,10 @@ Triangle::Triangle(Vertex& p_v0, Vertex& p_v1, Vertex& p_v2) : m_v0(p_v0), m_v1(
 {
 	m_V0 = Vec2(m_v2.position.x - m_v0.position.x, m_v2.position.y - m_v0.position.y);
 	m_V1 = Vec2(m_v1.position.x - m_v0.position.x, m_v1.position.y - m_v0.position.y);
-	m_d00 = m_V0 * m_V0;
-	m_d01 = m_V0 * m_V1;
-	m_d10 = m_V1 * m_V0;
-	m_d11 = m_V1 * m_V1;
+	m_d00 = m_V0.x * m_V0.x + m_V0.y * m_V0.y;
+	m_d01 = m_V0.x * m_V1.x + m_V0.y * m_V1.y;
+	m_d10 = m_V1.x * m_V0.x + m_V1.y * m_V1.y;
+	m_d11 = m_V1.x * m_V1.x + m_V1.y * m_V1.y;
 	m_Denom = 1.0f / (m_d00 * m_d11 - m_d01 * m_d01);
 }
 	
@@ -17,11 +17,11 @@ Triangle::Triangle(Vertex& p_v0, Vertex& p_v1, Vertex& p_v2) : m_v0(p_v0), m_v1(
 Vec3 Triangle::Barycentric(Vertex& p_v0, Vertex& p_v1, Vertex& p_v2, Vertex& p_point)
 {
 	Vec2 V2(p_point.position.x - p_v0.position.x, p_point.position.y - p_v0.position.y);
-	float d02 = (m_V0 * V2);
-	float d12 = (m_V1 * V2);
+	float d02 = m_V0.x * V2.x + m_V0.y * V2.y;
+	float d12 = m_V1.x * V2.x + m_V1.y * V2.y;
 	float v = (m_d11 * d02 - m_d01 * d12) * m_Denom;
 	float u = (m_d00 * d12 - m_d01 * d02) * m_Denom;
-	return Vec3(v, u, 1.0f - (v + u));
+	return Vec3(v, u, 1.0f - v - u);
 }
 
 AABB Triangle::getAABB()
