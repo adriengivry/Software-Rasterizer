@@ -30,8 +30,24 @@ void UserInterface::Draw() const
 
 
 	std::string items[] = { "1. Z-Buffer", "2. Phong (Per-Vertex)", "3. Blinn-Phong (Per-Pixel)", "4. Wireframe", "5. Texture", "6. Alpha-Blending", "7. Antialiasing" };
+	uint8_t r, g, b;
 	for (uint8_t i = 0; i < 7; ++i)
-		DrawAt(items[i], 0, 200 + i * 23);
+	{
+		if (i + 1 == m_sharedContext.appInfos.selectedVersion)
+		{
+			r = 0;
+			g = 255;
+			b = 0;
+		}
+		else
+		{
+			r = 255;
+			g = 255;
+			b = 255;
+		}
+		
+		DrawAt(items[i], 0, 200 + i * 23, r, g, b);
+	}
 }
 
 void UserInterface::Close()
@@ -39,9 +55,9 @@ void UserInterface::Close()
 	TTF_CloseFont(m_font);
 }
 
-void UserInterface::DrawAt(std::string p_text, uint16_t p_x, uint16_t p_y) const
+void UserInterface::DrawAt(std::string p_text, uint16_t p_x, uint16_t p_y, const uint8_t p_r, const uint8_t p_g, const uint8_t p_b) const
 {
-	SDL_Surface* itemSurface = TTF_RenderText_Blended(m_font, p_text.c_str(), { 255, 255, 255, 255 });
+	SDL_Surface* itemSurface = TTF_RenderText_Blended(m_font, p_text.c_str(), { p_r, p_g, p_b, 255 });
 	SDL_Texture* itemTexture = SDL_CreateTextureFromSurface(m_sharedContext.window->GetRenderer(), itemSurface);
 	int itemTextureWidth = 0;
 	int itemTextureHeight = 0;

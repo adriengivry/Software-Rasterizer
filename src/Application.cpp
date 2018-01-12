@@ -22,6 +22,7 @@ void Application::Update()
 	m_sharedContext.appInfos.lastTime = m_sharedContext.appInfos.currentTime;
 
 	UpdateCamera();
+	RenderScene();
 	m_eventManager->Update();
 	m_rasterizer.Update();
 	m_userInterface->Update();
@@ -57,8 +58,10 @@ void Application::Update()
 
 void Application::Draw()
 {
-	RenderScene();
+	SDL_RenderClear(m_window.GetRenderer());
+	m_rasterizer.Draw();
 	m_userInterface->Draw();
+	SDL_RenderPresent(m_window.GetRenderer());
 }
 
 void Application::Init()

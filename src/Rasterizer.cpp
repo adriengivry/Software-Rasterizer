@@ -119,12 +119,14 @@ void Rasterizer::RenderSceneWireframe(Scene * p_pScene)
 void Rasterizer::Update()
 {
 	SDL_UpdateTexture(m_sharedContext.window->GetTexture(), nullptr, m_rtexture.GetPixelBuffer(), m_rtexture.GetWidth() * sizeof(uint32_t));
-	SDL_RenderCopy(m_sharedContext.window->GetRenderer(), m_sharedContext.window->GetTexture(), nullptr, nullptr);
-	SDL_RenderPresent(m_sharedContext.window->GetRenderer());
 	m_rtexture.ClearBuffer();
-	SDL_RenderClear(m_sharedContext.window->GetRenderer());
 	for (int i = m_rtexture.GetWidth() * m_rtexture.GetHeight(); i--;)
 		m_zBuffer[i] = std::numeric_limits<float>::digits10;
+}
+
+void Rasterizer::Draw()
+{
+	SDL_RenderCopy(m_sharedContext.window->GetRenderer(), m_sharedContext.window->GetTexture(), nullptr, nullptr);
 }
 
 void Rasterizer::DrawLine(const float p_x1, const float p_y1, const float p_x2, const float p_y2, Color& p_color1, Color& p_color2)
