@@ -327,9 +327,9 @@ void Rasterizer::DrawTriangle3(Vertex& p_v0, Vertex& p_v1, Vertex& p_v2, Vertex&
 				{
 					m_zBuffer[int(positions.position.x + positions.position.y * Window::WIDTH)] = positions.position.z;
 					Color pixelColor;
-					pixelColor.r =  c0.r * bary.z + c1.r * bary.x + c2.r * bary.y;
-					pixelColor.g = c0.g * bary.z + c1.g * bary.x + c2.g * bary.y;
-					pixelColor.b = c0.b * bary.z + c1.b * bary.x + c2.b * bary.y;
+					pixelColor.r =  c0.r * bary.z + c1.r * bary.y + c2.r * bary.x;
+					pixelColor.g = c0.g * bary.z + c1.g * bary.y + c2.g * bary.x;
+					pixelColor.b = c0.b * bary.z + c1.b * bary.y + c2.b * bary.x;
 					m_rtexture.SetPixelColor(int(positions.position.x), int(positions.position.y), pixelColor);
 				}
 			}
@@ -506,7 +506,7 @@ Color Rasterizer::BlinnPhongColor(Vertex& p_position, Vec3& p_normal, Vertex& p_
 	Color& p_color)
 {
 	Vertex position1(Mat4::ScreenToView(p_position.position, m_rtexture.GetWidth(), m_rtexture.GetHeight()));
-	Vec3 lightDir(p_lightPosition.position - p_position.position);
+	Vec3 lightDir(p_lightPosition.position.x - position1.position.x, p_lightPosition.position.y - position1.position.y, p_lightPosition.position.z - position1.position.z);
 	lightDir.Normalize();
 
 	float lambert = std::max(lightDir.dot(p_normal), 0.0f);	
@@ -514,20 +514,29 @@ Color Rasterizer::BlinnPhongColor(Vertex& p_position, Vec3& p_normal, Vertex& p_
 
 	if (lambert > 0.0f)
 	{
-		Vec3 viewDir = position1.position *-1;
+		Vec3 viewDir(-position1.position.x, -position1.position.y, -position1.position.z);
 		viewDir.Normalize();
 
-		Vec3 halfDir = (lightDir + viewDir);
+		Vec3 halfDir(lightDir.x + viewDir.x, lightDir.y + viewDir.y, lightDir.z + viewDir.z);
 		halfDir.Normalize();
 
 		float specAngle = std::max(halfDir.dot(p_normal), 0.0f);
 		specular = pow(specAngle, 20.0);
 	}
-	Color amb = p_color * 0.5 * (p_lightcomp.x);
-	Color diff = p_color * 0.7 * (p_lightcomp.y * lambert);
-	Color spec = p_color * 0.9 * (p_lightcomp.z * specular);
-	Color total = amb + diff + spec;
-	return total;
+	Color amb, diff, spec;
+	amb.r = p_color.r * 0.5 * p_lightcomp.x;
+	amb.g = p_color.g * 0.5 * p_lightcomp.x;
+	amb.b = p_color.b * 0.5 * p_lightcomp.x;
+
+	diff.r = p_color.r * 0.7 * (p_lightcomp.y * lambert);
+	diff.g = p_color.g * 0.7 * (p_lightcomp.y * lambert);
+	diff.b = p_color.b * 0.7 * (p_lightcomp.y * lambert);
+
+	spec.r = p_color.r * 0.9 * (p_lightcomp.z * specular);
+	spec.g = p_color.g * 0.9 * (p_lightcomp.z * specular);
+	spec.b = p_color.b * 0.9 * (p_lightcomp.z * specular);
+	
+	return Color(amb.r + diff.r + spec.r, amb.g + diff.g + spec.g, amb.b + diff.b + spec.b);
 }
 
 void Rasterizer::DrawSpan(const Span& p_span, float p_y)
