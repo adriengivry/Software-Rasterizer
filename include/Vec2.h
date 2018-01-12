@@ -11,13 +11,18 @@ namespace Toolbox
 		Vec2(const Vec2& p_other);
 		float GetMagnitude() const;
 		void Normalize();
-		float cross(const Vec2& p_other)const;
+		float Cross(const Vec2& p_other)const;
 		Vec2 operator+(const Vec2& p_other) const;
 		Vec2 operator-(const Vec2& p_other) const;
 		Vec2 operator*(const float p_scale) const;
 		float operator*(const Vec2& p_other) const;
 
 	};
+
+	inline float Vec2::Cross(const Vec2& p_other) const
+	{
+		return (this->x * p_other.y - this->y * p_other.x);
+	}
 
 	inline Vec2::Vec2(const float p_x, const float p_y)
 	{
@@ -40,11 +45,6 @@ namespace Toolbox
 	{
 		this->x = this->x / this->GetMagnitude();
 		this->y = this->y / this->GetMagnitude();
-	}
-
-	inline float Vec2::cross(const Vec2 & p_other) const
-	{
-		return (this->x * p_other.y - this->y * p_other.x);
 	}
 
 	inline Vec2 Vec2::operator+(const Vec2 & p_other) const

@@ -11,7 +11,7 @@ public:
 
 	void Setup() override;
 	void Update() override;
-	void Draw();
+	void Draw() const;
 	void Close() override;
 
 private:

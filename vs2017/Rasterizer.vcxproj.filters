@@ -48,9 +48,6 @@
     <ClCompile Include="..\src\Texture.cpp">
       <Filter>Source Files\Components</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Display.cpp">
-      <Filter>Source Files\Components</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\Triangle.cpp">
       <Filter>Source Files\Components</Filter>
     </ClCompile>
@@ -71,6 +68,9 @@
     </ClCompile>
     <ClCompile Include="..\src\Rasterizer.cpp">
       <Filter>Source Files\Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Application.cpp">
+      <Filter>Source Files\Components</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -99,9 +99,6 @@
       <Filter>Header Files\Components</Filter>
     </ClInclude>
     <ClInclude Include="..\include\Vertex.h">
-      <Filter>Header Files\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\Display.h">
       <Filter>Header Files\Components</Filter>
     </ClInclude>
     <ClInclude Include="..\include\Triangle.h">
@@ -139,6 +136,9 @@
     </ClInclude>
     <ClInclude Include="..\include\Rasterizer.h">
       <Filter>Header Files\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Application.h">
+      <Filter>Header Files\Components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

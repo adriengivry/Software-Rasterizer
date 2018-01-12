@@ -245,7 +245,7 @@ void Rasterizer::DrawTriangle2(Vertex& p_v0, Vertex& p_v1, Vertex& p_v2, Vertex&
 
 	Vec2 v(v1.position.x - v0.position.x, v1.position.y - v0.position.y);
 	Vec2 w(v2.position.x - v0.position.x, v2.position.y - v0.position.y);
-	float area = v.cross(w);
+	float area = v.Cross(w);
 	if (area < 0)
 		return;
 
@@ -288,7 +288,7 @@ void Rasterizer::DrawTriangle3(Vertex& p_v0, Vertex& p_v1, Vertex& p_v2, Vertex&
 	
 	Vec2 v(v1.position.x - v0.position.x, v1.position.y - v0.position.y);
 	Vec2 w(v2.position.x - v0.position.x, v2.position.y - v0.position.y);
-	float area = v.cross(w);
+	float area = v.Cross(w);
 	if (area < 0)
 		return;
 	
@@ -328,7 +328,7 @@ void Rasterizer::DrawTiangleWire(Vertex& p_v0, Vertex& p_v1, Vertex& p_v2)
 	
 	Vec2 v(v1.position.x - v0.position.x, v1.position.y - v0.position.y);
 	Vec2 w(v2.position.x - v0.position.x, v2.position.y - v0.position.y);
-	float area = v.cross(w);
+	float area = v.Cross(w);
 	if (area < 0)
 		return;
 

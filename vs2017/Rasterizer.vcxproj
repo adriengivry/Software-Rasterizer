@@ -19,7 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\src\Display.cpp" />
+    <ClCompile Include="..\src\Application.cpp" />
     <ClCompile Include="..\src\Entity.cpp" />
     <ClCompile Include="..\src\EntityManager.cpp" />
     <ClCompile Include="..\src\EventManager.cpp" />
@@ -36,7 +36,7 @@
   <ItemGroup>
     <ClInclude Include="..\include\Color.h" />
     <ClInclude Include="..\include\IComponent.h" />
-    <ClInclude Include="..\include\Display.h" />
+    <ClInclude Include="..\include\Application.h" />
     <ClInclude Include="..\include\Entity.h" />
     <ClInclude Include="..\include\EntityManager.h" />
     <ClInclude Include="..\include\EventManager.h" />
@@ -153,6 +153,7 @@
     <Link>
       <AdditionalLibraryDirectories>$(ProjectDir)..\dependencies\SDL2\lib\;$(ProjectDir)..\dependencies\SDL2_ttf\lib\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <SubSystem>Windows</SubSystem>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -186,6 +187,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>$(ProjectDir)..\dependencies\SDL2\lib\;$(ProjectDir)..\dependencies\SDL2_ttf\lib\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <SubSystem>Windows</SubSystem>
     </Link>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

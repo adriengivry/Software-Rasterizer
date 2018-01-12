@@ -22,10 +22,9 @@ void UserInterface::Setup()
 
 void UserInterface::Update()
 {
-	Draw();
 }
 
-void UserInterface::Draw()
+void UserInterface::Draw() const
 {
 	// CURRENT FPS
 	std::string fps = std::to_string(m_sharedContext.fpsCounter) + " FPS";

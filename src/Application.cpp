@@ -1,8 +1,8 @@
-#include "../include/Display.h"
+#include "Application.h"
 
 using namespace Toolbox;
 
-Display::Display() :
+Application::Application() :
 	m_pScene(nullptr),
 	m_pEntity(nullptr),
 	m_pLight(nullptr),
@@ -12,10 +12,13 @@ Display::Display() :
 	m_prTexture(new Texture(WINDOW_WIDTH, WINDOW_HEIGHT)),
 	m_pRasterizer(*m_prTexture, *m_pRenderer, *m_pTexture),
 	m_userInterface(new UserInterface(*m_pWindow, *m_pRenderer, m_sharedContext)),
+	m_eventManager(new EventManager(m_sharedContext)),
 	yturn(0)
-{}
+{
+	Init();
+}
 
-Display::~Display()
+Application::~Application()
 {
 	SDL_DestroyTexture(m_pTexture);
 	SDL_DestroyRenderer(m_pRenderer);
@@ -31,11 +34,12 @@ Display::~Display()
 	delete m_pLight;
 }
 
-void Display::Update()
+void Application::Update()
 {
 	m_sharedContext.lastTime = m_sharedContext.currentTime;
 	m_pRasterizer.Update();
 	m_userInterface->Update();
+	m_eventManager->Update();
 	m_sharedContext.currentTime = SDL_GetTicks();
 	m_sharedContext.deltaTime = (m_sharedContext.currentTime - m_sharedContext.lastTime) / 1000;
 	m_sharedContext.fpsCounter = 1.f / m_sharedContext.deltaTime;
@@ -62,19 +66,17 @@ void Display::Update()
 	}
 }
 
-void Display::Init()
+void Application::Draw()
 {
-	//m_prTexture = new Texture(WINDOW_WIDTH, WINDOW_HEIGHT);
-	//m_pWindow = SDL_CreateWindow("Rasterizer", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WINDOW_WIDTH, WINDOW_HEIGHT, 0);
-	//m_pRenderer = SDL_CreateRenderer(m_pWindow, -1, SDL_RENDERER_ACCELERATED);
-	SDL_SetRenderDrawBlendMode(m_pRenderer, SDL_BLENDMODE_BLEND);
-	//m_pTexture = SDL_CreateTexture(m_pRenderer, SDL_PIXELFORMAT_ARGB32, SDL_TEXTUREACCESS_STREAMING, WINDOW_WIDTH, WINDOW_HEIGHT);
-	SDL_SetTextureBlendMode(m_pTexture, SDL_BLENDMODE_BLEND);
-	//m_pRasterizer = new Rasterizer(*m_prTexture, *m_pRenderer, *m_pTexture);
+	RenderScene();
+	m_userInterface->Draw();
 }
 
-void Display::InitScene()
+void Application::Init()
 {
+	SDL_SetRenderDrawBlendMode(m_pRenderer, SDL_BLENDMODE_BLEND);
+	SDL_SetTextureBlendMode(m_pTexture, SDL_BLENDMODE_BLEND);
+
 	m_pScene = new Scene();
 	m_pLight = new Light(0, 0, 0);
 	m_pEntity = new Entity*[2];
@@ -93,10 +95,15 @@ void Display::InitScene()
 	m_pScene->m_lights.push_back(m_pLight);
 }
 
-void Display::RenderScene()
+void Application::RenderScene()
 {
 	Mat4 matrix = (Mat4::CreateTranslation(0, 0, -6) * Mat4::CreateRotation(45, yturn, 0));
 	m_pScene->m_entities[0]->SetMatrix(matrix);
 	m_pRasterizer.RenderScenewire(m_pScene);
 	yturn += m_sharedContext.deltaTime * 90;
+}
+
+SharedContext& Application::GetContext()
+{
+	return m_sharedContext;
 }

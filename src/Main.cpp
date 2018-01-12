@@ -1,60 +1,54 @@
 #include "SDL.h"
 #include "SDL_ttf.h"
 #include <iostream>
-#include "Display.h"
-#undef main
+#include "Application.h"
+
 #define SDL_INIT_SUCCESS 0
+#define TTF_INIT_SUCCESS 0
 #define SDL_LOG(logMessage) std::cout << "[SDL] " << logMessage << std::endl
-static bool gameRunning = true;
-static void HandleKeyEvent(const SDL_Event &event)
+
+bool InitSDL()
 {
-	switch (event.key.keysym.sym)
+	bool success = true;
+
+	if (SDL_Init(SDL_INIT_VIDEO) != SDL_INIT_SUCCESS)
 	{
-	case SDLK_ESCAPE:
-		gameRunning = false;
-		break;
-	
-	default: break;
+		SDL_LOG("Failed to Init Core");
+		success = false;
 	}
+
+	if (TTF_Init() != TTF_INIT_SUCCESS)
+	{
+		SDL_LOG("Failed to Init TTF");
+		success = false;
+	}
+
+	return success;
 }
 
-static void HandleEvent(const SDL_Event &event)
+void CloseSDL()
 {
-	switch (event.type)
-	{
-	case SDL_QUIT:
-		gameRunning = false;
-		break;
-	
-	case SDL_KEYDOWN:
-		HandleKeyEvent(event);
-	default: break;
-	}
+	TTF_Quit();
+	SDL_Quit();
 }
 
 int main(int argc, char* argv[])
 {
-	if (SDL_Init(SDL_INIT_VIDEO) != SDL_INIT_SUCCESS)
-		SDL_LOG("Failed to Init");
-
-	TTF_Init();
-
-	Display display;
-	display.Init();
-	display.InitScene();
-
-	while (gameRunning)
+	if (!InitSDL())
 	{
-		SDL_Event event;
-		while (SDL_PollEvent(&event))
-			HandleEvent(event);
-
-		display.RenderScene();
-		display.Update();
+		CloseSDL();
+		return EXIT_FAILURE;
 	}
 
-	TTF_Quit();
-	SDL_Quit();
+	Application app;
 
-	return 0;
+	while (app.GetContext().isRunning)
+	{
+		app.Update();
+		app.Draw();
+	}
+
+	CloseSDL();
+
+	return EXIT_SUCCESS;
 }

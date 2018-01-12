@@ -2,16 +2,19 @@
 #include "Rasterizer.h"
 #include "UserInterface.h"
 #include <numeric>
+#include "EventManager.h"
 
-class Display
+class Application
 {
 public:
-	Display();
-	~Display();
+	Application();
+	~Application();
 	void Update();
+	void Draw();
 	void Init();
-	void InitScene();
 	void RenderScene();
+
+	SharedContext& GetContext();
 private:
 	Scene* m_pScene;
 	Entity** m_pEntity;
@@ -23,5 +26,6 @@ private:
 	SharedContext m_sharedContext;
 	Rasterizer m_pRasterizer;
 	UserInterface* m_userInterface;
+	EventManager* m_eventManager;
 	float yturn;
 };
