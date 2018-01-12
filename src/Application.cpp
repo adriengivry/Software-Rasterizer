@@ -3,8 +3,8 @@
 using namespace Toolbox;
 
 Application::Application() :
-	m_prTexture(new Texture(Window::WIDTH, Window::HEIGHT)),
-	m_rasterizer(*m_prTexture, m_sharedContext),
+	m_renderTexture(new Texture(Window::WIDTH, Window::HEIGHT)),
+	m_rasterizer(*m_renderTexture, m_sharedContext),
 	m_userInterface(new UserInterface(m_sharedContext)),
 	m_eventManager(new EventManager(m_sharedContext))
 {
@@ -14,8 +14,7 @@ Application::Application() :
 
 Application::~Application()
 {
-	//delete m_pRasterizer;
-	delete m_prTexture;
+	delete m_renderTexture;
 }
 
 void Application::Update()
@@ -78,7 +77,25 @@ void Application::RenderScene()
 		Mat4::CreateTranslation(0 , 0, -6 + m_cameraParams.zoomOffset) * 
 		Mat4::CreateRotation(45 + m_cameraParams.xRotationOffset, 45 + m_cameraParams.yRotationOffset, 0);
 	m_scene.entities[0]->SetMatrix(matrix);
-	m_rasterizer.RenderScene3(&m_scene);
+
+	switch (m_sharedContext.appInfos.selectedVersion)
+	{
+	default:
+		break;
+	case 1:
+		m_rasterizer.RenderScene(&m_scene);
+		break;
+	case 2:
+		m_rasterizer.RenderScene2(&m_scene);
+		break;
+	case 3:
+		m_rasterizer.RenderScene3(&m_scene);
+		break;
+	case 4:
+		m_rasterizer.RenderScenewire(&m_scene);
+		break;
+	}
+	
 }
 
 void Application::UpdateCamera()

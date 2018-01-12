@@ -61,6 +61,18 @@ void EventManager::KeyInput(const SDL_Keysym& p_key, const bool p_state) const
 	case SDLK_DOWN:
 		m_sharedContext.actions.xTurnCounterClockwise = p_state;
 		break;
+	case SDLK_1:
+		m_sharedContext.appInfos.selectedVersion = 1;
+		break;
+	case SDLK_2:
+		m_sharedContext.appInfos.selectedVersion = 2;
+		break;
+	case SDLK_3:
+		m_sharedContext.appInfos.selectedVersion = 3;
+		break;
+	case SDLK_4:
+		m_sharedContext.appInfos.selectedVersion = 4;
+		break;
 	default:
 		break;
 	}

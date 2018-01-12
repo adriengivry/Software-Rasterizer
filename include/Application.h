@@ -26,7 +26,7 @@ public:
 	SharedContext& GetContext();
 private:
 	Scene m_scene;
-	Texture* m_prTexture;
+	Texture* m_renderTexture;
 	SharedContext m_sharedContext;
 	Rasterizer m_rasterizer;
 	UserInterface* m_userInterface;

@@ -3,11 +3,6 @@
 #include "Scene.h"
 #include "Window.h"
 
-struct Features
-{
-	bool camera;
-};
-
 struct Actions
 {
 	bool moveLeft;
@@ -32,6 +27,7 @@ struct ApplicationInfos
 	uint16_t averageFps = 0;
 	uint16_t fpsValues[10];
 	uint8_t fpsValuesBuffer = 0;
+	uint8_t selectedVersion = 2;
 };
 
 struct SharedContext
@@ -40,6 +36,5 @@ struct SharedContext
 	Window* window = nullptr;
 
 	ApplicationInfos appInfos;
-	Features features;
 	Actions actions;
 };

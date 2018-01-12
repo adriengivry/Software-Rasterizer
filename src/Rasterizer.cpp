@@ -37,6 +37,9 @@ void Rasterizer::RenderScene(Scene * p_pScene)
 			Vertex v0 = (p_pScene->entities[j]->GetMesh()->GetVertices()[p_pScene->entities[j]->GetMesh()->GetIndices()[i]]);
 			Vertex v1 = (p_pScene->entities[j]->GetMesh()->GetVertices()[p_pScene->entities[j]->GetMesh()->GetIndices()[i + 1]]);
 			Vertex v2 = (p_pScene->entities[j]->GetMesh()->GetVertices()[p_pScene->entities[j]->GetMesh()->GetIndices()[i + 2]]);
+			v0.VertexTransform(positionMatrix);
+			v1.VertexTransform(positionMatrix);
+			v2.VertexTransform(positionMatrix);
 			DrawTriangle(v0, v1, v2);
 		}
 	}
@@ -207,6 +210,12 @@ void Rasterizer::DrawTriangle(Vertex& p_v0, Vertex& p_v1, Vertex& p_v2)
 	Vertex v0(Mat4::ConvertToScreen(p_v0.position, m_rtexture.GetWidth(), m_rtexture.GetHeight()));
 	Vertex v1(Mat4::ConvertToScreen(p_v1.position, m_rtexture.GetWidth(), m_rtexture.GetHeight()));
 	Vertex v2(Mat4::ConvertToScreen(p_v2.position, m_rtexture.GetWidth(), m_rtexture.GetHeight()));
+	Vec2 v(v1.position.x - v0.position.x, v1.position.y - v0.position.y);
+	Vec2 w(v2.position.x - v0.position.x, v2.position.y - v0.position.y);
+	float area = v.Cross(w);
+	if (area < 0)
+		return;
+
 	Triangle triangle(v0, v1, v2);
 	AABB box = triangle.getAABB();
 	int minX = std::max((int)box.minPoint.x, 0);
@@ -226,7 +235,11 @@ void Rasterizer::DrawTriangle(Vertex& p_v0, Vertex& p_v1, Vertex& p_v2)
 				if (m_zBuffer[int(positions.position.x + positions.position.y * Window::WIDTH)] > positions.position.z)
 				{
 					m_zBuffer[int(positions.position.x + positions.position.y * Window::WIDTH)] = positions.position.z;
-					m_rtexture.SetPixelColor(int(positions.position.x), int(positions.position.y), (p_v0.color * bary.z + p_v1.color * bary.x + p_v2.color * bary.y));
+					Color pixelColor;
+					pixelColor.r =  p_v0.color.r * bary.z + p_v1.color.r * bary.x + p_v2.color.r * bary.y;
+					pixelColor.g = p_v0.color.g * bary.z + p_v1.color.g * bary.x + p_v2.color.g * bary.y;
+					pixelColor.b = p_v0.color.b * bary.z + p_v1.color.b * bary.x + p_v2.color.b * bary.y;
+					m_rtexture.SetPixelColor(int(positions.position.x), int(positions.position.y), pixelColor);
 				}
 			}
 		}
@@ -268,7 +281,11 @@ void Rasterizer::DrawTriangle2(Vertex& p_v0, Vertex& p_v1, Vertex& p_v2, Vertex&
 								bary.z * p_v0.normal.z + bary.y * p_v1.normal.z + bary.x * p_v2.normal.z);
 
 					normal.Normalize();
-					Color finalColor = this->BlinnPhongColor(positions, normal, p_lightPosition, p_lightcomp, (p_v0.color * bary.z + p_v1.color * bary.y + p_v2.color * bary.x));
+					Color pixelColor;
+					pixelColor.r = p_v0.color.r * bary.z + p_v1.color.r * bary.x + p_v2.color.r * bary.y;
+					pixelColor.g = p_v0.color.g * bary.z + p_v1.color.g * bary.x + p_v2.color.g * bary.y;
+					pixelColor.b = p_v0.color.b * bary.z + p_v1.color.b * bary.x + p_v2.color.b * bary.y;
+					Color finalColor = this->BlinnPhongColor(positions, normal, p_lightPosition, p_lightcomp, pixelColor);
 					m_rtexture.SetPixelColor(int(positions.position.x), int(positions.position.y), finalColor);
 				}
 			}
@@ -309,7 +326,11 @@ void Rasterizer::DrawTriangle3(Vertex& p_v0, Vertex& p_v1, Vertex& p_v2, Vertex&
 				if (m_zBuffer[int(positions.position.x + positions.position.y * Window::WIDTH)] > positions.position.z)
 				{
 					m_zBuffer[int(positions.position.x + positions.position.y * Window::WIDTH)] = positions.position.z;
-					m_rtexture.SetPixelColor(int(positions.position.x), int(positions.position.y), (c0 * bary.z + c1 * bary.y + c2 * bary.x));
+					Color pixelColor;
+					pixelColor.r =  c0.r * bary.z + c1.r * bary.x + c2.r * bary.y;
+					pixelColor.g = c0.g * bary.z + c1.g * bary.x + c2.g * bary.y;
+					pixelColor.b = c0.b * bary.z + c1.b * bary.x + c2.b * bary.y;
+					m_rtexture.SetPixelColor(int(positions.position.x), int(positions.position.y), pixelColor);
 				}
 			}
 		}
@@ -383,7 +404,11 @@ void Rasterizer::DrawTriangleSphere(Vertex& p_v0, Vertex& p_v1, Vertex& p_v2)
 					if (m_zBuffer[int(positions.position.x + positions.position.y * Window::WIDTH)] < positions.position.z)
 					{
 						m_zBuffer[int(positions.position.x + positions.position.y * Window::WIDTH)] = positions.position.z;
-						m_rtexture.SetPixelColor((int)positions.position.x, (int)positions.position.y, (p_v0.color * bary.z + p_v1.color * bary.x + p_v2.color * bary.y));
+						Color pixelColor;
+						pixelColor.r = p_v0.color.r * bary.z + p_v1.color.r * bary.x + p_v2.color.r * bary.y;
+						pixelColor.g = p_v0.color.g * bary.z + p_v1.color.g * bary.x + p_v2.color.g * bary.y;
+						pixelColor.b = p_v0.color.b * bary.z + p_v1.color.b * bary.x + p_v2.color.b * bary.y;
+						m_rtexture.SetPixelColor((int)positions.position.x, (int)positions.position.y, pixelColor);
 					}
 				}
 			}
