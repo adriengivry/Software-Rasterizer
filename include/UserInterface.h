@@ -14,6 +14,8 @@ public:
 	void Draw() const;
 	void Close() override;
 
+	void DrawAt(std::string p_text, uint16_t p_x, uint16_t p_y) const;
+
 private:
 	TTF_Font* m_font;
 	SharedContext& m_sharedContext;

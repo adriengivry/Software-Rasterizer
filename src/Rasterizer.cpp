@@ -44,7 +44,7 @@ void Rasterizer::RenderScene(Scene * p_pScene)
 		}
 	}
 }
-void Rasterizer::RenderScene2(Scene * p_pScene)
+void Rasterizer::RenderSceneBlinnPhong(Scene * p_pScene)
 {
 	
 	Vertex lightposition = p_pScene->lights[0]->GetPosition();
@@ -73,7 +73,7 @@ void Rasterizer::RenderScene2(Scene * p_pScene)
 		}
 	}
 }
-void Rasterizer::RenderScene3(Scene * p_pScene)
+void Rasterizer::RenderScenePhong(Scene * p_pScene)
 {
 	for (uint16_t j = 0; j < p_pScene->entities.size(); j++)
 	{
@@ -98,7 +98,7 @@ void Rasterizer::RenderScene3(Scene * p_pScene)
 		}
 	}
 }
-void Rasterizer::RenderScenewire(Scene * p_pScene)
+void Rasterizer::RenderSceneWireframe(Scene * p_pScene)
 {
 	for (uint16_t j = 0; j < p_pScene->entities.size(); j++)
 	{

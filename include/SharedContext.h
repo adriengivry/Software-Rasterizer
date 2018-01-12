@@ -27,7 +27,7 @@ struct ApplicationInfos
 	uint16_t averageFps = 0;
 	uint16_t fpsValues[10];
 	uint8_t fpsValuesBuffer = 0;
-	uint8_t selectedVersion = 2;
+	uint8_t selectedVersion = 1;
 };
 
 struct SharedContext

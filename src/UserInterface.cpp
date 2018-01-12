@@ -25,24 +25,29 @@ void UserInterface::Update()
 
 void UserInterface::Draw() const
 {
-	// CURRENT FPS
-	std::string fps = std::to_string(m_sharedContext.appInfos.fpsCounter) + " FPS";
-	fps += " (" + std::to_string(m_sharedContext.appInfos.minFps) + " to " + std::to_string(m_sharedContext.appInfos.maxFps) + " FPS | ~" + std::to_string(m_sharedContext.appInfos.averageFps) + " FPS)";
+	const std::string fps = std::to_string(m_sharedContext.appInfos.fpsCounter) + " FPS (" + std::to_string(m_sharedContext.appInfos.minFps) + " to " + std::to_string(m_sharedContext.appInfos.maxFps) + " FPS | ~" + std::to_string(m_sharedContext.appInfos.averageFps) + " FPS)";
+	DrawAt(fps, 0, 0);
 
 
-	SDL_Surface* fpsCounter = TTF_RenderText_Blended(m_font, fps.c_str() , { 255, 255, 255, 255 });
-	SDL_Texture* texture = SDL_CreateTextureFromSurface(m_sharedContext.window->GetRenderer(), fpsCounter);
-	int texW = 0;
-	int texH = 0;
-	SDL_QueryTexture(texture, nullptr, nullptr, &texW, &texH);
-	SDL_Rect dstrect = { 0, 0, texW, texH };
-	SDL_RenderCopy(m_sharedContext.window->GetRenderer(), texture, nullptr, &dstrect);
-
-	SDL_FreeSurface(fpsCounter);
-	SDL_DestroyTexture(texture);
+	std::string items[] = { "1. Z-Buffer", "2. Phong (Per-Vertex)", "3. Blinn-Phong (Per-Pixel)", "4. Wireframe", "5. Texture", "6. Alpha-Blending", "7. Antialiasing" };
+	for (uint8_t i = 0; i < 7; ++i)
+		DrawAt(items[i], 0, 200 + i * 23);
 }
 
 void UserInterface::Close()
 {
 	TTF_CloseFont(m_font);
+}
+
+void UserInterface::DrawAt(std::string p_text, uint16_t p_x, uint16_t p_y) const
+{
+	SDL_Surface* itemSurface = TTF_RenderText_Blended(m_font, p_text.c_str(), { 255, 255, 255, 255 });
+	SDL_Texture* itemTexture = SDL_CreateTextureFromSurface(m_sharedContext.window->GetRenderer(), itemSurface);
+	int itemTextureWidth = 0;
+	int itemTextureHeight = 0;
+	SDL_QueryTexture(itemTexture, nullptr, nullptr, &itemTextureWidth, &itemTextureHeight);
+	SDL_Rect dstrect = { p_x, p_y, itemTextureWidth, itemTextureHeight };
+	SDL_RenderCopy(m_sharedContext.window->GetRenderer(), itemTexture, nullptr, &dstrect);
+	SDL_FreeSurface(itemSurface);
+	SDL_DestroyTexture(itemTexture);
 }

@@ -9,9 +9,9 @@ public:
 	Rasterizer(Texture& p_texture, SharedContext& p_sharedContext);
 	~Rasterizer();
 	void RenderScene(Scene* p_pScene);
-	void RenderScene2(Scene* p_pScene);
-	void RenderScene3(Scene* p_pScene);
-	void RenderScenewire(Scene* p_pScene);
+	void RenderSceneBlinnPhong(Scene* p_pScene);
+	void RenderScenePhong(Scene* p_pScene);
+	void RenderSceneWireframe(Scene* p_pScene);
 	void Update();
 	void DrawLine(const float p_x1, const float p_y1, const float p_x2, const float p_y2, Color& p_color1, Color& p_color2);
 	void DrawTriangle(Vertex& p_v0, Vertex& p_v1, Vertex& p_v2);

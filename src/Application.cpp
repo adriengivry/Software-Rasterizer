@@ -86,13 +86,13 @@ void Application::RenderScene()
 		m_rasterizer.RenderScene(&m_scene);
 		break;
 	case 2:
-		m_rasterizer.RenderScene2(&m_scene);
+		m_rasterizer.RenderScenePhong(&m_scene);
 		break;
 	case 3:
-		m_rasterizer.RenderScene3(&m_scene);
+		m_rasterizer.RenderSceneBlinnPhong(&m_scene);
 		break;
 	case 4:
-		m_rasterizer.RenderScenewire(&m_scene);
+		m_rasterizer.RenderSceneWireframe(&m_scene);
 		break;
 	}
 	
