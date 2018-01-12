@@ -19,7 +19,7 @@ void EventManager::Update()
 		switch (m_event.type)
 		{
 		case SDL_QUIT:
-			m_sharedContext.isRunning = false;
+			m_sharedContext.appInfos.isRunning = false;
 			break;
 		case SDL_KEYDOWN:
 			KeyInput(m_event.key.keysym, true);

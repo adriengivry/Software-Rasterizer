@@ -11,10 +11,9 @@ namespace Mat3Dto2D
 };
 using namespace Mat3Dto2D;
 
-Rasterizer::Rasterizer(Texture& p_texture, SDL_Renderer& p_renderer, SDL_Texture& p_texture1) :
+Rasterizer::Rasterizer(Texture& p_texture, SharedContext& p_sharedContext) :
 	m_rtexture(p_texture),
-	m_renderer(p_renderer),
-	m_texture(p_texture1),
+	m_sharedContext(p_sharedContext),
 	m_wireFrame(false),
 	m_zBuffer(new float[m_rtexture.GetWidth() * m_rtexture.GetHeight()])
 {
@@ -119,11 +118,11 @@ void Rasterizer::RenderScenewire(Scene * p_pScene)
 }
 void Rasterizer::Update()
 {
-	SDL_UpdateTexture(&m_texture, nullptr, m_rtexture.GetPixelBuffer(), m_rtexture.GetWidth() * sizeof(uint32_t));
-	SDL_RenderCopy(&m_renderer, &m_texture, nullptr, nullptr);
-	SDL_RenderPresent(&m_renderer);
+	SDL_UpdateTexture(m_sharedContext.window->GetTexture(), nullptr, m_rtexture.GetPixelBuffer(), m_rtexture.GetWidth() * sizeof(uint32_t));
+	SDL_RenderCopy(m_sharedContext.window->GetRenderer(), m_sharedContext.window->GetTexture(), nullptr, nullptr);
+	SDL_RenderPresent(m_sharedContext.window->GetRenderer());
 	m_rtexture.ClearBuffer();
-	SDL_RenderClear(&m_renderer);
+	SDL_RenderClear(m_sharedContext.window->GetRenderer());
 	for (int i = m_rtexture.GetWidth() * m_rtexture.GetHeight(); i--;)
 		m_zBuffer[i] = std::numeric_limits<float>::digits10;
 }
@@ -227,9 +226,9 @@ void Rasterizer::DrawTriangle(Vertex& p_v0, Vertex& p_v1, Vertex& p_v2)
 			{
 				positions.position.z = 0;
 				positions.position.z = v0.position.z * bary.z + v1.position.z * bary.x + bary.y * v2.position.z;
-				if (m_zBuffer[int(positions.position.x + positions.position.y * WINDOW_WIDTH)] > positions.position.z)
+				if (m_zBuffer[int(positions.position.x + positions.position.y * Window::WIDTH)] > positions.position.z)
 				{
-					m_zBuffer[int(positions.position.x + positions.position.y * WINDOW_WIDTH)] = positions.position.z;
+					m_zBuffer[int(positions.position.x + positions.position.y * Window::WIDTH)] = positions.position.z;
 					m_rtexture.SetPixelColor(int(positions.position.x), int(positions.position.y), (p_v0.color * bary.z + p_v1.color * bary.x + p_v2.color * bary.y));
 				}
 			}
@@ -264,9 +263,9 @@ void Rasterizer::DrawTriangle2(Vertex& p_v0, Vertex& p_v1, Vertex& p_v2, Vertex&
 			if (bary.x >= 0 && bary.y >= 0 && bary.x + bary.y <= 1)
 			{
 				positions.position.z = v0.position.z * bary.z + v1.position.z * bary.y + bary.x * v2.position.z;
-				if (m_zBuffer[int(positions.position.x + positions.position.y * WINDOW_WIDTH)] > positions.position.z)
+				if (m_zBuffer[int(positions.position.x + positions.position.y * Window::WIDTH)] > positions.position.z)
 				{
-					m_zBuffer[int(positions.position.x + positions.position.y * WINDOW_WIDTH)] = positions.position.z;
+					m_zBuffer[int(positions.position.x + positions.position.y * Window::WIDTH)] = positions.position.z;
 					Vec3 normal(bary.z * p_v0.normal.x + bary.y * p_v1.normal.x + bary.x * p_v2.normal.x,
 								bary.z * p_v0.normal.y + bary.y * p_v1.normal.y + bary.x * p_v2.normal.y,
 								bary.z * p_v0.normal.z + bary.y * p_v1.normal.z + bary.x * p_v2.normal.z);
@@ -310,9 +309,9 @@ void Rasterizer::DrawTriangle3(Vertex& p_v0, Vertex& p_v1, Vertex& p_v2, Vertex&
 			if (bary.x >= 0 && bary.y >= 0 && bary.x + bary.y < 1)
 			{
 				positions.position.z = v0.position.z * bary.z + v1.position.z * bary.y + bary.x * v2.position.z;
-				if (m_zBuffer[int(positions.position.x + positions.position.y * WINDOW_WIDTH)] > positions.position.z)
+				if (m_zBuffer[int(positions.position.x + positions.position.y * Window::WIDTH)] > positions.position.z)
 				{
-					m_zBuffer[int(positions.position.x + positions.position.y * WINDOW_WIDTH)] = positions.position.z;
+					m_zBuffer[int(positions.position.x + positions.position.y * Window::WIDTH)] = positions.position.z;
 					m_rtexture.SetPixelColor(int(positions.position.x), int(positions.position.y), (c0 * bary.z + c1 * bary.y + c2 * bary.x));
 				}
 			}
@@ -384,9 +383,9 @@ void Rasterizer::DrawTriangleSphere(Vertex& p_v0, Vertex& p_v1, Vertex& p_v2)
 				{
 					positions.position.z = 0;
 					positions.position.z = v0.position.z * bary.z + (v1.position.z) * bary.x + bary.y * (v2.position.z);
-					if (m_zBuffer[int(positions.position.x + positions.position.y * WINDOW_WIDTH)] < positions.position.z)
+					if (m_zBuffer[int(positions.position.x + positions.position.y * Window::WIDTH)] < positions.position.z)
 					{
-						m_zBuffer[int(positions.position.x + positions.position.y * WINDOW_WIDTH)] = positions.position.z;
+						m_zBuffer[int(positions.position.x + positions.position.y * Window::WIDTH)] = positions.position.z;
 						m_rtexture.SetPixelColor((int)positions.position.x, (int)positions.position.y, (p_v0.color * bary.z + p_v1.color * bary.x + p_v2.color * bary.y));
 					}
 				}

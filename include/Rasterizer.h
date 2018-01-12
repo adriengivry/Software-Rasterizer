@@ -1,10 +1,12 @@
 #include "Scene.h"
 #include "Texture.h"
 #include "Triangle.h"
+#include "SharedContext.h"
+
 class Rasterizer
 {
 public:
-	Rasterizer(Texture& p_texture, SDL_Renderer& p_renderer, SDL_Texture& p_texture1);
+	Rasterizer(Texture& p_texture, SharedContext& p_sharedContext);
 	~Rasterizer();
 	void RenderScene(Scene* p_pScene);
 	void RenderScene2(Scene* p_pScene);
@@ -27,8 +29,7 @@ public:
 
 private:
 	Texture& m_rtexture;
-	SDL_Renderer& m_renderer;
-	SDL_Texture& m_texture;
+	SharedContext& m_sharedContext;
 	bool m_wireFrame;
 	float* m_zBuffer;
 };

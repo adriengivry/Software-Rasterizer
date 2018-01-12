@@ -3,8 +3,6 @@
 #include <sdl_stdinc.h>
 //#define M_PI 3.1415926535f
 #define DEG_TO_RAD 3.1415926535f/180.0f
-#define WINDOW_WIDTH 1024
-#define WINDOW_HEIGHT 768
 
 namespace Toolbox
 {

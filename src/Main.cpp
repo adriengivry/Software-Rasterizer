@@ -11,7 +11,7 @@ int main(int argc, char* argv[])
 
 	Application app;
 
-	while (app.GetContext().isRunning)
+	while (app.GetContext().appInfos.isRunning)
 	{
 		app.Update();
 		app.Draw();

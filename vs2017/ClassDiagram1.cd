@@ -1,0 +1,200 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="IObject" Collapsed="true">
+    <Position X="3.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>C:\Users\a.givry\Source\Repos\Rasterizer\include\IObject.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="IComponent" Collapsed="true">
+    <Position X="0.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>C:\Users\a.givry\Source\Repos\Rasterizer\include\IComponent.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Application" Collapsed="true">
+    <Position X="9.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAQCAAgAABAAAgCAAAQAAAACABQCAGAAECACAACAAAA=</HashCode>
+      <FileName>C:\Users\a.givry\Source\Repos\Rasterizer\include\Application.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Entity" Collapsed="true">
+    <Position X="11.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAAAAAAAABEAAAAAAACECAACAAAAAAAAAAAAAAAEA=</HashCode>
+      <FileName>C:\Users\a.givry\Source\Repos\Rasterizer\include\Entity.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Light" Collapsed="true">
+    <Position X="13.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAAAACAAAACAQAAAAgAAAAACggQAgAAAAAAAAAA=</HashCode>
+      <FileName>C:\Users\a.givry\Source\Repos\Rasterizer\include\Light.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Mesh" Collapsed="true">
+    <Position X="15" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAEAVIEAAAAAAAEQAAAAAAAAAAQAAQAAAAGAAAA=</HashCode>
+      <FileName>C:\Users\a.givry\Source\Repos\Rasterizer\include\Mesh.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Texture" Collapsed="true">
+    <Position X="11.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAgAABAAAAABBCAAAEAACABAIAAEAIAAA=</HashCode>
+      <FileName>C:\Users\a.givry\Source\Repos\Rasterizer\include\Texture.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Triangle" Collapsed="true">
+    <Position X="13.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AADgAAAAAAAAAAABcAIAAAAAAAAAAAMQQEAAAEAAABA=</HashCode>
+      <FileName>C:\Users\a.givry\Source\Repos\Rasterizer\include\Triangle.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Window" Collapsed="true">
+    <Position X="0.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEQACAAAAAAAAAAAAAAAAAQQAACAAAIAACQBAAAA=</HashCode>
+      <FileName>C:\Users\a.givry\Source\Repos\Rasterizer\include\Window.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EntityManager" Collapsed="true">
+    <Position X="2.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAAAAAAAAAAABAAAAAAAAAAAAAAEAAAAAAAAAA=</HashCode>
+      <FileName>C:\Users\a.givry\Source\Repos\Rasterizer\include\EntityManager.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EventManager" Collapsed="true">
+    <Position X="5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAABAACAAAAAAAAAAACAAAAAEAAAAAEAAAAACAEAA=</HashCode>
+      <FileName>C:\Users\a.givry\Source\Repos\Rasterizer\include\EventManager.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="IManager" Collapsed="true">
+    <Position X="5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAACAAAAAAAAQAAAAAAAAAAAAAAAAAAAACAAAA=</HashCode>
+      <FileName>C:\Users\a.givry\Source\Repos\Rasterizer\include\IManager.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Rasterizer" Collapsed="true">
+    <Position X="9.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gIRBgAgAABAQAoCAAAAAAAAAAAAEAAAIEEQQQAAAAAg=</HashCode>
+      <FileName>C:\Users\a.givry\Source\Repos\Rasterizer\include\Rasterizer.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UserInterface" Collapsed="true">
+    <Position X="7.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAQAAAAAKAAAAgAAAAAAAAAAAAAAAEAAEAAAAACAAAA=</HashCode>
+      <FileName>C:\Users\a.givry\Source\Repos\Rasterizer\include\UserInterface.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Struct Name="Color" Collapsed="true">
+    <Position X="15" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAoAQAhgAAAAAA=</HashCode>
+      <FileName>C:\Users\a.givry\Source\Repos\Rasterizer\include\Color.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="CameraParams" Collapsed="true">
+    <Position X="13.25" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAQAAYAAAA=</HashCode>
+      <FileName>C:\Users\a.givry\Source\Repos\Rasterizer\include\Application.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Scene" Collapsed="true">
+    <Position X="15" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAIEAAAAAAAAAA=</HashCode>
+      <FileName>C:\Users\a.givry\Source\Repos\Rasterizer\include\Scene.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Features" Collapsed="true">
+    <Position X="11.5" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>C:\Users\a.givry\Source\Repos\Rasterizer\include\SharedContext.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Actions" Collapsed="true">
+    <Position X="11.5" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABACAAAACAAAAAAAAIAQAAAAAAAACEAAAAg=</HashCode>
+      <FileName>C:\Users\a.givry\Source\Repos\Rasterizer\include\SharedContext.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="SharedContext" Collapsed="true">
+    <Position X="9.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACEQAAAAAEAACFAAAAgAoAAAAAAAACIQAAAEAAAAAA=</HashCode>
+      <FileName>C:\Users\a.givry\Source\Repos\Rasterizer\include\SharedContext.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="AABB" Collapsed="true">
+    <Position X="9.75" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAIAAAAAAgAAAAAAAAAAAAEAAAAA=</HashCode>
+      <FileName>C:\Users\a.givry\Source\Repos\Rasterizer\include\Triangle.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Edge" Collapsed="true">
+    <Position X="9.75" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAwAABACAAQAAAAAAAAA=</HashCode>
+      <FileName>C:\Users\a.givry\Source\Repos\Rasterizer\include\Triangle.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Span" Collapsed="true">
+    <Position X="11.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAQAAAACAAAAAAAIAAAA=</HashCode>
+      <FileName>C:\Users\a.givry\Source\Repos\Rasterizer\include\Triangle.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Vertex" Collapsed="true">
+    <Position X="11.5" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAgAAAABAAAgAAgAIAgAAAAAAACAAAggAAAIAAA=</HashCode>
+      <FileName>C:\Users\a.givry\Source\Repos\Rasterizer\include\Vertex.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Toolbox::Mat4" Collapsed="true">
+    <Position X="13.25" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAgBAAQAAAAAAAAEAICASAAAAACIAAEAgAQAAgCI=</HashCode>
+      <FileName>C:\Users\a.givry\Source\Repos\Rasterizer\include\Mat4.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Toolbox::Vec2" Collapsed="true">
+    <Position X="13.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAEAEAAAAAAAAAAAAAAAAADggAAAAAA=</HashCode>
+      <FileName>C:\Users\a.givry\Source\Repos\Rasterizer\include\Vec2.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Toolbox::Vec3" Collapsed="true">
+    <Position X="15" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAEAEAAIAQAAAAAAAAAAAADgAQEAAAA=</HashCode>
+      <FileName>C:\Users\a.givry\Source\Repos\Rasterizer\include\Vec3.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Toolbox::Vec4" Collapsed="true">
+    <Position X="9.75" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAEAABAQAAAAAAAAAAAAjgAwgAAAA=</HashCode>
+      <FileName>C:\Users\a.givry\Source\Repos\Rasterizer\include\Vec4.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

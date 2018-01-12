@@ -20,7 +20,7 @@ struct Actions
 	bool yTurnCounterClockwise;
 };
 
-struct SharedContext
+struct ApplicationInfos
 {
 	bool isRunning = true;
 	float lastTime = 0;
@@ -30,11 +30,16 @@ struct SharedContext
 	uint16_t minFps = 65535;
 	uint16_t maxFps = 0;
 	uint16_t averageFps = 0;
-	uint16_t fpsValues[100];
+	uint16_t fpsValues[10];
 	uint8_t fpsValuesBuffer = 0;
+};
+
+struct SharedContext
+{
 	Scene* scene = nullptr;
 	Window* window = nullptr;
 
+	ApplicationInfos appInfos;
 	Features features;
 	Actions actions;
 };
