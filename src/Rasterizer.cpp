@@ -243,6 +243,12 @@ void Rasterizer::DrawTriangle2(Vertex& p_v0, Vertex& p_v1, Vertex& p_v2, Vertex&
 	Vertex v1(Mat4::ConvertToScreen(p_v1.position, m_rtexture.GetWidth(), m_rtexture.GetHeight()));
 	Vertex v2(Mat4::ConvertToScreen(p_v2.position, m_rtexture.GetWidth(), m_rtexture.GetHeight()));
 
+	Vec2 v(v1.position.x - v0.position.x, v1.position.y - v0.position.y);
+	Vec2 w(v2.position.x - v0.position.x, v2.position.y - v0.position.y);
+	float area = v.cross(w);
+	if (area < 0)
+		return;
+
 	Triangle triangle(v0, v1, v2);
 	AABB box = triangle.getAABB();
 	int minX = std::max(static_cast<int>(box.minPoint.x), 0);
@@ -276,14 +282,21 @@ void Rasterizer::DrawTriangle2(Vertex& p_v0, Vertex& p_v1, Vertex& p_v2, Vertex&
 
 void Rasterizer::DrawTriangle3(Vertex& p_v0, Vertex& p_v1, Vertex& p_v2, Vertex& p_light1, Vertex& p_light2, Vertex& p_light3, Vertex& p_lightPosition, Vec3& p_lightcomp)
 {
-	Color c0 = this->PhongColor(p_light1, Vec3(p_light1.normal.x, p_light1.normal.y, p_light1.normal.z), p_lightPosition, p_lightcomp, p_v0.color);
-	Color c1 = this->PhongColor(p_light2, Vec3(p_light2.normal.x, p_light2.normal.y, p_light2.normal.z), p_lightPosition, p_lightcomp, p_v1.color);
-	Color c2 = this->PhongColor(p_light3, Vec3(p_light3.normal.x, p_light3.normal.y, p_light3.normal.z), p_lightPosition, p_lightcomp, p_v2.color);
+	
 
 	Vertex v0(Mat4::ConvertToScreen(p_v0.position, m_rtexture.GetWidth(), m_rtexture.GetHeight()));
 	Vertex v1(Mat4::ConvertToScreen(p_v1.position, m_rtexture.GetWidth(), m_rtexture.GetHeight()));
 	Vertex v2(Mat4::ConvertToScreen(p_v2.position, m_rtexture.GetWidth(), m_rtexture.GetHeight()));
 	
+	Vec2 v(v1.position.x - v0.position.x, v1.position.y - v0.position.y);
+	Vec2 w(v2.position.x - v0.position.x, v2.position.y - v0.position.y);
+	float area = v.cross(w);
+	if (area < 0)
+		return;
+	
+	Color c0 = this->PhongColor(p_light1, Vec3(p_light1.normal.x, p_light1.normal.y, p_light1.normal.z), p_lightPosition, p_lightcomp, p_v0.color);
+	Color c1 = this->PhongColor(p_light2, Vec3(p_light2.normal.x, p_light2.normal.y, p_light2.normal.z), p_lightPosition, p_lightcomp, p_v1.color);
+	Color c2 = this->PhongColor(p_light3, Vec3(p_light3.normal.x, p_light3.normal.y, p_light3.normal.z), p_lightPosition, p_lightcomp, p_v2.color);
 	Triangle triangle(v0, v1, v2);
 	AABB box = triangle.getAABB();
 	int minX = std::max((int)box.minPoint.x, 0);
@@ -296,9 +309,9 @@ void Rasterizer::DrawTriangle3(Vertex& p_v0, Vertex& p_v1, Vertex& p_v2, Vertex&
 		for (positions.position.x = minX; positions.position.x <= maxX; positions.position.x++)
 		{
 			Vec3 bary(triangle.Barycentric(v0, v1, v2, positions));
-			if (bary.x >= 0 && bary.y >= 0 && bary.x + bary.y <= 1)
+			if (bary.x >= 0 && bary.y >= 0 && bary.x + bary.y < 1)
 			{
-				positions.position.z = v0.position.z * bary.z + (v1.position.z) * bary.y + bary.x * (v2.position.z);
+				positions.position.z = v0.position.z * bary.z + v1.position.z * bary.y + bary.x * v2.position.z;
 				if (m_zBuffer[int(positions.position.x + positions.position.y * WINDOW_WIDTH)] > positions.position.z)
 				{
 					m_zBuffer[int(positions.position.x + positions.position.y * WINDOW_WIDTH)] = positions.position.z;
@@ -315,6 +328,11 @@ void Rasterizer::DrawTiangleWire(Vertex& p_v0, Vertex& p_v1, Vertex& p_v2)
 	Vertex v1(Mat4::ConvertToScreen(p_v1.position, m_rtexture.GetWidth(), m_rtexture.GetHeight()));
 	Vertex v2(Mat4::ConvertToScreen(p_v2.position, m_rtexture.GetWidth(), m_rtexture.GetHeight()));
 	
+	Vec2 v(v1.position.x - v0.position.x, v1.position.y - v0.position.y);
+	Vec2 w(v2.position.x - v0.position.x, v2.position.y - v0.position.y);
+	float area = v.cross(w);
+	if (area < 0)
+		return;
 
 	DrawLine(v0.position.x, v0.position.y, v1.position.x, v1.position.y, p_v0.color, p_v1.color);
 	DrawLine(v1.position.x, v1.position.y, v2.position.x, v2.position.y, p_v1.color, p_v2.color);
@@ -484,7 +502,7 @@ Color Rasterizer::BlinnPhongColor(Vertex& p_position, Vec3& p_normal, Vertex& p_
 		halfDir.Normalize();
 
 		float specAngle = std::max(halfDir.dot(p_normal), 0.0f);
-		specular = pow(specAngle, 16.0);
+		specular = pow(specAngle, 20.0);
 	}
 	Color amb = p_color * 0.5 * (p_lightcomp.x);
 	Color diff = p_color * 0.7 * (p_lightcomp.y * lambert);

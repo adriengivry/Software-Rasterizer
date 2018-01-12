@@ -83,6 +83,7 @@ void Display::InitScene()
 		m_pEntity[i] = new Entity();
 	}
 	m_pEntity[0]->SetMesh(*Mesh::CreateCube2());
+	//m_pEntity[1]->SetMesh(*Mesh::CreateSphere(10, 10));
 	for (int i = 0; i < m_pEntity[0]->GetMesh()->GetVertices().size(); ++i)
 	{
 		m_pEntity[0]->GetMesh()->GetVertices()[i].color = RED;
@@ -96,6 +97,6 @@ void Display::RenderScene()
 {
 	Mat4 matrix = (Mat4::CreateTranslation(0, 0, -6) * Mat4::CreateRotation(45, yturn, 0));
 	m_pScene->m_entities[0]->SetMatrix(matrix);
-	m_pRasterizer.RenderScene3(m_pScene);
+	m_pRasterizer.RenderScene2(m_pScene);
 	yturn += m_sharedContext.deltaTime * 90;
 }
