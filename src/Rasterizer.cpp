@@ -28,18 +28,15 @@ Rasterizer::~Rasterizer()
 
 void Rasterizer::RenderScene(Scene * p_pScene)
 {
-	for (uint16_t j = 0; j < p_pScene->m_entities.size(); j++)
+	for (uint16_t j = 0; j < p_pScene->entities.size(); j++)
 	{
-		Mat4 normalMatrix = p_pScene->m_entities[j]->GetMatrix();
+		Mat4 normalMatrix = p_pScene->entities[j]->GetMatrix();
 		Mat4 positionMatrix = Mat4::CreatePerspective(60, float(m_rtexture.GetWidth()) / float(m_rtexture.GetHeight()), 0.1f, 100.0f) * normalMatrix;
-		for (int i = 0; i < p_pScene->m_entities[j]->GetMesh()->GetIndices().size() - 2; i += 3)
+		for (int i = 0; i < p_pScene->entities[j]->GetMesh()->GetIndices().size() - 2; i += 3)
 		{
-			Vertex v0 = (p_pScene->m_entities[j]->GetMesh()->GetVertices()[p_pScene->m_entities[j]->GetMesh()->GetIndices()[i]]);
-			Vertex v1 = (p_pScene->m_entities[j]->GetMesh()->GetVertices()[p_pScene->m_entities[j]->GetMesh()->GetIndices()[i + 1]]);
-			Vertex v2 = (p_pScene->m_entities[j]->GetMesh()->GetVertices()[p_pScene->m_entities[j]->GetMesh()->GetIndices()[i + 2]]);
-			//v0.VertexTransform(positionMatrix, normalMatrix);
-			//v1.VertexTransform(positionMatrix, normalMatrix);
-			//v2.VertexTransform(positionMatrix, normalMatrix);
+			Vertex v0 = (p_pScene->entities[j]->GetMesh()->GetVertices()[p_pScene->entities[j]->GetMesh()->GetIndices()[i]]);
+			Vertex v1 = (p_pScene->entities[j]->GetMesh()->GetVertices()[p_pScene->entities[j]->GetMesh()->GetIndices()[i + 1]]);
+			Vertex v2 = (p_pScene->entities[j]->GetMesh()->GetVertices()[p_pScene->entities[j]->GetMesh()->GetIndices()[i + 2]]);
 			DrawTriangle(v0, v1, v2);
 		}
 	}
@@ -47,21 +44,21 @@ void Rasterizer::RenderScene(Scene * p_pScene)
 void Rasterizer::RenderScene2(Scene * p_pScene)
 {
 	
-	Vertex lightposition = p_pScene->m_lights[0]->GetPosition();
-	Vec3 Lightcomp(p_pScene->m_lights[0]->GetAmbient(), p_pScene->m_lights[0]->GetDiffuse(), p_pScene->m_lights[0]->GetSpecular());
+	Vertex lightposition = p_pScene->lights[0]->GetPosition();
+	Vec3 Lightcomp(p_pScene->lights[0]->GetAmbient(), p_pScene->lights[0]->GetDiffuse(), p_pScene->lights[0]->GetSpecular());
 	lightposition.VertexTransform(Mat4::CreatePerspective(60, float(m_rtexture.GetWidth()) / float(m_rtexture.GetHeight()), 0.1f, 100.0f));
 	//Vertex lightlast(Mat4::ConvertToScreen(lightposition.position, m_rtexture.GetWidth(), m_rtexture.GetHeight()));
-	for (uint16_t j = 0; j < p_pScene->m_entities.size(); j++)
+	for (uint16_t j = 0; j < p_pScene->entities.size(); j++)
 	{
-		Mat4 normalMatrix = p_pScene->m_entities[j]->GetMatrix();
+		Mat4 normalMatrix = p_pScene->entities[j]->GetMatrix();
 		Mat4 projection = Mat4::CreatePerspective(60, float(m_rtexture.GetWidth()) / float(m_rtexture.GetHeight()), 0.1f, 100.0f) * normalMatrix;
 		Mat4 normalMatrixTrans = normalMatrix.CreateInverse();
 		normalMatrixTrans = normalMatrixTrans.CreateTranspose();
-		for (int i = 0; i < p_pScene->m_entities[j]->GetMesh()->GetIndices().size() - 2; i += 3)
+		for (int i = 0; i < p_pScene->entities[j]->GetMesh()->GetIndices().size() - 2; i += 3)
 		{
-			Vertex v0 = (p_pScene->m_entities[j]->GetMesh()->GetVertices()[p_pScene->m_entities[j]->GetMesh()->GetIndices()[i]]);
-			Vertex v1 = (p_pScene->m_entities[j]->GetMesh()->GetVertices()[p_pScene->m_entities[j]->GetMesh()->GetIndices()[i + 1]]);
-			Vertex v2 = (p_pScene->m_entities[j]->GetMesh()->GetVertices()[p_pScene->m_entities[j]->GetMesh()->GetIndices()[i + 2]]);
+			Vertex v0 = (p_pScene->entities[j]->GetMesh()->GetVertices()[p_pScene->entities[j]->GetMesh()->GetIndices()[i]]);
+			Vertex v1 = (p_pScene->entities[j]->GetMesh()->GetVertices()[p_pScene->entities[j]->GetMesh()->GetIndices()[i + 1]]);
+			Vertex v2 = (p_pScene->entities[j]->GetMesh()->GetVertices()[p_pScene->entities[j]->GetMesh()->GetIndices()[i + 2]]);
 			v0.VertexTransform(projection);
 			v1.VertexTransform(projection);
 			v2.VertexTransform(projection);
@@ -75,22 +72,22 @@ void Rasterizer::RenderScene2(Scene * p_pScene)
 }
 void Rasterizer::RenderScene3(Scene * p_pScene)
 {
-	for (uint16_t j = 0; j < p_pScene->m_entities.size(); j++)
+	for (uint16_t j = 0; j < p_pScene->entities.size(); j++)
 	{
-		Mat4 normalMatrix = p_pScene->m_entities[j]->GetMatrix();
+		Mat4 normalMatrix = p_pScene->entities[j]->GetMatrix();
 		Mat4 projection1 = Mat4::CreatePerspective(60, float(m_rtexture.GetWidth()) / float(m_rtexture.GetHeight()), 0.1f, 100.0f) * normalMatrix;
 		Mat4 normalMatrixTrans = normalMatrix.CreateTranspose();
 		normalMatrixTrans = normalMatrixTrans.CreateInverse();
-		Vertex lightposition = p_pScene->m_lights[0]->GetPosition();
-		Vec3 Lightcomp(p_pScene->m_lights[0]->GetAmbient(), p_pScene->m_lights[0]->GetDiffuse(), p_pScene->m_lights[0]->GetSpecular());
-		for (int i = 0; i < p_pScene->m_entities[j]->GetMesh()->GetIndices().size() - 2; i += 3)
+		Vertex lightposition = p_pScene->lights[0]->GetPosition();
+		Vec3 Lightcomp(p_pScene->lights[0]->GetAmbient(), p_pScene->lights[0]->GetDiffuse(), p_pScene->lights[0]->GetSpecular());
+		for (int i = 0; i < p_pScene->entities[j]->GetMesh()->GetIndices().size() - 2; i += 3)
 		{
-			Vertex v0 = (p_pScene->m_entities[j]->GetMesh()->GetVertices()[p_pScene->m_entities[j]->GetMesh()->GetIndices()[i]]);
-			Vertex v1 = (p_pScene->m_entities[j]->GetMesh()->GetVertices()[p_pScene->m_entities[j]->GetMesh()->GetIndices()[i + 1]]);
-			Vertex v2 = (p_pScene->m_entities[j]->GetMesh()->GetVertices()[p_pScene->m_entities[j]->GetMesh()->GetIndices()[i + 2]]);
-			Vertex light1 = v0.firstTransform(normalMatrix, normalMatrixTrans);
-			Vertex light2 = v1.firstTransform(normalMatrix, normalMatrixTrans);
-			Vertex light3 = v2.firstTransform(normalMatrix, normalMatrixTrans);
+			Vertex v0 = (p_pScene->entities[j]->GetMesh()->GetVertices()[p_pScene->entities[j]->GetMesh()->GetIndices()[i]]);
+			Vertex v1 = (p_pScene->entities[j]->GetMesh()->GetVertices()[p_pScene->entities[j]->GetMesh()->GetIndices()[i + 1]]);
+			Vertex v2 = (p_pScene->entities[j]->GetMesh()->GetVertices()[p_pScene->entities[j]->GetMesh()->GetIndices()[i + 2]]);
+			Vertex light1 = v0.FirstTransform(normalMatrix, normalMatrixTrans);
+			Vertex light2 = v1.FirstTransform(normalMatrix, normalMatrixTrans);
+			Vertex light3 = v2.FirstTransform(normalMatrix, normalMatrixTrans);
 			v0.VertexTransform(projection1);
 			v1.VertexTransform(projection1);
 			v2.VertexTransform(projection1);
@@ -100,15 +97,15 @@ void Rasterizer::RenderScene3(Scene * p_pScene)
 }
 void Rasterizer::RenderScenewire(Scene * p_pScene)
 {
-	for (uint16_t j = 0; j < p_pScene->m_entities.size(); j++)
+	for (uint16_t j = 0; j < p_pScene->entities.size(); j++)
 	{
-		Mat4 normalMatrix = p_pScene->m_entities[j]->GetMatrix();
+		Mat4 normalMatrix = p_pScene->entities[j]->GetMatrix();
 		Mat4 positionMatrix = Mat4::CreatePerspective(60, float(m_rtexture.GetWidth()) / float(m_rtexture.GetHeight()), 0.1f, 100.0f) * normalMatrix;
-		for (int i = 0; i < p_pScene->m_entities[j]->GetMesh()->GetIndices().size() - 2; i +=3)
+		for (int i = 0; i < p_pScene->entities[j]->GetMesh()->GetIndices().size() - 2; i +=3)
 		{
-			Vertex v0 = (p_pScene->m_entities[j]->GetMesh()->GetVertices()[p_pScene->m_entities[j]->GetMesh()->GetIndices()[i]]);
-			Vertex v1 = (p_pScene->m_entities[j]->GetMesh()->GetVertices()[p_pScene->m_entities[j]->GetMesh()->GetIndices()[i + 1]]);
-			Vertex v2 = (p_pScene->m_entities[j]->GetMesh()->GetVertices()[p_pScene->m_entities[j]->GetMesh()->GetIndices()[i + 2]]);
+			Vertex v0 = (p_pScene->entities[j]->GetMesh()->GetVertices()[p_pScene->entities[j]->GetMesh()->GetIndices()[i]]);
+			Vertex v1 = (p_pScene->entities[j]->GetMesh()->GetVertices()[p_pScene->entities[j]->GetMesh()->GetIndices()[i + 1]]);
+			Vertex v2 = (p_pScene->entities[j]->GetMesh()->GetVertices()[p_pScene->entities[j]->GetMesh()->GetIndices()[i + 2]]);
 			v0.VertexTransform(positionMatrix);
 			v1.VertexTransform(positionMatrix);
 			v2.VertexTransform(positionMatrix);

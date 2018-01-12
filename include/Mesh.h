@@ -16,6 +16,7 @@ public:
 
 	void SetVertex(const Vertex p_vertex);
 	void SetIndex(const uint32_t p_index);
+	void SetColor(const float p_r, const float p_g, const float p_b, const float p_a = 255);
 
 private:
 	std::vector<Vertex> m_vertices;

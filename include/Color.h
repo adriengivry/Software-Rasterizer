@@ -1,19 +1,11 @@
 #pragma once
 #include <cstdint>
-#define RED  Color(255, 0, 0, 255)
-#define GREEN  Color(0, 255, 0, 255)
-#define BLUE  Color(0, 0, 255, 255)
 
 struct Color
 {
 	float r, g, b, a;
-	Color(const float p_r = 0, const float p_g = 0, const float p_b = 0, const float p_a = 255)
-	{
-		this->r = p_r;
-		this->g = p_g;
-		this->b = p_b;
-		this->a = p_a;
-	}
+
+	explicit Color(const float p_r = 0, const float p_g = 0, const float p_b = 0, const float p_a = 255);
 	uint32_t CovertTo32();
 	Color operator+(const Color& p_color) const;
 	Color operator-(const Color& p_color) const;
@@ -21,7 +13,14 @@ struct Color
 	Color operator/(float p_scale) const;
 	Color& operator=(const Color& p_color);
 	bool operator==(const Color& p_color);
+
+	void Set(const float p_r = 0, const float p_g = 0, const float p_b = 0, const float p_a = 255);
 };
+
+inline Color::Color(const float p_r, const float p_g, const float p_b, const float p_a)
+{
+	Set(p_r, p_g, p_b, p_a);
+}
 
 inline uint32_t Color::CovertTo32()
 {
@@ -103,4 +102,12 @@ inline bool Color::operator==(const Color & p_color)
 		flag = true;
 	}
 	return flag;
+}
+
+inline void Color::Set(const float p_r, const float p_g, const float p_b, const float p_a)
+{
+	this->r = p_r;
+	this->g = p_g;
+	this->b = p_b;
+	this->a = p_a;
 }

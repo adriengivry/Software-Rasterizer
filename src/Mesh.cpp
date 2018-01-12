@@ -193,3 +193,8 @@ void Mesh::SetIndex(const uint32_t p_index)
 {
 	m_indices.push_back(p_index);
 }
+
+void Mesh::SetColor(const float p_r, const float p_g, const float p_b, const float p_a)
+{
+	for (auto& i : m_vertices) i.SetColor(p_r, p_g, p_b, p_a);
+}

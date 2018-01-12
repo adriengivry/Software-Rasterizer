@@ -3,11 +3,8 @@
 using namespace Toolbox;
 
 Application::Application() :
-	m_pScene(nullptr),
-	m_pLight(nullptr),
-	
 	m_prTexture(new Texture(Window::WIDTH, Window::HEIGHT)),
-	m_pRasterizer(*m_prTexture, m_sharedContext),
+	m_rasterizer(*m_prTexture, m_sharedContext),
 	m_userInterface(new UserInterface(m_sharedContext)),
 	m_eventManager(new EventManager(m_sharedContext))
 {
@@ -19,8 +16,6 @@ Application::~Application()
 {
 	//delete m_pRasterizer;
 	delete m_prTexture;
-	delete m_pScene;
-	delete m_pLight;
 }
 
 void Application::Update()
@@ -29,7 +24,7 @@ void Application::Update()
 
 	UpdateCamera();
 	m_eventManager->Update();
-	m_pRasterizer.Update();
+	m_rasterizer.Update();
 	m_userInterface->Update();
 
 	m_sharedContext.appInfos.currentTime = SDL_GetTicks();
@@ -72,14 +67,8 @@ void Application::Init()
 	SDL_SetRenderDrawBlendMode(m_window.GetRenderer(), SDL_BLENDMODE_BLEND);
 	SDL_SetTextureBlendMode(m_window.GetTexture(), SDL_BLENDMODE_BLEND);
 
-	m_pScene = new Scene();
-	m_pLight = new Light(0, 0, 0);
-
-	Entity* cube = new Entity();
-	cube->SetMesh(*Mesh::CreateCube());
-	for (auto& i : cube->GetMesh()->GetVertices()) i.color = RED;
-	m_pScene->m_entities.push_back(cube);
-	m_pScene->m_lights.push_back(m_pLight);
+	m_scene.InitEntities();
+	m_scene.InitLights();
 }
 
 void Application::RenderScene()
@@ -88,8 +77,8 @@ void Application::RenderScene()
 		Mat4::CreateTranslation(m_cameraParams.xOffset, 0, 0).CreateInverse() * 
 		Mat4::CreateTranslation(0 , 0, -6 + m_cameraParams.zoomOffset) * 
 		Mat4::CreateRotation(45 + m_cameraParams.xRotationOffset, 45 + m_cameraParams.yRotationOffset, 0);
-	m_pScene->m_entities[0]->SetMatrix(matrix);
-	m_pRasterizer.RenderScene3(m_pScene);
+	m_scene.entities[0]->SetMatrix(matrix);
+	m_rasterizer.RenderScene3(&m_scene);
 }
 
 void Application::UpdateCamera()

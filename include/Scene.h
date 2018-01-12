@@ -6,6 +6,9 @@
 struct Scene
 {
 	Scene();
-	std::vector<Entity*> m_entities;
-	std::vector<Light*> m_lights;
+	~Scene();
+	void InitEntities();
+	void InitLights();
+	std::vector<Entity*> entities;
+	std::vector<Light*> lights;
 };

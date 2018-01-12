@@ -57,9 +57,6 @@
     <ClCompile Include="..\src\EventManager.cpp">
       <Filter>Source Files\Managers</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\EntityManager.cpp">
-      <Filter>Source Files\Managers</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\Window.cpp">
       <Filter>Source Files\Components</Filter>
     </ClCompile>
@@ -117,9 +114,6 @@
       <Filter>Header Files\Components</Filter>
     </ClInclude>
     <ClInclude Include="..\include\EventManager.h">
-      <Filter>Header Files\Managers</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\EntityManager.h">
       <Filter>Header Files\Managers</Filter>
     </ClInclude>
     <ClInclude Include="..\include\IComponent.h">

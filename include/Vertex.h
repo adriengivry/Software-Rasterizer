@@ -30,7 +30,7 @@ struct Vertex
 		normal.z = 0;
 		normal.w = 0;
 	}
-	void setColor(Color& p_color)
+	void SetColor(Color& p_color)
 	{
 		color = p_color;
 	}
@@ -54,7 +54,7 @@ struct Vertex
 		this->position = Toolbox::Vec3(vector4.x, vector4.y, vector4.z);
 		return *this;
 	}
-	Vertex firstTransform(const Toolbox::Mat4& p_transform, const Toolbox::Mat4& p_normaltransform)
+	Vertex FirstTransform(const Toolbox::Mat4& p_transform, const Toolbox::Mat4& p_normaltransform)
 	{
 		Toolbox::Vec4 vector4 = p_transform * Toolbox::Vec4(position);
 		Toolbox::Vec4 normal4 = p_normaltransform * normal;

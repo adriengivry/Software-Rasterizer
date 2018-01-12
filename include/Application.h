@@ -25,11 +25,10 @@ public:
 
 	SharedContext& GetContext();
 private:
-	Scene* m_pScene;
-	Light* m_pLight;
+	Scene m_scene;
 	Texture* m_prTexture;
 	SharedContext m_sharedContext;
-	Rasterizer m_pRasterizer;
+	Rasterizer m_rasterizer;
 	UserInterface* m_userInterface;
 	EventManager* m_eventManager;
 	Window m_window;
