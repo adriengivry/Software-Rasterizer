@@ -1,42 +1,11 @@
-#include "SDL.h"
-#include "SDL_ttf.h"
-#include <iostream>
+#include "SDLManager.h"
 #include "Application.h"
-
-#define SDL_INIT_SUCCESS 0
-#define TTF_INIT_SUCCESS 0
-#define SDL_LOG(logMessage) std::cout << "[SDL] " << logMessage << std::endl
-
-bool InitSDL()
-{
-	bool success = true;
-
-	if (SDL_Init(SDL_INIT_VIDEO) != SDL_INIT_SUCCESS)
-	{
-		SDL_LOG("Failed to Init Core");
-		success = false;
-	}
-
-	if (TTF_Init() != TTF_INIT_SUCCESS)
-	{
-		SDL_LOG("Failed to Init TTF");
-		success = false;
-	}
-
-	return success;
-}
-
-void CloseSDL()
-{
-	TTF_Quit();
-	SDL_Quit();
-}
 
 int main(int argc, char* argv[])
 {
-	if (!InitSDL())
+	if (!Toolbox::InitSDL())
 	{
-		CloseSDL();
+		Toolbox::CloseSDL();
 		return EXIT_FAILURE;
 	}
 
@@ -48,7 +17,7 @@ int main(int argc, char* argv[])
 		app.Draw();
 	}
 
-	CloseSDL();
+	Toolbox::CloseSDL();
 
 	return EXIT_SUCCESS;
 }

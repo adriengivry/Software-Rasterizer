@@ -55,10 +55,10 @@ void EventManager::KeyInput(const SDL_Keysym& p_key, const bool p_state) const
 	case SDLK_RIGHT:
 		m_sharedContext.actions.yTurnCounterClockwise = p_state;
 		break;
-	case SDLK_UP:
+	case SDLK_DOWN:
 		m_sharedContext.actions.xTurnClockwise = p_state;
 		break;
-	case SDLK_DOWN:
+	case SDLK_UP:
 		m_sharedContext.actions.xTurnCounterClockwise = p_state;
 		break;
 	default:
