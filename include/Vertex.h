@@ -1,13 +1,15 @@
 #pragma once
 #include "Mat4.h"
 #include "Color.h"
+#include "Vec2.h"
 
 struct Vertex
 {
 	Toolbox::Vec3 position;
 	Toolbox::Vec4 normal;
 	Color color;
-	float u, v;
+	Toolbox::Vec2 texCoordinate;
+
     Vertex(const float p_x, const float p_y, const float p_z)
     {
 		position.x = p_x;

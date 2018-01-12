@@ -5,66 +5,7 @@ using namespace Toolbox;
 Mesh::Mesh() {}
 Mesh::~Mesh() {}
 
-Mesh* Mesh::CreateCube()
-{
-	int index, indexA, indexB;
-	float x, y, z;
-	float yAngle = -90.0f * DEG_TO_RAD;
-	float xAngle = 90.0f * DEG_TO_RAD;
-	Mesh* Cube = new Mesh();
-	//Make the first face, Rotation center should be placed at x = 0, y = 0, z = 0
-	x = -0.5f;
-	y = 0.5f;
-	z = 0.5f;
-	for (index = 0; index < 4; index++)
-	{
-		if (index >= 1)
-		{
-			x = (x * cos(yAngle) + x * sin(yAngle));
-			z = (z * -sin(yAngle) + z * cos(yAngle));
-		}
-		Cube->m_vertices.push_back(Vertex(x, y, z));
-		Cube->m_vertices.push_back(Vertex(x, y * cos(xAngle) + y * -sin(xAngle), z * sin(xAngle) + z * cos(xAngle)));
-	}
-	//Calculate Index
-	//draw sides first
-	for (index = 0; index < 8; index++)
-	{
-		if (index == 6)
-		{
-			indexB = -2;
-		}
-		else if (index == 7)
-		{
-			indexA = -1;
-			indexB = -2;
-		}
-		else
-		{
-			indexA = index;
-			indexB = index;
-		}
-		Cube->m_indices.push_back(index);
-		Cube->m_indices.push_back(indexA + 1);
-		Cube->m_indices.push_back(indexB + 2);
-	}
-	//draw bases
-	for (index = 0; index < 2; index++)
-	{
-		//top/bottom TriangleA
-		Cube->m_indices.push_back(index);
-		Cube->m_indices.push_back(index + 2);
-		Cube->m_indices.push_back(index + 4);
-
-		//Top/bottom TriangleB
-		Cube->m_indices.push_back(index + 4);
-		Cube->m_indices.push_back(index + 6);
-		Cube->m_indices.push_back(index);
-	}
-	return Cube;
-}
-
-Mesh * Mesh::CreateCube2()
+Mesh * Mesh::CreateCube()
 {
 	Mesh* Cube = new Mesh();
 	Cube->m_vertices.push_back(Vertex(-0.5, -0.5, -0.5));
@@ -76,6 +17,15 @@ Mesh * Mesh::CreateCube2()
 	Cube->m_vertices.push_back(Vertex(0.5, 0.5, 0.5));
 	Cube->m_vertices.push_back(Vertex(-0.5, 0.5, 0.5));
 
+	Cube->m_vertices[0].texCoordinate = Vec2(1, 0);
+	Cube->m_vertices[1].texCoordinate = Vec2(0, 0);
+	Cube->m_vertices[2].texCoordinate = Vec2(0, 1);
+	Cube->m_vertices[3].texCoordinate = Vec2(1, 1);
+	Cube->m_vertices[4].texCoordinate = Vec2(0, 0);
+	Cube->m_vertices[5].texCoordinate = Vec2(1, 0);
+	Cube->m_vertices[6].texCoordinate = Vec2(1, 1);
+	Cube->m_vertices[7].texCoordinate = Vec2(0, 1);
+
 	Cube->m_indices.push_back(2);
 	Cube->m_indices.push_back(3);
 	Cube->m_indices.push_back(0);
@@ -123,7 +73,7 @@ Mesh * Mesh::CreateCube2()
 	Cube->m_indices.push_back(4);
 	Cube->m_indices.push_back(1);
 	Cube->m_indices.push_back(0);
-	
+
 	for (uint16_t i = 0; i < Cube->m_indices.size() - 2; i+= 3)
 	{
 		Vec3 Normal;

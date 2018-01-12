@@ -8,8 +8,7 @@ class Mesh
 public:
     Mesh();
     ~Mesh();
-    static Mesh* CreateCube();
-	static Mesh* CreateCube2();
+	static Mesh* CreateCube();
     static Mesh* CreateSphere(int p_latitudeCount, int p_longitudeCount);
 	static Mesh* CreateTriangle();
 	std::vector<Vertex>& GetVertices();
