@@ -35,7 +35,7 @@ void UserInterface::Draw() const
 	{
 		if (i + 1 == m_sharedContext.appInfos.selectedVersion)
 		{
-			r = 0;
+			r = 255;
 			g = 255;
 			b = 0;
 		}
@@ -46,7 +46,7 @@ void UserInterface::Draw() const
 			b = 255;
 		}
 		
-		DrawAt(items[i], 0, 200 + i * 23, r, g, b);
+		DrawAt(items[i], 0, 250 + i * 23, r, g, b);
 	}
 }
 
