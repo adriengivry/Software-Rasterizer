@@ -226,7 +226,7 @@ void Rasterizer::DrawTriangle(Vertex& p_v0, Vertex& p_v1, Vertex& p_v2)
 			if (bary.x >= 0 && bary.y >= 0 && bary.x + bary.y < 1)
 			{
 				positions.position.z = 0;
-				positions.position.z = v0.position.z * bary.z + (v1.position.z) * bary.x + bary.y * (v2.position.z);
+				positions.position.z = v0.position.z * bary.z + v1.position.z * bary.x + bary.y * v2.position.z;
 				if (m_zBuffer[int(positions.position.x + positions.position.y * WINDOW_WIDTH)] > positions.position.z)
 				{
 					m_zBuffer[int(positions.position.x + positions.position.y * WINDOW_WIDTH)] = positions.position.z;
@@ -282,8 +282,6 @@ void Rasterizer::DrawTriangle2(Vertex& p_v0, Vertex& p_v1, Vertex& p_v2, Vertex&
 
 void Rasterizer::DrawTriangle3(Vertex& p_v0, Vertex& p_v1, Vertex& p_v2, Vertex& p_light1, Vertex& p_light2, Vertex& p_light3, Vertex& p_lightPosition, Vec3& p_lightcomp)
 {
-	
-
 	Vertex v0(Mat4::ConvertToScreen(p_v0.position, m_rtexture.GetWidth(), m_rtexture.GetHeight()));
 	Vertex v1(Mat4::ConvertToScreen(p_v1.position, m_rtexture.GetWidth(), m_rtexture.GetHeight()));
 	Vertex v2(Mat4::ConvertToScreen(p_v2.position, m_rtexture.GetWidth(), m_rtexture.GetHeight()));
