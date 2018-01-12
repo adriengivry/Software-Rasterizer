@@ -37,9 +37,12 @@ Application::~Application()
 void Application::Update()
 {
 	m_sharedContext.lastTime = m_sharedContext.currentTime;
+
+	UpdateCamera();
+	m_eventManager->Update();
 	m_pRasterizer.Update();
 	m_userInterface->Update();
-	m_eventManager->Update();
+	
 	m_sharedContext.currentTime = SDL_GetTicks();
 	m_sharedContext.deltaTime = (m_sharedContext.currentTime - m_sharedContext.lastTime) / 1000;
 	m_sharedContext.fpsCounter = 1.f / m_sharedContext.deltaTime;
@@ -97,10 +100,29 @@ void Application::Init()
 
 void Application::RenderScene()
 {
-	Mat4 matrix = (Mat4::CreateTranslation(0, 0, -6) * Mat4::CreateRotation(45, yturn, 0));
+	Mat4 matrix = (Mat4::CreateTranslation(0 + m_cameraParams.xOffset, 0, -6 + m_cameraParams.zoomOffset) * Mat4::CreateRotation(45, yturn, 0));
 	m_pScene->m_entities[0]->SetMatrix(matrix);
-	m_pRasterizer.RenderScenewire(m_pScene);
+	m_pRasterizer.RenderScene3(m_pScene);
 	yturn += m_sharedContext.deltaTime * 90;
+}
+
+void Application::UpdateCamera()
+{
+	float xOffset = 0;
+	float zoomOffset = 0;
+
+	if (m_sharedContext.actions.moveLeft)
+		xOffset += 1;
+	if (m_sharedContext.actions.moveRight)
+		xOffset -= 1;
+
+	if (m_sharedContext.actions.zoomIn)
+		zoomOffset += 5;
+	if (m_sharedContext.actions.zoomOut)
+		zoomOffset -= 5;
+
+	m_cameraParams.xOffset += xOffset * m_sharedContext.deltaTime;
+	m_cameraParams.zoomOffset += zoomOffset * m_sharedContext.deltaTime;
 }
 
 SharedContext& Application::GetContext()
