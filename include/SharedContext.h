@@ -14,6 +14,10 @@ struct Actions
 	bool moveRight;
 	bool zoomIn;
 	bool zoomOut;
+	bool xTurnClockwise;
+	bool xTurnCounterClockwise;
+	bool yTurnClockwise;
+	bool yTurnCounterClockwise;
 };
 
 struct SharedContext

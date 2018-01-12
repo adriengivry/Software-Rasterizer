@@ -8,6 +8,8 @@ struct CameraParams
 {
 	float xOffset = 0;
 	float zoomOffset = 0;
+	float xRotationOffset = 0;
+	float yRotationOffset = 0;
 };
 
 class Application
@@ -36,6 +38,4 @@ private:
 	EventManager* m_eventManager;
 
 	CameraParams m_cameraParams;
-
-	float yturn;
 };
