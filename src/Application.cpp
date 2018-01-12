@@ -12,8 +12,7 @@ Application::Application() :
 	m_prTexture(new Texture(WINDOW_WIDTH, WINDOW_HEIGHT)),
 	m_pRasterizer(*m_prTexture, *m_pRenderer, *m_pTexture),
 	m_userInterface(new UserInterface(*m_pWindow, *m_pRenderer, m_sharedContext)),
-	m_eventManager(new EventManager(m_sharedContext)),
-	yturn(0)
+	m_eventManager(new EventManager(m_sharedContext))
 {
 	Init();
 }
@@ -37,9 +36,12 @@ Application::~Application()
 void Application::Update()
 {
 	m_sharedContext.lastTime = m_sharedContext.currentTime;
+
+	UpdateCamera();
+	m_eventManager->Update();
 	m_pRasterizer.Update();
 	m_userInterface->Update();
-	m_eventManager->Update();
+	
 	m_sharedContext.currentTime = SDL_GetTicks();
 	m_sharedContext.deltaTime = (m_sharedContext.currentTime - m_sharedContext.lastTime) / 1000;
 	m_sharedContext.fpsCounter = 1.f / m_sharedContext.deltaTime;
@@ -60,7 +62,10 @@ void Application::Update()
 			}
 		}
 
-		m_sharedContext.averageFps = fpsSum / valuesCounter;
+		if (valuesCounter == 0)
+			m_sharedContext.averageFps = 0;
+		else
+			m_sharedContext.averageFps = fpsSum / valuesCounter;
 		m_sharedContext.minFps = m_sharedContext.fpsCounter < m_sharedContext.minFps ? m_sharedContext.fpsCounter : m_sharedContext.minFps;
 		m_sharedContext.maxFps = m_sharedContext.fpsCounter > m_sharedContext.maxFps ? m_sharedContext.fpsCounter : m_sharedContext.maxFps;
 	}
@@ -97,10 +102,44 @@ void Application::Init()
 
 void Application::RenderScene()
 {
-	Mat4 matrix = (Mat4::CreateTranslation(0, 0, -6) * Mat4::CreateRotation(45, yturn, 0));
+	Mat4 matrix = 
+		Mat4::CreateTranslation(m_cameraParams.xOffset, 0, 0).CreateInverse() * 
+		Mat4::CreateTranslation(0 , 0, -6 + m_cameraParams.zoomOffset) * 
+		Mat4::CreateRotation(45 + m_cameraParams.xRotationOffset, 45 + m_cameraParams.yRotationOffset, 0);
 	m_pScene->m_entities[0]->SetMatrix(matrix);
-	m_pRasterizer.RenderScenewire(m_pScene);
-	yturn += m_sharedContext.deltaTime * 90;
+	m_pRasterizer.RenderScene3(m_pScene);
+}
+
+void Application::UpdateCamera()
+{
+	float xOffset = 0;
+	float zoomOffset = 0;
+	float xRotationOffset = 0;
+	float yRotationOffset = 0;
+
+	if (m_sharedContext.actions.moveLeft)
+		xOffset -= 1;
+	if (m_sharedContext.actions.moveRight)
+		xOffset += 1;
+
+	if (m_sharedContext.actions.zoomIn)
+		zoomOffset += 5;
+	if (m_sharedContext.actions.zoomOut)
+		zoomOffset -= 5;
+
+	if (m_sharedContext.actions.xTurnClockwise)
+		xRotationOffset += 90;
+	if (m_sharedContext.actions.xTurnCounterClockwise)
+		xRotationOffset -= 90;
+	if (m_sharedContext.actions.yTurnClockwise)
+		yRotationOffset += 90;
+	if (m_sharedContext.actions.yTurnCounterClockwise)
+		yRotationOffset -= 90;
+
+	m_cameraParams.xOffset += xOffset * m_sharedContext.deltaTime;
+	m_cameraParams.zoomOffset += zoomOffset * m_sharedContext.deltaTime;
+	m_cameraParams.xRotationOffset += xRotationOffset * m_sharedContext.deltaTime;
+	m_cameraParams.yRotationOffset += yRotationOffset * m_sharedContext.deltaTime;
 }
 
 SharedContext& Application::GetContext()

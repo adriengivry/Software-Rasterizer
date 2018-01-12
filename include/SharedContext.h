@@ -8,6 +8,18 @@ struct Features
 	bool camera;
 };
 
+struct Actions
+{
+	bool moveLeft;
+	bool moveRight;
+	bool zoomIn;
+	bool zoomOut;
+	bool xTurnClockwise;
+	bool xTurnCounterClockwise;
+	bool yTurnClockwise;
+	bool yTurnCounterClockwise;
+};
+
 struct SharedContext
 {
 	bool isRunning = true;
@@ -24,4 +36,5 @@ struct SharedContext
 	Window* window = nullptr;
 
 	Features features;
+	Actions actions;
 };

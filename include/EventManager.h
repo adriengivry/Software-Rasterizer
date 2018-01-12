@@ -11,6 +11,7 @@ public:
 
 	void Setup() override;
 	void Update() override;
+	void KeyInput(const SDL_Keysym& p_key, bool p_state) const;
 	void Close() override;
 
 private:

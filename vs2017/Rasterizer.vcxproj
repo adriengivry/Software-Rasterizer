@@ -28,6 +28,7 @@
     <ClCompile Include="..\src\Mesh.cpp" />
     <ClCompile Include="..\src\Rasterizer.cpp" />
     <ClCompile Include="..\src\Scene.cpp" />
+    <ClCompile Include="..\src\SDLManager.cpp" />
     <ClCompile Include="..\src\Texture.cpp" />
     <ClCompile Include="..\src\Triangle.cpp" />
     <ClCompile Include="..\src\UserInterface.cpp" />
@@ -47,6 +48,7 @@
     <ClInclude Include="..\include\IObject.h" />
     <ClInclude Include="..\include\Rasterizer.h" />
     <ClInclude Include="..\include\Scene.h" />
+    <ClInclude Include="..\include\SDLManager.h" />
     <ClInclude Include="..\include\SharedContext.h" />
     <ClInclude Include="..\include\Texture.h" />
     <ClInclude Include="..\include\Triangle.h" />

@@ -4,6 +4,14 @@
 #include <numeric>
 #include "EventManager.h"
 
+struct CameraParams
+{
+	float xOffset = 0;
+	float zoomOffset = 0;
+	float xRotationOffset = 0;
+	float yRotationOffset = 0;
+};
+
 class Application
 {
 public:
@@ -13,6 +21,7 @@ public:
 	void Draw();
 	void Init();
 	void RenderScene();
+	void UpdateCamera();
 
 	SharedContext& GetContext();
 private:
@@ -27,5 +36,6 @@ private:
 	Rasterizer m_pRasterizer;
 	UserInterface* m_userInterface;
 	EventManager* m_eventManager;
-	float yturn;
+
+	CameraParams m_cameraParams;
 };
