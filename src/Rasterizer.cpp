@@ -2,15 +2,6 @@
 
 using namespace Toolbox;
 
-namespace Mat3Dto2D
-{
-	Mat4 model;
-	Mat4 view;
-	Mat4 projection;
-	Mat4 SphereModel;
-};
-using namespace Mat3Dto2D;
-
 Rasterizer::Rasterizer(Texture& p_texture, SharedContext& p_sharedContext) :
 	m_rtexture(p_texture),
 	m_sharedContext(p_sharedContext),
@@ -44,6 +35,7 @@ void Rasterizer::RenderScene(Scene * p_pScene)
 		}
 	}
 }
+
 void Rasterizer::RenderSceneBlinnPhong(Scene * p_pScene)
 {
 	
@@ -354,125 +346,6 @@ void Rasterizer::DrawTiangleWire(Vertex& p_v0, Vertex& p_v1, Vertex& p_v2)
 	DrawLine(v0.position.x, v0.position.y, v1.position.x, v1.position.y, p_v0.color, p_v1.color);
 	DrawLine(v1.position.x, v1.position.y, v2.position.x, v2.position.y, p_v1.color, p_v2.color);
 	DrawLine(v2.position.x, v2.position.y, v0.position.x, v0.position.y, p_v2.color, p_v0.color);
-}
-
-void Rasterizer::DrawTriangleSphere(Vertex& p_v0, Vertex& p_v1, Vertex& p_v2)
-{
-	model = Mat4::CreateTranslation(0, 0, 3);
-	Mat4 pvm = projection * view * SphereModel;
-	Vec4 v00(p_v0.position);
-	Vec4 v01(p_v1.position);
-	Vec4 v02(p_v2.position);
-	//v00 = pvm * v00;
-	//v01 = pvm * v01;
-	//v02 = pvm * v02;
-
-	if (v00.w != 0)
-		v00 /= v00.w;
-
-	if (v01.w != 0)
-		v01 /= v01.w;
-
-	if (v02.w != 0)
-		v02 /= v02.w;
-
-	Vertex v0(Mat4::ConvertToScreen(Vec3(v00.x, v00.y, v00.z), m_rtexture.GetWidth(), m_rtexture.GetHeight()));
-	Vertex v1(Mat4::ConvertToScreen(Vec3(v01.x, v01.y, v01.z), m_rtexture.GetWidth(), m_rtexture.GetHeight()));
-	Vertex v2(Mat4::ConvertToScreen(Vec3(v02.x, v02.y, v02.z), m_rtexture.GetWidth(), m_rtexture.GetHeight()));
-	if (m_wireFrame)
-	{
-		DrawLine(v0.position.x, v0.position.y, v1.position.x, v1.position.y, v0.color, v1.color);
-		DrawLine(v1.position.x, v1.position.y, v2.position.x, v2.position.y, v1.color, v2.color);
-		DrawLine(v2.position.x, v2.position.y, v0.position.x, v0.position.y, v2.color, v0.color);
-	}
-	else
-	{
-		Triangle triangle(v0, v1, v2);
-		AABB box = triangle.getAABB();
-		int minX = std::max((int)box.minPoint.x, 0);
-		int minY = std::max((int)box.minPoint.y, 0);
-		int maxX = std::min((int)box.maxPoint.x, m_rtexture.GetWidth() - 1);
-		int maxY = std::min((int)box.maxPoint.y, m_rtexture.GetHeight() - 1);
-		Vertex positions(0, 0, 0);
-		for (positions.position.y = minY; positions.position.y <= maxY; positions.position.y++)
-		{
-			for (positions.position.x = minX; positions.position.x <= maxX; positions.position.x++)
-			{
-				Vec3 bary(triangle.Barycentric(v0, v1, v2, positions));
-				if (bary.x >= 0 && bary.y >= 0 && bary.x + bary.y <= 1)
-				{
-					positions.position.z = 0;
-					positions.position.z = v0.position.z * bary.z + (v1.position.z) * bary.x + bary.y * (v2.position.z);
-					if (m_zBuffer[int(positions.position.x + positions.position.y * Window::WIDTH)] < positions.position.z)
-					{
-						m_zBuffer[int(positions.position.x + positions.position.y * Window::WIDTH)] = positions.position.z;
-						Color pixelColor;
-						pixelColor.r = p_v0.color.r * bary.z + p_v1.color.r * bary.x + p_v2.color.r * bary.y;
-						pixelColor.g = p_v0.color.g * bary.z + p_v1.color.g * bary.x + p_v2.color.g * bary.y;
-						pixelColor.b = p_v0.color.b * bary.z + p_v1.color.b * bary.x + p_v2.color.b * bary.y;
-						m_rtexture.SetPixelColor((int)positions.position.x, (int)positions.position.y, pixelColor);
-					}
-				}
-			}
-		}
-	}
-}
-
-void Rasterizer::DrawTriangleSpan(Vertex& p_v0, Vertex& p_v1, Vertex& p_v2)
-{
-	Mat4 pvm = projection * view * model;
-	Vec4 v00(p_v0.position);
-	Vec4 v01(p_v1.position);
-	Vec4 v02(p_v2.position);
-	//v00 = pvm * v00;
-	//v01 = pvm * v01;
-	//v02 = pvm * v02;
-
-	//v00 = pvm * v00;
-	//v01 = pvm * v01;
-	//v02 = pvm * v02;
-	if (v00.w != 0)
-		v00 /= v00.w;
-	
-	if (v01.w != 0)
-		v01 /= v01.w;
-
-	if (v02.w != 0)
-		v02 /= v02.w;
-
-	Vertex v0(Mat4::ConvertToScreen(Vec3(v00.x, v00.y, v00.z), m_rtexture.GetWidth(), m_rtexture.GetHeight()));
-	Vertex v1(Mat4::ConvertToScreen(Vec3(v01.x, v01.y, v01.z), m_rtexture.GetWidth(), m_rtexture.GetHeight()));
-	Vertex v2(Mat4::ConvertToScreen(Vec3(v02.x, v02.y, v02.z), m_rtexture.GetWidth(), m_rtexture.GetHeight()));
-	Edge edges[3] =
-	{
-		Edge(v0.position.x, v0.position.y, v1.position.x, v1.position.y, p_v0.color, p_v1.color),
-		Edge(v1.position.x, v1.position.y, v2.position.x, v2.position.y, p_v1.color, p_v2.color),
-		Edge(v2.position.x, v2.position.y, v0.position.x, v0.position.y, p_v2.color, p_v0.color)
-	};
-	int maxLength = 0;
-	int longEdge = 0;
-
-	for (int i = 0; i < 3; i++)
-	{
-		int length = edges[i].y2 - edges[i].y1;
-		if (length > maxLength)
-		{
-			maxLength = length;
-			longEdge = i;
-		}
-	}
-	int sEdge1 = (longEdge + 1) % 3;
-	int sEdge2 = (longEdge + 2) % 3;
-	FillTriangle(edges[longEdge], edges[sEdge1]);
-	FillTriangle(edges[longEdge], edges[sEdge2]);
-}
-
-void Rasterizer::BeginDraw()
-{
-	//SphereModel = Mat4::Identity();
-	//projection = Mat4::CreatePerspective(60, float(WINDOW_WIDTH) / float(WINDOW_HEIGHT), 0.01f, 100.0f);
-	//view = Mat4::CreateView(0, 0, 0, 0, 0, 0, 0, 1, 0);
-	//model = Mat4::CreateTranslation(0, 2, 0);
 }
 
 void Rasterizer::ClearBuffer()

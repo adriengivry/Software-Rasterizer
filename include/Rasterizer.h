@@ -19,9 +19,6 @@ public:
 	void DrawTriangle2(Vertex& p_v0, Vertex& p_v1, Vertex& p_v2, Vertex& p_lightPosition, Toolbox::Vec3& p_lightcomp);
 	void DrawTriangle3(Vertex& p_v0, Vertex& p_v1, Vertex& p_v2, Vertex& p_light1, Vertex& p_light2, Vertex& p_light3, Vertex& p_lightPosition, Toolbox::Vec3& p_lightcomp);
 	void DrawTiangleWire(Vertex& p_v0, Vertex& p_v1, Vertex& p_v2);
-	void DrawTriangleSphere(Vertex& p_v0, Vertex& p_v1, Vertex& p_v2);
-	void DrawTriangleSpan(Vertex& p_v0, Vertex& p_v1, Vertex& p_v2);
-	void BeginDraw();
 	void ClearBuffer();
 	Color PhongColor(Vertex& p_position, Toolbox::Vec3& p_normal, Vertex& p_lightPosition, Toolbox::Vec3& p_lightcomp, Color& p_color);
 	Color BlinnPhongColor(Vertex& p_position, Toolbox::Vec3& p_normal, Vertex& p_lightPosition, Toolbox::Vec3& p_lightcomp, Color& p_color);
@@ -33,12 +30,4 @@ private:
 	SharedContext& m_sharedContext;
 	bool m_wireFrame;
 	float* m_zBuffer;
-};
-
-namespace Mat3Dto2D
-{
-	extern Toolbox::Mat4 model;
-	extern Toolbox::Mat4 view;
-	extern Toolbox::Mat4 projection;
-	extern Toolbox::Mat4 SphereModel;
 };
