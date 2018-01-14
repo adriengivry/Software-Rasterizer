@@ -15,9 +15,9 @@ void Scene::InitEntities()
 	cube->SetColor(255, 0, 0);
 
 	Entity* cube2 = new Entity();
-	cube->SetMesh(*Mesh::CreateCube());
+	cube2->SetMesh(*Mesh::CreateCube());
 	entities.push_back(cube);
-	
+	entities.push_back(cube2);
 }
 
 void Scene::InitLights()

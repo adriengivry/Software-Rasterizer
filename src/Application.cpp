@@ -97,13 +97,12 @@ void Application::RenderScene()
 	case 4:
 		m_rasterizer.RenderSceneWireframe(&m_scene);
 		break;
-	case 5:
-		m_rasterizer.RenderTexture(&m_scene);
-		break;
-	case 6:
-		m_rasterizer.RenderAlphaBlending(&m_scene);
-
-
+	//case 5:
+		//m_rasterizer.RenderTexture(&m_scene);
+		//break;
+	//case 6:
+		//m_rasterizer.RenderAlphaBlending(&m_scene);
+		//break;
 	}
 	
 }
