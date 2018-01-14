@@ -1,7 +1,9 @@
 #include "SDLManager.h"
 #include "SDL.h"
 #include "SDL_ttf.h"
+#include "SDL_image.h"
 #include <iostream>
+
 
 bool Toolbox::InitSDL()
 {
@@ -19,6 +21,11 @@ bool Toolbox::InitSDL()
 		success = false;
 	}
 
+	if (IMG_Init(IMG_INIT_PNG) != IMG_INIT_SUCCESS)
+	{
+		SDL_LOG("Failed to Init Image");
+		success = false;
+	}
 	return success;
 }
 

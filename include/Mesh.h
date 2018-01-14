@@ -14,10 +14,11 @@ public:
 	std::vector<Vertex>& GetVertices();
 	std::vector<uint32_t>& GetIndices();
 
+	void SetTexture(Texture* p_ptexture);
 	void SetVertex(const Vertex p_vertex);
 	void SetIndex(const uint32_t p_index);
 	void SetColor(const float p_r, const float p_g, const float p_b, const float p_a = 255);
-
+	Texture* GetTexture();
 private:
 	std::vector<Vertex> m_vertices;
 	std::vector<uint32_t> m_indices;
