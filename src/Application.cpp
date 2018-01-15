@@ -164,74 +164,93 @@ void Application::UpdateCamera()
 
 void Application::UpdateLights()
 {
-	float lightOffset = 0;
-
-	const float lightIncrementPerSecond = 20;
-
-	if (m_sharedContext.actions.increaseLight)
-		lightOffset += lightIncrementPerSecond * m_sharedContext.appInfos.deltaTime;
-
-	if (m_sharedContext.actions.decreaseLight)
-		lightOffset -= lightIncrementPerSecond * m_sharedContext.appInfos.deltaTime;
-
-	switch (m_sharedContext.appInfos.selectedLight)
+	if (m_sharedContext.appInfos.selectedVersion == 2 || m_sharedContext.appInfos.selectedVersion == 3)
 	{
-	default: 
-		break;
-	case AMBIANT:
-		m_sharedContext.appInfos.lightParams.ambiant += lightOffset;
-		break;
-	case DIFFUSE:
-		m_sharedContext.appInfos.lightParams.diffuse += lightOffset;
-		break;
-	case SPECULAR:
-		m_sharedContext.appInfos.lightParams.specular += lightOffset;
-		break;
+		float lightOffset = 0;
+
+		const float lightIncrementPerSecond = 20;
+
+		if (m_sharedContext.actions.increaseLight)
+			lightOffset += lightIncrementPerSecond * m_sharedContext.appInfos.deltaTime;
+
+		if (m_sharedContext.actions.decreaseLight)
+			lightOffset -= lightIncrementPerSecond * m_sharedContext.appInfos.deltaTime;
+
+		switch (m_sharedContext.appInfos.selectedLight)
+		{
+		default:
+			break;
+		case AMBIANT:
+			m_sharedContext.appInfos.lightParams.ambiant += lightOffset;
+			break;
+		case DIFFUSE:
+			m_sharedContext.appInfos.lightParams.diffuse += lightOffset;
+			break;
+		case SPECULAR:
+			m_sharedContext.appInfos.lightParams.specular += lightOffset;
+			break;
+		}
+
+		if (m_sharedContext.appInfos.lightParams.ambiant < 0)
+			m_sharedContext.appInfos.lightParams.ambiant = 0;
+		else if (m_sharedContext.appInfos.lightParams.ambiant > 100)
+			m_sharedContext.appInfos.lightParams.ambiant = 100;
+
+		if (m_sharedContext.appInfos.lightParams.diffuse < 0)
+			m_sharedContext.appInfos.lightParams.diffuse = 0;
+		else if (m_sharedContext.appInfos.lightParams.diffuse > 100)
+			m_sharedContext.appInfos.lightParams.diffuse = 100;
+
+		if (m_sharedContext.appInfos.lightParams.specular < 0)
+			m_sharedContext.appInfos.lightParams.specular = 0;
+		else if (m_sharedContext.appInfos.lightParams.specular > 100)
+			m_sharedContext.appInfos.lightParams.specular = 100;
 	}
-
-	if (m_sharedContext.appInfos.lightParams.ambiant < 0)
-		m_sharedContext.appInfos.lightParams.ambiant = 0;
-	else if (m_sharedContext.appInfos.lightParams.ambiant > 100)
-		m_sharedContext.appInfos.lightParams.ambiant = 100;
-
-	if (m_sharedContext.appInfos.lightParams.diffuse < 0)
-		m_sharedContext.appInfos.lightParams.diffuse = 0;
-	else if (m_sharedContext.appInfos.lightParams.diffuse > 100)
-		m_sharedContext.appInfos.lightParams.diffuse = 100;
-
-	if (m_sharedContext.appInfos.lightParams.specular < 0)
-		m_sharedContext.appInfos.lightParams.specular = 0;
-	else if (m_sharedContext.appInfos.lightParams.specular > 100)
-		m_sharedContext.appInfos.lightParams.specular = 100;
 }
 
 void Application::UpdateCubeColor()
 {
-	float redOffset = 0;
-	float greenOffset = 0;
-	float blueOffset = 0;
-	const float colorIncrementPerSecond = 50;
+	if (m_sharedContext.appInfos.selectedVersion < 5)
+	{
+		float redOffset = 0;
+		float greenOffset = 0;
+		float blueOffset = 0;
+		const float colorIncrementPerSecond = 50;
 
-	if (m_sharedContext.actions.addRed)
-		redOffset += colorIncrementPerSecond * m_sharedContext.appInfos.deltaTime;
+		if (m_sharedContext.actions.addRed)
+			redOffset += colorIncrementPerSecond * m_sharedContext.appInfos.deltaTime;
 
-	if (m_sharedContext.actions.addGreen)
-		greenOffset += colorIncrementPerSecond * m_sharedContext.appInfos.deltaTime;
+		if (m_sharedContext.actions.addGreen)
+			greenOffset += colorIncrementPerSecond * m_sharedContext.appInfos.deltaTime;
 
-	if (m_sharedContext.actions.addBlue)
-		blueOffset += colorIncrementPerSecond * m_sharedContext.appInfos.deltaTime;
+		if (m_sharedContext.actions.addBlue)
+			blueOffset += colorIncrementPerSecond * m_sharedContext.appInfos.deltaTime;
 
-	m_sharedContext.appInfos.cubeParams.red += redOffset;
-	while (m_sharedContext.appInfos.cubeParams.red > 255.f) m_sharedContext.appInfos.cubeParams.red /= 255;
+		m_sharedContext.appInfos.cubeParams.red += redOffset;
+		while (m_sharedContext.appInfos.cubeParams.red > 255.f) m_sharedContext.appInfos.cubeParams.red /= 255;
 
-	m_sharedContext.appInfos.cubeParams.green += greenOffset;
-	while (m_sharedContext.appInfos.cubeParams.green > 255.f) m_sharedContext.appInfos.cubeParams.green /= 255;
+		m_sharedContext.appInfos.cubeParams.green += greenOffset;
+		while (m_sharedContext.appInfos.cubeParams.green > 255.f) m_sharedContext.appInfos.cubeParams.green /= 255;
 
-	m_sharedContext.appInfos.cubeParams.blue += blueOffset;
-	while (m_sharedContext.appInfos.cubeParams.blue > 255.f) m_sharedContext.appInfos.cubeParams.blue /= 255;
+		m_sharedContext.appInfos.cubeParams.blue += blueOffset;
+		while (m_sharedContext.appInfos.cubeParams.blue > 255.f) m_sharedContext.appInfos.cubeParams.blue /= 255;
 
+		m_scene.entities[0]->SetColor(m_sharedContext.appInfos.cubeParams.red, m_sharedContext.appInfos.cubeParams.green, m_sharedContext.appInfos.cubeParams.blue);
+	}
 
-	m_scene.entities[0]->SetColor(m_sharedContext.appInfos.cubeParams.red, m_sharedContext.appInfos.cubeParams.green, m_sharedContext.appInfos.cubeParams.blue);
+	if (m_sharedContext.appInfos.selectedVersion == 6)
+	{
+		float transparencyOffset = 0;
+		const float transparencyIncrementPerSecond = 20;
+
+		if (m_sharedContext.actions.addTransparency)
+			transparencyOffset += transparencyIncrementPerSecond * m_sharedContext.appInfos.deltaTime;
+
+		m_sharedContext.appInfos.cubeParams.transparency += transparencyOffset;
+		while (m_sharedContext.appInfos.cubeParams.transparency > 100) m_sharedContext.appInfos.cubeParams.transparency /= 100;
+
+		m_scene.entities[1]->SetAlpha(m_sharedContext.appInfos.cubeParams.transparency / 100.f);
+	}
 }
 
 SharedContext& Application::GetContext()

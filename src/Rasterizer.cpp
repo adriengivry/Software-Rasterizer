@@ -472,12 +472,7 @@ void Rasterizer::DrawTriangleAlphaBlending(Vertex& p_v0, Vertex& p_v1, Vertex& p
 				final.r = p_alpha * source.r + (1.f - p_alpha) * background.r;
 				final.g = p_alpha * source.g + (1.f - p_alpha) * background.g;
 				final.b = p_alpha * source.b + (1.f - p_alpha) * background.b;
-				final.a = 255.0f;
-				
-				//final.r = p_alpha * source.r;
-				//final.g = p_alpha * source.g;
-				//final.b = p_alpha * source.b;
-				//final.a = 255.0f * p_alpha;
+				final.a = 255.0f * p_alpha;
 				
 				m_rtexture.SetPixelColor(int(positions.position.x), int(positions.position.y), final);
 

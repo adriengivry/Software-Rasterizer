@@ -25,6 +25,7 @@ struct Actions
 	bool addRed;
 	bool addGreen;
 	bool addBlue;
+	bool addTransparency;
 };
 
 struct LightParams
@@ -39,6 +40,7 @@ struct CubeParams
 	float red = 255;
 	float green = 0;
 	float blue = 0;
+	float transparency = 40;
 };
 
 struct ApplicationInfos

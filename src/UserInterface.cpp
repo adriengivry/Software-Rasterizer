@@ -68,7 +68,7 @@ void UserInterface::Draw() const
 
 	if (m_sharedContext.appInfos.selectedVersion < 5)
 	{
-		std::string colorValues[] =
+		std::string cubeProperties[] =
 		{
 			"CUBE PROPERTIES",
 			"[R]: " + std::to_string(static_cast<uint8_t>(m_sharedContext.appInfos.cubeParams.red)),
@@ -113,7 +113,7 @@ void UserInterface::Draw() const
 				b = 255;
 			}
 
-			DrawAt(colorValues[i], 0, 350 + i * 23, r, g, b);
+			DrawAt(cubeProperties[i], 0, 350 + i * 23, r, g, b);
 		}
 	}
 
@@ -150,7 +150,39 @@ void UserInterface::Draw() const
 
 			DrawAt(lightParams[i], 0, 465 + i * 23, r, g, b);
 		}
-	}	
+	}
+
+	if (m_sharedContext.appInfos.selectedVersion == 6)
+	{
+		std::string cubeProperties[] =
+		{
+			"CUBE PROPERTIES",
+			"[T]ransparency: " + std::to_string(static_cast<uint8_t>(m_sharedContext.appInfos.cubeParams.transparency)) + "%"
+		};
+
+		for (uint8_t i = 0; i < 2; ++i)
+		{
+			r = 125;
+			g = 125;
+			b = 125;
+
+			if (m_sharedContext.actions.addTransparency)
+			{
+				r = 255;
+				g = 255;
+				b = 255;
+			}
+
+			if (i == 0)
+			{
+				r = 255;
+				g = 255;
+				b = 0;
+			}
+
+			DrawAt(cubeProperties[i], 0, 350 + i * 23, r, g, b);
+		}
+	}
 }
 
 void UserInterface::Close()
