@@ -10,6 +10,7 @@ public:
     Mesh();
     ~Mesh();
 	static Mesh* CreateCube();
+	static Mesh* CreateTextureCube();
     static Mesh* CreateSphere(int p_latitudeCount, int p_longitudeCount);
 	static Mesh* CreateTriangle();
 	std::vector<Vertex>& GetVertices();

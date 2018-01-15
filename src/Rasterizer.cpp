@@ -107,11 +107,17 @@ void Rasterizer::RenderTexture(Scene* p_pScene)
 		Vertex v0 = (p_pScene->entities[1]->GetMesh()->GetVertices()[p_pScene->entities[1]->GetMesh()->GetIndices()[i]]);
 		Vertex v1 = (p_pScene->entities[1]->GetMesh()->GetVertices()[p_pScene->entities[1]->GetMesh()->GetIndices()[i + 1]]);
 		Vertex v2 = (p_pScene->entities[1]->GetMesh()->GetVertices()[p_pScene->entities[1]->GetMesh()->GetIndices()[i + 2]]);
+		
 		v0.VertexTransform(positionMatrix);
 		v1.VertexTransform(positionMatrix);
 		v2.VertexTransform(positionMatrix);
 		DrawTriangleTexture(v0, v1, v2, p_pScene->entities[1]->GetMesh()->GetImage());
 	}
+}
+
+void Rasterizer::RenderAlphaBlending(Scene* p_pScene)
+{
+	
 }
 
 void Rasterizer::Update()
@@ -393,6 +399,11 @@ void Rasterizer::DrawTriangleTexture(Vertex& p_v0, Vertex& p_v1, Vertex& p_v2, I
 			}
 		}
 	}
+}
+
+void Rasterizer::DrawTriangleAlphaBlending(Vertex& p_v0, Vertex& p_v1, Vertex& p_v2)
+{
+	
 }
 
 void Rasterizer::ClearBuffer()

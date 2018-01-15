@@ -33,43 +33,43 @@ Mesh * Mesh::CreateCube()
 	Cube->m_indices.push_back(2);
 	Cube->m_indices.push_back(0);
 	Cube->m_indices.push_back(1);
-	
+
 	Cube->m_indices.push_back(6);
 	Cube->m_indices.push_back(2);
 	Cube->m_indices.push_back(1);
-	
+
 	Cube->m_indices.push_back(6);
 	Cube->m_indices.push_back(1);
 	Cube->m_indices.push_back(5);
-	
+
 	Cube->m_indices.push_back(7);
 	Cube->m_indices.push_back(6);
 	Cube->m_indices.push_back(5);
-	
+
 	Cube->m_indices.push_back(7);
 	Cube->m_indices.push_back(5);
 	Cube->m_indices.push_back(4);
-	
+
 	Cube->m_indices.push_back(3);
 	Cube->m_indices.push_back(7);
 	Cube->m_indices.push_back(4);
-	
+
 	Cube->m_indices.push_back(3);
 	Cube->m_indices.push_back(4);
 	Cube->m_indices.push_back(0);
-	
+
 	Cube->m_indices.push_back(3);
 	Cube->m_indices.push_back(2);
 	Cube->m_indices.push_back(6);
-	
+
 	Cube->m_indices.push_back(3);
 	Cube->m_indices.push_back(6);
 	Cube->m_indices.push_back(7);
-	
+
 	Cube->m_indices.push_back(4);
 	Cube->m_indices.push_back(5);
 	Cube->m_indices.push_back(1);
-	
+
 	Cube->m_indices.push_back(4);
 	Cube->m_indices.push_back(1);
 	Cube->m_indices.push_back(0);
@@ -90,6 +90,157 @@ Mesh * Mesh::CreateCube()
 	{
 		Cube->m_vertices[i].normal.Normalize();
 	}
+	return Cube;
+}
+
+Mesh* Mesh::CreateTextureCube()
+{
+	Mesh* Cube = new Mesh();
+	Cube->m_vertices.push_back(Vertex(0.5, 0.5, -0.5)); //2 0 
+	Cube->m_vertices.push_back(Vertex(-0.5, 0.5, -0.5)); //3 1
+	Cube->m_vertices.push_back(Vertex(-0.5, -0.5, -0.5)); //0 2
+	
+	Cube->m_vertices.push_back(Vertex(0.5, 0.5, -0.5)); //2   3
+	Cube->m_vertices.push_back(Vertex(-0.5, -0.5, -0.5)); //0  4
+	Cube->m_vertices.push_back(Vertex(0.5, -0.5, -0.5)); //1  5
+	
+	Cube->m_vertices.push_back(Vertex(0.5, 0.5, 0.5)); //6     6
+	Cube->m_vertices.push_back(Vertex(0.5, 0.5, -0.5)); //2   7
+	Cube->m_vertices.push_back(Vertex(0.5, -0.5, -0.5)); //1      8
+
+	Cube->m_vertices.push_back(Vertex(0.5, 0.5, 0.5)); //6     9
+	Cube->m_vertices.push_back(Vertex(0.5, -0.5, -0.5)); //1      10
+	Cube->m_vertices.push_back(Vertex(0.5, -0.5, 0.5)); //5    11
+
+	Cube->m_vertices.push_back(Vertex(-0.5, 0.5, 0.5)); //7   12
+	Cube->m_vertices.push_back(Vertex(0.5, 0.5, 0.5)); //6    13
+	Cube->m_vertices.push_back(Vertex(0.5, -0.5, 0.5)); //5    14
+
+	Cube->m_vertices.push_back(Vertex(-0.5, 0.5, 0.5)); //7   15
+	Cube->m_vertices.push_back(Vertex(0.5, -0.5, 0.5)); //5    16
+	Cube->m_vertices.push_back(Vertex(-0.5, -0.5, 0.5)); //4  17
+
+	Cube->m_vertices.push_back(Vertex(-0.5, 0.5, -0.5)); //3  18
+	Cube->m_vertices.push_back(Vertex(-0.5, 0.5, 0.5)); //7   19
+	Cube->m_vertices.push_back(Vertex(-0.5, -0.5, 0.5)); //4  20
+
+	Cube->m_vertices.push_back(Vertex(-0.5, 0.5, -0.5)); //3  21
+	Cube->m_vertices.push_back(Vertex(-0.5, -0.5, 0.5)); //4  22
+	Cube->m_vertices.push_back(Vertex(-0.5, -0.5, -0.5)); //0  23
+
+	Cube->m_vertices.push_back(Vertex(-0.5, 0.5, -0.5)); //3  24
+	Cube->m_vertices.push_back(Vertex(0.5, 0.5, -0.5)); //2   25
+	Cube->m_vertices.push_back(Vertex(0.5, 0.5, 0.5)); //6     26
+
+	Cube->m_vertices.push_back(Vertex(-0.5, 0.5, -0.5)); //3  27
+	Cube->m_vertices.push_back(Vertex(0.5, 0.5, 0.5)); //6     28
+	Cube->m_vertices.push_back(Vertex(-0.5, 0.5, 0.5)); //7   29
+
+	Cube->m_vertices.push_back(Vertex(-0.5, -0.5, 0.5)); //4   30
+	Cube->m_vertices.push_back(Vertex(0.5, -0.5, 0.5)); //5    31
+	Cube->m_vertices.push_back(Vertex(0.5, -0.5, -0.5)); //1      32
+
+	Cube->m_vertices.push_back(Vertex(-0.5, -0.5, 0.5)); //4   33
+	Cube->m_vertices.push_back(Vertex(0.5, -0.5, -0.5)); //1      34
+	Cube->m_vertices.push_back(Vertex(-0.5, -0.5, -0.5)); //0  35
+	
+	Cube->m_vertices[0].texCoordinate = Vec2(1, 1);
+	Cube->m_vertices[1].texCoordinate = Vec2(0, 1);
+	Cube->m_vertices[2].texCoordinate = Vec2(0, 0);
+
+	Cube->m_vertices[3].texCoordinate = Vec2(1, 1);
+	Cube->m_vertices[4].texCoordinate = Vec2(0, 0);
+	Cube->m_vertices[5].texCoordinate = Vec2(1, 0);
+
+	Cube->m_vertices[6].texCoordinate = Vec2(1, 1);
+	Cube->m_vertices[7].texCoordinate = Vec2(0, 1);
+	Cube->m_vertices[8].texCoordinate = Vec2(0, 0);
+
+	Cube->m_vertices[9].texCoordinate = Vec2(1, 1);
+	Cube->m_vertices[10].texCoordinate = Vec2(0, 0);
+	Cube->m_vertices[11].texCoordinate = Vec2(1, 0);
+
+	Cube->m_vertices[12].texCoordinate = Vec2(1, 1);
+	Cube->m_vertices[13].texCoordinate = Vec2(0, 1);
+	Cube->m_vertices[14].texCoordinate = Vec2(0, 0);
+
+	Cube->m_vertices[15].texCoordinate = Vec2(1, 1);
+	Cube->m_vertices[16].texCoordinate = Vec2(0, 0);
+	Cube->m_vertices[17].texCoordinate = Vec2(1, 0);
+
+	Cube->m_vertices[18].texCoordinate = Vec2(1, 1);
+	Cube->m_vertices[19].texCoordinate = Vec2(0, 1);
+	Cube->m_vertices[20].texCoordinate = Vec2(0, 0);
+
+	Cube->m_vertices[21].texCoordinate = Vec2(1, 1);
+	Cube->m_vertices[22].texCoordinate = Vec2(0, 0);
+	Cube->m_vertices[23].texCoordinate = Vec2(1, 0);
+
+	Cube->m_vertices[24].texCoordinate = Vec2(1, 1);
+	Cube->m_vertices[25].texCoordinate = Vec2(0, 1);
+	Cube->m_vertices[26].texCoordinate = Vec2(0, 0);
+
+	Cube->m_vertices[27].texCoordinate = Vec2(1, 1);
+	Cube->m_vertices[28].texCoordinate = Vec2(0, 0);
+	Cube->m_vertices[29].texCoordinate = Vec2(1, 0);
+
+	Cube->m_vertices[30].texCoordinate = Vec2(1, 1);
+	Cube->m_vertices[31].texCoordinate = Vec2(0, 1);
+	Cube->m_vertices[32].texCoordinate = Vec2(0, 0);
+
+	Cube->m_vertices[33].texCoordinate = Vec2(1, 1);
+	Cube->m_vertices[34].texCoordinate = Vec2(0, 0);
+	Cube->m_vertices[35].texCoordinate = Vec2(1, 0);
+
+
+	Cube->m_indices.push_back(0);
+	Cube->m_indices.push_back(1);
+	Cube->m_indices.push_back(2);
+
+	Cube->m_indices.push_back(3);
+	Cube->m_indices.push_back(4);
+	Cube->m_indices.push_back(5);
+
+	Cube->m_indices.push_back(6);
+	Cube->m_indices.push_back(7);
+	Cube->m_indices.push_back(8);
+
+	Cube->m_indices.push_back(9);
+	Cube->m_indices.push_back(10);
+	Cube->m_indices.push_back(11);
+
+	Cube->m_indices.push_back(12);
+	Cube->m_indices.push_back(13);
+	Cube->m_indices.push_back(14);
+
+	Cube->m_indices.push_back(15);
+	Cube->m_indices.push_back(16);
+	Cube->m_indices.push_back(17);
+
+	Cube->m_indices.push_back(18);
+	Cube->m_indices.push_back(19);
+	Cube->m_indices.push_back(20);
+
+	Cube->m_indices.push_back(21);
+	Cube->m_indices.push_back(22);
+	Cube->m_indices.push_back(23);
+
+	Cube->m_indices.push_back(24);
+	Cube->m_indices.push_back(25);
+	Cube->m_indices.push_back(26);
+
+	Cube->m_indices.push_back(27);
+	Cube->m_indices.push_back(28);
+	Cube->m_indices.push_back(29);
+
+	Cube->m_indices.push_back(30);
+	Cube->m_indices.push_back(31);
+	Cube->m_indices.push_back(32);
+
+	Cube->m_indices.push_back(33);
+	Cube->m_indices.push_back(34);
+	Cube->m_indices.push_back(35);
+	
 	return Cube;
 }
 

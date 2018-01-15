@@ -84,8 +84,15 @@ void Application::RenderScene()
 		Mat4::CreateTranslation(m_cameraParams.xOffset, 0, 0).CreateInverse() * 
 		Mat4::CreateTranslation(0 , 0, -6 + m_cameraParams.zoomOffset) * 
 		Mat4::CreateRotation(45 + m_cameraParams.xRotationOffset, 45 + m_cameraParams.yRotationOffset, 0);
+
+	const Mat4 matrix2 =
+		Mat4::CreateTranslation(m_cameraParams.xOffset, 0, 0).CreateInverse() *
+		Mat4::CreateTranslation(0, 0, -6 + m_cameraParams.zoomOffset) *
+		Mat4::CreateRotation(45, 45, 0) *
+		Mat4::CreateScale(2.f, 2.f, 2.f);
 	m_scene.entities[0]->SetMatrix(matrix);
 	m_scene.entities[1]->SetMatrix(matrix);
+	m_scene.entities[2]->SetMatrix(matrix2);
 	switch (m_sharedContext.appInfos.selectedVersion)
 	{
 	default:

@@ -22,6 +22,7 @@ public:
 	void DrawTriangle3(Vertex& p_v0, Vertex& p_v1, Vertex& p_v2, Vertex& p_light1, Vertex& p_light2, Vertex& p_light3, Vertex& p_lightPosition, Toolbox::Vec3& p_lightcomp);
 	void DrawTiangleWire(Vertex& p_v0, Vertex& p_v1, Vertex& p_v2);
 	void DrawTriangleTexture(Vertex& p_v0, Vertex& p_v1, Vertex& p_v2, Image* p_image);
+	void DrawTriangleAlphaBlending(Vertex& p_v0, Vertex& p_v1, Vertex& p_v2);
 	void ClearBuffer();
 	Color PhongColor(Vertex& p_position, Toolbox::Vec3& p_normal, Vertex& p_lightPosition, Toolbox::Vec3& p_lightcomp, Color& p_color);
 	Color BlinnPhongColor(Vertex& p_position, Toolbox::Vec3& p_normal, Vertex& p_lightPosition, Toolbox::Vec3& p_lightcomp, Color& p_color);
