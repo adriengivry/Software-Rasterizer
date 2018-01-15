@@ -29,6 +29,7 @@ void Application::Update()
 {
 	m_sharedContext.appInfos.lastTime = m_sharedContext.appInfos.currentTime;
 
+	UpdateCubeColor();
 	UpdateCamera();
 	UpdateLights();
 	RenderScene();
@@ -202,6 +203,35 @@ void Application::UpdateLights()
 		m_sharedContext.appInfos.lightParams.specular = 0;
 	else if (m_sharedContext.appInfos.lightParams.specular > 100)
 		m_sharedContext.appInfos.lightParams.specular = 100;
+}
+
+void Application::UpdateCubeColor()
+{
+	float redOffset = 0;
+	float greenOffset = 0;
+	float blueOffset = 0;
+	const float colorIncrementPerSecond = 50;
+
+	if (m_sharedContext.actions.addRed)
+		redOffset += colorIncrementPerSecond * m_sharedContext.appInfos.deltaTime;
+
+	if (m_sharedContext.actions.addGreen)
+		greenOffset += colorIncrementPerSecond * m_sharedContext.appInfos.deltaTime;
+
+	if (m_sharedContext.actions.addBlue)
+		blueOffset += colorIncrementPerSecond * m_sharedContext.appInfos.deltaTime;
+
+	m_sharedContext.appInfos.cubeParams.red += redOffset;
+	while (m_sharedContext.appInfos.cubeParams.red > 255.f) m_sharedContext.appInfos.cubeParams.red /= 255;
+
+	m_sharedContext.appInfos.cubeParams.green += greenOffset;
+	while (m_sharedContext.appInfos.cubeParams.green > 255.f) m_sharedContext.appInfos.cubeParams.green /= 255;
+
+	m_sharedContext.appInfos.cubeParams.blue += blueOffset;
+	while (m_sharedContext.appInfos.cubeParams.blue > 255.f) m_sharedContext.appInfos.cubeParams.blue /= 255;
+
+
+	m_scene.entities[0]->SetColor(m_sharedContext.appInfos.cubeParams.red, m_sharedContext.appInfos.cubeParams.green, m_sharedContext.appInfos.cubeParams.blue);
 }
 
 SharedContext& Application::GetContext()

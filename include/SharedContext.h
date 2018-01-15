@@ -22,6 +22,9 @@ struct Actions
 	bool yTurnCounterClockwise;
 	bool increaseLight;
 	bool decreaseLight;
+	bool addRed;
+	bool addGreen;
+	bool addBlue;
 };
 
 struct LightParams
@@ -29,6 +32,13 @@ struct LightParams
 	float ambiant = 50;
 	float diffuse = 70;
 	float specular = 90;
+};
+
+struct CubeParams
+{
+	float red = 255;
+	float green = 0;
+	float blue = 0;
 };
 
 struct ApplicationInfos
@@ -46,6 +56,19 @@ struct ApplicationInfos
 	uint8_t selectedVersion = 1;
 	uint8_t selectedLight = AMBIANT;
 	LightParams lightParams;
+	CubeParams cubeParams;
+
+	void Reset()
+	{
+		selectedVersion = 1;
+		selectedLight = AMBIANT;
+		lightParams.ambiant = 50;
+		lightParams.diffuse = 70;
+		lightParams.specular = 90;
+		cubeParams.red = 255;
+		cubeParams.green = 0;
+		cubeParams.blue = 0;
+	}
 };
 
 struct SharedContext

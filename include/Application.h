@@ -23,6 +23,7 @@ public:
 	void RenderScene();
 	void UpdateCamera();
 	void UpdateLights();
+	void UpdateCubeColor();
 
 	SharedContext& GetContext();
 private:

@@ -78,6 +78,18 @@ void EventManager::KeyInput(const SDL_Keysym& p_key, const bool p_state) const
 	case SDLK_PAGEDOWN:
 		m_sharedContext.actions.decreaseLight = p_state;
 		break;
+	case SDLK_r:
+		m_sharedContext.actions.addRed = p_state;
+		break;
+	case SDLK_g:
+		m_sharedContext.actions.addGreen = p_state;
+		break;
+	case SDLK_b:
+		m_sharedContext.actions.addBlue = p_state;
+		break;
+	case SDLK_ESCAPE:
+		m_sharedContext.appInfos.Reset();
+		break;
 	default:
 		break;
 	}

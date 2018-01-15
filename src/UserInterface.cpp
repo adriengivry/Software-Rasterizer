@@ -28,42 +28,129 @@ void UserInterface::Draw() const
 	const std::string fps = std::to_string(m_sharedContext.appInfos.fpsCounter) + " FPS (" + std::to_string(m_sharedContext.appInfos.minFps) + " to " + std::to_string(m_sharedContext.appInfos.maxFps) + " FPS | ~" + std::to_string(m_sharedContext.appInfos.averageFps) + " FPS)";
 	DrawAt(fps, 0, 0);
 
-	std::string items[] = { 
+	std::string items[] = 
+	{ 
+		"VERSION SELECTION",
 		"1. Z-Buffer",
 		"2. Phong (Per-Vertex)",
 		"3. Blinn-Phong (Per-Pixel)",
 		"4. Wireframe",
 		"5. Texture",
 		"6. Alpha-Blending",
-		"7. Antialiasing",
-		"8. Ambiant [" + std::to_string(static_cast<uint8_t>(m_sharedContext.appInfos.lightParams.ambiant)) + "]",
-		"9. Diffuse [" + std::to_string(static_cast<uint8_t>(m_sharedContext.appInfos.lightParams.diffuse)) + "]",
-		"0. Specular [" + std::to_string(static_cast<uint8_t>(m_sharedContext.appInfos.lightParams.specular)) + "]"
+		"7. Antialiasing"
 	};
 
 	uint8_t r, g, b;
-	for (uint8_t i = 0; i < 10; ++i)
-	{
-		r = 255;
-		g = 255;
-		b = 255;
 
-		if (i - 6 == m_sharedContext.appInfos.selectedLight)
+	for (uint8_t i = 0; i < 7; ++i)
+	{
+		r = 125;
+		g = 125;
+		b = 125;
+
+		if (i == m_sharedContext.appInfos.selectedVersion)
 		{
-			r = 0;
+			r = 255;
 			g = 255;
-			b = 0;
+			b = 255;
 		}
 
-		if (i + 1 == m_sharedContext.appInfos.selectedVersion)
+		if (i == 0)
 		{
 			r = 255;
 			g = 255;
 			b = 0;
 		}
 		
-		DrawAt(items[i], 0, 230 + i * 23 + 40 * (i > 6), r, g, b);
+		DrawAt(items[i], 0, 170 + i * 23, r, g, b);
 	}
+
+
+	if (m_sharedContext.appInfos.selectedVersion < 5)
+	{
+		std::string colorValues[] =
+		{
+			"CUBE PROPERTIES",
+			"[R]: " + std::to_string(static_cast<uint8_t>(m_sharedContext.appInfos.cubeParams.red)),
+			"[G]: " + std::to_string(static_cast<uint8_t>(m_sharedContext.appInfos.cubeParams.green)),
+			"[B]: " + std::to_string(static_cast<uint8_t>(m_sharedContext.appInfos.cubeParams.blue))
+		};
+
+		for (uint8_t i = 0; i < 4; ++i)
+		{
+			bool colorIsChanging = false;
+
+			switch (i)
+			{
+			default:
+				break;
+			case 1:
+				colorIsChanging = m_sharedContext.actions.addRed;
+				break;
+			case 2:
+				colorIsChanging = m_sharedContext.actions.addGreen;
+				break;
+			case 3:
+				colorIsChanging = m_sharedContext.actions.addBlue;
+				break;
+			}
+
+			r = 125;
+			g = 125;
+			b = 125;
+
+			if (i == 0)
+			{
+				r = 255;
+				g = 255;
+				b = 0;
+			}
+
+			if (colorIsChanging)
+			{
+				r = 255;
+				g = 255;
+				b = 255;
+			}
+
+			DrawAt(colorValues[i], 0, 350 + i * 23, r, g, b);
+		}
+	}
+
+
+	if (m_sharedContext.appInfos.selectedVersion == 2 || m_sharedContext.appInfos.selectedVersion == 3)
+	{
+		std::string lightParams[] =
+		{
+			"LIGHT PROPERTIES",
+			"8. Ambiant [" + std::to_string(static_cast<uint8_t>(m_sharedContext.appInfos.lightParams.ambiant)) + "]",
+			"9. Diffuse [" + std::to_string(static_cast<uint8_t>(m_sharedContext.appInfos.lightParams.diffuse)) + "]",
+			"0. Specular [" + std::to_string(static_cast<uint8_t>(m_sharedContext.appInfos.lightParams.specular)) + "]"
+		};
+
+		for (uint8_t i = 0; i < 4; ++i)
+		{
+			r = 125;
+			g = 125;
+			b = 125;
+
+			if (i == m_sharedContext.appInfos.selectedLight)
+			{
+				r = 255;
+				g = 255;
+				b = 255;
+			}
+
+			if (i == 0)
+			{
+				r = 255;
+				g = 255;
+				b = 0;
+			}
+
+			DrawAt(lightParams[i], 0, 465 + i * 23, r, g, b);
+		}
+	}	
 }
 
 void UserInterface::Close()
