@@ -2,7 +2,7 @@
 
 using namespace Toolbox;
 
-Entity::Entity() : m_mesh(nullptr) {}
+Entity::Entity() : m_mesh(nullptr), m_alpha(1.f) {}
 Entity::~Entity() 
 {
 	delete m_mesh;
@@ -16,6 +16,16 @@ Mesh* Entity::GetMesh() const
 Mat4& Entity::GetMatrix()
 {
 	return m_transformation;
+}
+
+void Entity::SetAlpha(const float p_alpha)
+{
+	m_alpha = p_alpha;
+}
+
+float Entity::GetAlpha()
+{
+	return m_alpha;
 }
 
 void Entity::SetMesh(const Mesh& p_mesh)
