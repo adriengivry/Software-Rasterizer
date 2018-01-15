@@ -3,6 +3,13 @@
 #include "Scene.h"
 #include "Window.h"
 
+enum LIGHTS
+{
+	AMBIANT = 1,
+	DIFFUSE = 2,
+	SPECULAR = 3
+};
+
 struct Actions
 {
 	bool moveLeft;
@@ -13,6 +20,13 @@ struct Actions
 	bool xTurnCounterClockwise;
 	bool yTurnClockwise;
 	bool yTurnCounterClockwise;
+};
+
+struct LightParams
+{
+	uint8_t ambiant = 50;
+	uint8_t diffuse = 70;
+	uint8_t specular = 90;
 };
 
 struct ApplicationInfos
@@ -28,6 +42,8 @@ struct ApplicationInfos
 	uint16_t fpsValues[10];
 	uint8_t fpsValuesBuffer = 0;
 	uint8_t selectedVersion = 1;
+	uint8_t selectedLight = AMBIANT;
+	LightParams lightParams;
 };
 
 struct SharedContext

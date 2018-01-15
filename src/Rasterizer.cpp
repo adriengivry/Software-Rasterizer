@@ -428,9 +428,9 @@ Color Rasterizer::PhongColor(Vertex& p_position, Vec3& p_normal, Vertex& p_light
 		float specAngle = p_normal.dot((p_normal + lightDir) / 2.0f);
 		specular = powf(specAngle, 5.0);
 	}
-	Color amb = p_color * 0.3 *(p_lightcomp.x);
-	Color diff = p_color * 0.4 * (p_lightcomp.y * lambert);
-	Color spec = p_color * 0.7 * (p_lightcomp.z * specular);
+	Color amb = p_color * m_sharedContext.appInfos.lightParams.ambiant / 100.f *(p_lightcomp.x);
+	Color diff = p_color * m_sharedContext.appInfos.lightParams.diffuse / 100.f * (p_lightcomp.y * lambert);
+	Color spec = p_color * m_sharedContext.appInfos.lightParams.specular / 100.f * (p_lightcomp.z * specular);
 	Color total =  amb + diff + spec;
 	return total;
 }
@@ -459,17 +459,17 @@ Color Rasterizer::BlinnPhongColor(Vertex& p_position, Vec3& p_normal, Vertex& p_
 
 	// TODO: Put ambiant, diff and spec values in the appInfos and add the possibility to change it "in-game"
 	Color amb, diff, spec;
-	amb.r = p_color.r * 0.5 * p_lightcomp.x;
-	amb.g = p_color.g * 0.5 * p_lightcomp.x;
-	amb.b = p_color.b * 0.5 * p_lightcomp.x;
+	amb.r = p_color.r * m_sharedContext.appInfos.lightParams.ambiant / 100.f * p_lightcomp.x;
+	amb.g = p_color.g * m_sharedContext.appInfos.lightParams.ambiant / 100.f * p_lightcomp.x;
+	amb.b = p_color.b * m_sharedContext.appInfos.lightParams.ambiant / 100.f * p_lightcomp.x;
 
-	diff.r = p_color.r * 0.7 * (p_lightcomp.y * lambert);
-	diff.g = p_color.g * 0.7 * (p_lightcomp.y * lambert);
-	diff.b = p_color.b * 0.7 * (p_lightcomp.y * lambert);
+	diff.r = p_color.r * m_sharedContext.appInfos.lightParams.diffuse / 100.f * (p_lightcomp.y * lambert);
+	diff.g = p_color.g * m_sharedContext.appInfos.lightParams.diffuse / 100.f * (p_lightcomp.y * lambert);
+	diff.b = p_color.b * m_sharedContext.appInfos.lightParams.diffuse / 100.f * (p_lightcomp.y * lambert);
 
-	spec.r = p_color.r * 0.9 * (p_lightcomp.z * specular);
-	spec.g = p_color.g * 0.9 * (p_lightcomp.z * specular);
-	spec.b = p_color.b * 0.9 * (p_lightcomp.z * specular);
+	spec.r = p_color.r * m_sharedContext.appInfos.lightParams.specular / 100.f * (p_lightcomp.z * specular);
+	spec.g = p_color.g * m_sharedContext.appInfos.lightParams.specular / 100.f * (p_lightcomp.z * specular);
+	spec.b = p_color.b * m_sharedContext.appInfos.lightParams.specular / 100.f * (p_lightcomp.z * specular);
 	
 	return Color(amb.r + diff.r + spec.r, amb.g + diff.g + spec.g, amb.b + diff.b + spec.b);
 }
