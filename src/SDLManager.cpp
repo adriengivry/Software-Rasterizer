@@ -21,8 +21,9 @@ bool Toolbox::InitSDL()
 		success = false;
 	}
 
-	int initPng = IMG_INIT_PNG;
-	if (IMG_Init(initPng) != IMG_INIT_SUCCESS)
+	int flag = IMG_INIT_PNG;
+	int initted = IMG_Init(flag);
+	if (initted&flag != flag)
 	{
 		SDL_LOG("Failed to Init Image");
 		success = false;

@@ -70,10 +70,10 @@ void Application::Init()
 {
 	SDL_SetRenderDrawBlendMode(m_window.GetRenderer(), SDL_BLENDMODE_BLEND);
 	SDL_SetTextureBlendMode(m_window.GetTexture(), SDL_BLENDMODE_BLEND);
-	m_image = new Image("../assets/testure.png");
-	m_scene.entities[1]->GetMesh()->SetImage(m_image);
+	m_image = new Image("../assets/texture.png");
 	m_scene.InitEntities();
 	m_scene.InitLights();
+	m_scene.entities[1]->GetMesh()->SetImage(m_image);
 }
 
 void Application::RenderScene()
@@ -98,12 +98,11 @@ void Application::RenderScene()
 		m_rasterizer.RenderSceneBlinnPhong(&m_scene);
 		break;
 	case 4:
-		m_rasterizer.RenderTexture(&m_scene);
-		//m_rasterizer.RenderSceneWireframe(&m_scene);
+		m_rasterizer.RenderSceneWireframe(&m_scene);
 		break;
-	//case 5:
-		//m_rasterizer.RenderTexture(&m_scene);
-		//break;
+	case 5:
+		m_rasterizer.RenderTexture(&m_scene);
+		break;
 	//case 6:
 		//m_rasterizer.RenderAlphaBlending(&m_scene);
 		//break;

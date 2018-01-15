@@ -385,9 +385,9 @@ void Rasterizer::DrawTriangleTexture(Vertex& p_v0, Vertex& p_v1, Vertex& p_v2, I
 				int ImgX = u * p_image->GetImageWidth();
 				int ImgY = u2 * p_image->GetImageHeight();
 				Color final;
-				final.r = p_image->GetColorTable()[ImgX + ImgY * p_image->GetImageWidth()].r;
-				final.g = p_image->GetColorTable()[ImgX + ImgY * p_image->GetImageWidth()].g;
-				final.b = p_image->GetColorTable()[ImgX + ImgY * p_image->GetImageWidth()].b;
+				final.r = p_image->GetColorTable()[ImgX + ImgY].r;
+				final.g = p_image->GetColorTable()[ImgX + ImgY].g;
+				final.b = p_image->GetColorTable()[ImgX + ImgY].b;
 				final.a = 255.f;
 				m_rtexture.SetPixelColor(int(positions.position.x), int(positions.position.y), final);
 			}
