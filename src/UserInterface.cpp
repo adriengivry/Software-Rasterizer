@@ -28,43 +28,41 @@ void UserInterface::Draw() const
 	const std::string fps = std::to_string(m_sharedContext.appInfos.fpsCounter) + " FPS (" + std::to_string(m_sharedContext.appInfos.minFps) + " to " + std::to_string(m_sharedContext.appInfos.maxFps) + " FPS | ~" + std::to_string(m_sharedContext.appInfos.averageFps) + " FPS)";
 	DrawAt(fps, 0, 0);
 
-	std::string items[] = { "1. Z-Buffer", "2. Phong (Per-Vertex)", "3. Blinn-Phong (Per-Pixel)", "4. Wireframe", "5. Texture", "6. Alpha-Blending", "7. Antialiasing" };
+	std::string items[] = { 
+		"1. Z-Buffer",
+		"2. Phong (Per-Vertex)",
+		"3. Blinn-Phong (Per-Pixel)",
+		"4. Wireframe",
+		"5. Texture",
+		"6. Alpha-Blending",
+		"7. Antialiasing",
+		"8. Ambiant [" + std::to_string(m_sharedContext.appInfos.lightParams.ambiant) + "]",
+		"9. Diffuse [" + std::to_string(m_sharedContext.appInfos.lightParams.diffuse) + "]",
+		"0. Specular [" + std::to_string(m_sharedContext.appInfos.lightParams.specular) + "]" 
+	};
+
 	uint8_t r, g, b;
-	for (uint8_t i = 0; i < 7; ++i)
+	for (uint8_t i = 0; i < 10; ++i)
 	{
+		r = 255;
+		g = 255;
+		b = 255;
+
+		if (i - 6 == m_sharedContext.appInfos.selectedLight)
+		{
+			r = 0;
+			g = 255;
+			b = 0;
+		}
+
 		if (i + 1 == m_sharedContext.appInfos.selectedVersion)
 		{
 			r = 255;
 			g = 255;
 			b = 0;
 		}
-		else
-		{
-			r = 255;
-			g = 255;
-			b = 255;
-		}
 		
-		DrawAt(items[i], 0, 230 + i * 23, r, g, b);
-	}
-
-	std::string lights[] = { "8. Ambiant [" + std::to_string(m_sharedContext.appInfos.lightParams.ambiant) + "]", "9. Diffuse [" + std::to_string(m_sharedContext.appInfos.lightParams.diffuse) + "]", "0. Specular [" + std::to_string(m_sharedContext.appInfos.lightParams.specular) + "]" };
-
-	for (uint8_t i = 0; i < 3; ++i)
-	{
-		if (i + 1 == m_sharedContext.appInfos.selectedLight)
-		{
-			r = 0;
-			g = 255;
-			b = 0;
-		}
-		else
-		{
-			r = 255;
-			g = 255;
-			b = 255;
-		}
-		DrawAt(lights[i], 0, 400 + i * 23, r, g, b);
+		DrawAt(items[i], 0, 230 + i * 23 + 40 * (i > 6), r, g, b);
 	}
 }
 
