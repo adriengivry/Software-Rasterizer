@@ -3,7 +3,7 @@
 using namespace Toolbox;
 
 Mesh::Mesh(): m_pImage(nullptr) {}
-Mesh::~Mesh() {delete m_pImage;}
+Mesh::~Mesh() {}
 
 Mesh * Mesh::CreateCube()
 {

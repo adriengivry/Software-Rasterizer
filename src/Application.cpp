@@ -17,11 +17,11 @@ Application::~Application()
 {
 	delete m_eventManager;
 	delete m_renderTexture;
+	delete m_image;
 
 	/*
 	 * TODO: WEIRD MEMORY ERROR NEED TO BE CORRECTED (Memory leak if this part is commented)
 	 * delete m_userInterface;
-	 * delete m_image;
 	*/
 }
 
