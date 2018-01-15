@@ -62,6 +62,9 @@
   <ItemGroup>
     <Text Include="..\doc\coding_conventions.txt" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{137769a4-ad8c-4eb5-870b-da28c254b097}</ProjectGuid>
