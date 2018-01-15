@@ -41,6 +41,7 @@ Image::Image(std::string p_path)
         }
     }
     SDL_FreeSurface(rgbaImage);
+    SDL_FreeSurface(image);
 }
 
 Image::~Image() { delete m_pColortable; }
