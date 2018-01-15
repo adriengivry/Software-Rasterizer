@@ -67,25 +67,10 @@ inline Color Color::operator+(const Color& p_color) const
 {
 	Color temp;
 	temp.r = this->r + p_color.r;
-	if (temp.r >= 254.99f)
-		temp.r = 254.99f;
-
-	if (temp.r < 0.f)
-		temp.r = 0.f;
 
 	temp.g = this->g + p_color.g;
-	if (temp.g >= 254.99f)
-		temp.g = 254.99f;
-
-	if (temp.g < 0.f)
-		temp.g = 0.f;
-
+	
 	temp.b = this->b + p_color.b;
-	if (temp.b >= 254.99f)
-		temp.b = 254.99f;
-
-	if (temp.b < 0.f)
-		temp.b = 0.f;
 
 	temp.a = 254.99f;
 	return temp;
@@ -94,25 +79,11 @@ inline Color Color::operator-(const Color& p_color) const
 {
 	Color temp;
 	temp.r = this->r - p_color.r;
-	if (temp.r >= 254.99f)
-		temp.r = 254.99f;
-
-	if (temp.r < 0.f)
-		temp.r = 0.f;
 
 	temp.g = this->g - p_color.g;
-	if (temp.g >= 254.99f)
-		temp.g = 254.99f;
-
-	if (temp.g < 0.f)
-		temp.g = 0.f;
-
+	
 	temp.b = this->b - p_color.b;
-	if (temp.b >= 254.99f)
-		temp.b = 254.99f;
 
-	if (temp.b < 0.f)
-		temp.b = 0.f;
 
 	temp.a = 254.99f;
 	return temp;
@@ -121,25 +92,12 @@ inline Color Color::operator*(const float p_scale) const
 {
 	Color temp;
 	temp.r = this->r * p_scale;
-	if (temp.r >= 254.99f)
-		temp.r = 254.99f;
-
-	if (temp.r < 0.f)
-		temp.r = 0.f;
+	
 
 	temp.g = this->g * p_scale;
-	if (temp.g >= 254.99f)
-		temp.g = 254.99f;
 
-	if (temp.g < 0.f)
-		temp.g = 0.f;
 
 	temp.b = this->b * p_scale;
-	if (temp.b >= 254.99f)
-		temp.b = 254.99f;
-
-	if (temp.b < 0.f)
-		temp.b = 0.f;
 
 	temp.a = 254.99f;
 	return temp;
@@ -153,26 +111,12 @@ inline Color Color::operator/(float p_scale) const
 	}
 	Color temp;
 	temp.r = this->r / p_scale;
-	if (temp.r >= 254.99f)
-		temp.r = 254.99f;
 
-	if (temp.r < 0.f)
-		temp.r = 0.f;
 
 	temp.g = this->g / p_scale;
-	if (temp.g >= 254.99f)
-		temp.g = 254.99f;
-
-	if (temp.g < 0.f)
-		temp.g = 0.f;
-
+	
 	temp.b = this->b / p_scale;
-	if (temp.b >= 254.99f)
-		temp.b = 254.99f;
-
-	if (temp.b < 0.f)
-		temp.b = 0.f;
-
+	
 	temp.a = 254.99f;
 	return temp;
 }

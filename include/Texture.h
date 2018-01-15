@@ -22,7 +22,6 @@ public:
 	void ClearBuffer();
 
 private:
-	SDL_Surface * m_rbga;
 	uint32_t* m_pixelBuffer;
 	uint16_t m_width;
 	uint16_t m_height;
