@@ -2,8 +2,8 @@
 
 using namespace Toolbox;
 
-Mesh::Mesh(): m_pTexture(nullptr) {}
-Mesh::~Mesh() {delete m_pTexture;}
+Mesh::Mesh(): m_pImage(nullptr) {}
+Mesh::~Mesh() {delete m_pImage;}
 
 Mesh * Mesh::CreateCube()
 {
@@ -184,9 +184,14 @@ std::vector<uint32_t>& Mesh::GetIndices()
 	return m_indices;
 }
 
-void Mesh::SetTexture(Texture *p_ptexture)
+void Mesh::SetImage(Image* p_image)
 {
-	m_pTexture->SetColor(p_ptexture->GetColor());
+	m_pImage = p_image;
+}
+
+Image* Mesh::GetImage()
+{
+	return m_pImage;
 }
 
 void Mesh::SetVertex(const Vertex p_vertex)
@@ -202,9 +207,4 @@ void Mesh::SetIndex(const uint32_t p_index)
 void Mesh::SetColor(const float p_r, const float p_g, const float p_b, const float p_a)
 {
 	for (auto& i : m_vertices) i.SetColor(p_r, p_g, p_b, p_a);
-}
-
-Texture* Mesh::GetTexture()
-{
-	return m_pTexture;
 }

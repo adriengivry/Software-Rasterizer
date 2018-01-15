@@ -31,6 +31,7 @@ private:
 	Rasterizer m_rasterizer;
 	UserInterface* m_userInterface;
 	EventManager* m_eventManager;
+	Image* m_image;
 	Window m_window;
 
 	CameraParams m_cameraParams;

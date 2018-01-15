@@ -2,7 +2,7 @@
 
 #define SDL_INIT_SUCCESS 0
 #define TTF_INIT_SUCCESS 0
-#define IMG_INIT_SUCCESS 0
+#define IMG_INIT_SUCCESS 1
 #define SDL_LOG(logMessage) std::cout << "[SDL] " << logMessage << std::endl
 
 namespace Toolbox

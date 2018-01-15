@@ -6,7 +6,8 @@ Application::Application() :
 	m_renderTexture(new Texture(Window::WIDTH, Window::HEIGHT)),
 	m_rasterizer(*m_renderTexture, m_sharedContext),
 	m_userInterface(new UserInterface(m_sharedContext)),
-	m_eventManager(new EventManager(m_sharedContext))
+	m_eventManager(new EventManager(m_sharedContext)),
+	m_image(nullptr)
 {
 	m_sharedContext.window = &m_window;
 	Init();
@@ -15,6 +16,7 @@ Application::Application() :
 Application::~Application()
 {
 	delete m_renderTexture;
+	delete m_image;
 }
 
 void Application::Update()
@@ -68,7 +70,8 @@ void Application::Init()
 {
 	SDL_SetRenderDrawBlendMode(m_window.GetRenderer(), SDL_BLENDMODE_BLEND);
 	SDL_SetTextureBlendMode(m_window.GetTexture(), SDL_BLENDMODE_BLEND);
-
+	m_image = new Image("../assets/testure.png");
+	m_scene.entities[1]->GetMesh()->SetImage(m_image);
 	m_scene.InitEntities();
 	m_scene.InitLights();
 }
@@ -80,7 +83,7 @@ void Application::RenderScene()
 		Mat4::CreateTranslation(0 , 0, -6 + m_cameraParams.zoomOffset) * 
 		Mat4::CreateRotation(45 + m_cameraParams.xRotationOffset, 45 + m_cameraParams.yRotationOffset, 0);
 	m_scene.entities[0]->SetMatrix(matrix);
-
+	m_scene.entities[1]->SetMatrix(matrix);
 	switch (m_sharedContext.appInfos.selectedVersion)
 	{
 	default:
@@ -95,7 +98,8 @@ void Application::RenderScene()
 		m_rasterizer.RenderSceneBlinnPhong(&m_scene);
 		break;
 	case 4:
-		m_rasterizer.RenderSceneWireframe(&m_scene);
+		m_rasterizer.RenderTexture(&m_scene);
+		//m_rasterizer.RenderSceneWireframe(&m_scene);
 		break;
 	//case 5:
 		//m_rasterizer.RenderTexture(&m_scene);

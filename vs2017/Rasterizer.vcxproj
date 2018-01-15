@@ -22,6 +22,7 @@
     <ClCompile Include="..\src\Application.cpp" />
     <ClCompile Include="..\src\Entity.cpp" />
     <ClCompile Include="..\src\EventManager.cpp" />
+    <ClCompile Include="..\src\Image.cpp" />
     <ClCompile Include="..\src\Light.cpp" />
     <ClCompile Include="..\src\Main.cpp" />
     <ClCompile Include="..\src\Mesh.cpp" />
@@ -39,6 +40,7 @@
     <ClInclude Include="..\include\Application.h" />
     <ClInclude Include="..\include\Entity.h" />
     <ClInclude Include="..\include\EventManager.h" />
+    <ClInclude Include="..\include\Image.h" />
     <ClInclude Include="..\include\Light.h" />
     <ClInclude Include="..\include\IManager.h" />
     <ClInclude Include="..\include\Mat4.h" />

@@ -68,6 +68,7 @@ struct Vertex
 		this->position = p_other.position;
 		this->normal = p_other.normal;
 		this->color = p_other.color;
+		this->texCoordinate = p_other.texCoordinate;
 		return *this;
 	}
 };
