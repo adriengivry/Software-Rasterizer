@@ -5,7 +5,7 @@ using namespace Toolbox;
 Rasterizer::Rasterizer(Texture& p_texture, SharedContext& p_sharedContext) :
 	m_rtexture(p_texture),
 	m_sharedContext(p_sharedContext),
-	m_wireFrame(false),
+	m_zBufferOn(false),
 	m_zBuffer(new float[m_rtexture.GetWidth() * m_rtexture.GetHeight()])
 {
 	for (int i = 0 ; i < m_rtexture.GetWidth() * m_rtexture.GetHeight() - 1; ++i)
@@ -19,6 +19,7 @@ Rasterizer::~Rasterizer()
 
 void Rasterizer::RenderScene(Scene * p_pScene)
 {
+	m_zBufferOn = true;
 	Mat4 normalMatrix = p_pScene->entities[0]->GetMatrix();
 	Mat4 positionMatrix = Mat4::CreatePerspective(60, float(m_rtexture.GetWidth()) / float(m_rtexture.GetHeight()), 0.1f, 100.0f) * normalMatrix;
 	for (int i = 0; i < p_pScene->entities[0]->GetMesh()->GetIndices().size() - 2; i += 3)
@@ -35,6 +36,7 @@ void Rasterizer::RenderScene(Scene * p_pScene)
 
 void Rasterizer::RenderSceneBlinnPhong(Scene * p_pScene)
 {
+	m_zBufferOn = true;
 	Vertex lightposition = p_pScene->lights[0]->GetPosition();
 	Vec3 Lightcomp(p_pScene->lights[0]->GetAmbient(), p_pScene->lights[0]->GetDiffuse(), p_pScene->lights[0]->GetSpecular());
 	lightposition.VertexTransform(Mat4::CreatePerspective(60, float(m_rtexture.GetWidth()) / float(m_rtexture.GetHeight()), 0.1f, 100.0f));
@@ -61,6 +63,7 @@ void Rasterizer::RenderSceneBlinnPhong(Scene * p_pScene)
 
 void Rasterizer::RenderScenePhong(Scene * p_pScene)
 {
+	m_zBufferOn = true;
 	Mat4 normalMatrix = p_pScene->entities[0]->GetMatrix();
 	Mat4 projection1 = Mat4::CreatePerspective(60, float(m_rtexture.GetWidth()) / float(m_rtexture.GetHeight()), 0.1f, 100.0f) * normalMatrix;
 	Mat4 normalMatrixTrans = normalMatrix.CreateTranspose();
@@ -84,6 +87,7 @@ void Rasterizer::RenderScenePhong(Scene * p_pScene)
 }
 void Rasterizer::RenderSceneWireframe(Scene * p_pScene)
 {
+	m_zBufferOn = false;
 	Mat4 normalMatrix = p_pScene->entities[0]->GetMatrix();
 	Mat4 positionMatrix = Mat4::CreatePerspective(60, float(m_rtexture.GetWidth()) / float(m_rtexture.GetHeight()), 0.1f, 100.0f) * normalMatrix;
 	for (int i = 0; i < p_pScene->entities[0]->GetMesh()->GetIndices().size() - 2; i += 3)
@@ -100,6 +104,7 @@ void Rasterizer::RenderSceneWireframe(Scene * p_pScene)
 
 void Rasterizer::RenderTexture(Scene* p_pScene)
 {
+	m_zBufferOn = false;
 	Mat4 normalMatrix = p_pScene->entities[1]->GetMatrix();
 	Mat4 positionMatrix = Mat4::CreatePerspective(60, float(m_rtexture.GetWidth()) / float(m_rtexture.GetHeight()), 0.1f, 100.0f) * normalMatrix;
 	for (int i = 0; i < p_pScene->entities[1]->GetMesh()->GetIndices().size() - 2; i += 3)
@@ -117,6 +122,7 @@ void Rasterizer::RenderTexture(Scene* p_pScene)
 
 void Rasterizer::RenderAlphaBlending(Scene* p_pScene)
 {
+	m_zBufferOn = false;
 	for (uint16_t i = 2; i >= 1; --i)
 	{
 		Mat4 ModelProjection = Mat4::CreatePerspective(60, float(m_rtexture.GetWidth()) / float(m_rtexture.GetHeight()), 0.1f, 100.0f) * p_pScene->entities[i]->GetMatrix();
@@ -153,8 +159,11 @@ void Rasterizer::Update()
 {
 	SDL_UpdateTexture(m_sharedContext.window->GetTexture(), nullptr, m_rtexture.GetPixelBuffer(), m_rtexture.GetWidth() * sizeof(uint32_t));
 	m_rtexture.ClearBuffer();
-	for (int i = m_rtexture.GetWidth() * m_rtexture.GetHeight(); i--;)
-		m_zBuffer[i] = std::numeric_limits<float>::digits10;
+	if (m_zBufferOn)
+	{
+		for (int i = m_rtexture.GetWidth() * m_rtexture.GetHeight(); i--;)
+			m_zBuffer[i] = std::numeric_limits<float>::digits10;
+	}
 }
 
 void Rasterizer::Draw()

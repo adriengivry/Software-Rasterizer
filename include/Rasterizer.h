@@ -32,6 +32,6 @@ public:
 private:
 	Texture& m_rtexture;
 	SharedContext& m_sharedContext;
-	bool m_wireFrame;
+	bool m_zBufferOn;
 	float* m_zBuffer;
 };
