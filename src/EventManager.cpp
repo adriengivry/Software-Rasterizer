@@ -61,11 +61,58 @@ void EventManager::KeyInput(const SDL_Keysym& p_key, const bool p_state) const
 	case SDLK_DOWN:
 		m_sharedContext.actions.xTurnCounterClockwise = p_state;
 		break;
+	case SDLK_8:
+		m_sharedContext.appInfos.selectedLight = AMBIANT;
+		break;
+	case SDLK_9:
+		m_sharedContext.appInfos.selectedLight = DIFFUSE;
+		break;
+	case SDLK_0:
+		m_sharedContext.appInfos.selectedLight = SPECULAR;
+		break;
+	case SDLK_PAGEUP:
+		switch (m_sharedContext.appInfos.selectedLight)
+		{
+		default:
+			break;
+		case AMBIANT:
+			if (m_sharedContext.appInfos.lightParams.ambiant < 100)
+				m_sharedContext.appInfos.lightParams.ambiant += 1;
+			break;
+		case DIFFUSE:
+			if (m_sharedContext.appInfos.lightParams.diffuse < 100)
+				m_sharedContext.appInfos.lightParams.diffuse += 1;
+			break;
+		case SPECULAR:
+			if (m_sharedContext.appInfos.lightParams.specular < 100)
+				m_sharedContext.appInfos.lightParams.specular += 1;
+			break;
+		}
+		break;
+	case SDLK_PAGEDOWN:
+		switch (m_sharedContext.appInfos.selectedLight)
+		{
+		default:
+			break;
+		case AMBIANT:
+			if (m_sharedContext.appInfos.lightParams.ambiant > 0)
+				m_sharedContext.appInfos.lightParams.ambiant -= 1;
+			break;
+		case DIFFUSE:
+			if (m_sharedContext.appInfos.lightParams.diffuse > 0)
+				m_sharedContext.appInfos.lightParams.diffuse -= 1;
+			break;
+		case SPECULAR:
+			if (m_sharedContext.appInfos.lightParams.specular > 0)
+				m_sharedContext.appInfos.lightParams.specular -= 1;
+			break;
+		}
+		break;
 	default:
 		break;
 	}
 
-	if (p_key.sym >= 49 && p_key.sym <= 53)
+	if (p_key.sym >= 49 && p_key.sym <= 55)
 		m_sharedContext.appInfos.selectedVersion = p_key.sym - 48;
 }
 
