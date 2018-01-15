@@ -49,6 +49,7 @@ struct ApplicationInfos
 	float lastTime = 0;
 	float currentTime = 0;
 	float deltaTime = 0;
+	float secondCubeRotationOffset = 0;
 	uint16_t fpsCounter = 0;
 	uint16_t minFps = 65535;
 	uint16_t maxFps = 0;

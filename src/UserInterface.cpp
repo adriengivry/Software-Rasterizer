@@ -34,10 +34,10 @@ void UserInterface::Draw() const
 		"1. Z-Buffer",
 		"2. Phong (Per-Vertex)",
 		"3. Blinn-Phong (Per-Pixel)",
-		"4. Wireframe",
-		"5. Texture",
+		"4. Wireframe with Backface Culling",
+		"5. Bilinear filtering",
 		"6. Alpha-Blending",
-		"7. Antialiasing"
+		"7. Anti-aliasing"
 	};
 
 	uint8_t r, g, b;

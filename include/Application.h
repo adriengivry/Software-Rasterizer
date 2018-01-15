@@ -34,6 +34,7 @@ private:
 	UserInterface* m_userInterface;
 	EventManager* m_eventManager;
 	Image* m_image;
+	Image* m_image2;
 	Window m_window;
 
 	CameraParams m_cameraParams;

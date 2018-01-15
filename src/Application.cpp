@@ -7,9 +7,11 @@ Application::Application() :
 	m_rasterizer(*m_renderTexture, m_sharedContext),
 	m_userInterface(new UserInterface(m_sharedContext)),
 	m_eventManager(new EventManager(m_sharedContext)),
-	m_image(nullptr)
+	m_image(nullptr),
+	m_image2(nullptr)
 {
 	m_sharedContext.window = &m_window;
+	m_sharedContext.scene = &m_scene;
 	Init();
 }
 
@@ -18,6 +20,7 @@ Application::~Application()
 	delete m_eventManager;
 	delete m_renderTexture;
 	delete m_image;
+	delete m_image2;
 
 	/*
 	 * TODO: WEIRD MEMORY ERROR NEED TO BE CORRECTED (Memory leak if this part is commented)
@@ -79,10 +82,11 @@ void Application::Init()
 	//SDL_SetRenderDrawBlendMode(m_window.GetRenderer(), SDL_BLENDMODE_BLEND);
 	//SDL_SetTextureBlendMode(m_window.GetTexture(), SDL_BLENDMODE_BLEND);
 	m_image = new Image("../assets/texture.png");
+	m_image2 = new Image("../assets/texture2.png");
 	m_scene.InitEntities();
 	m_scene.InitLights();
 	m_scene.entities[1]->GetMesh()->SetImage(m_image);
-	m_scene.entities[2]->GetMesh()->SetImage(m_image);
+	m_scene.entities[2]->GetMesh()->SetImage(m_image2);
 	m_scene.entities[1]->SetAlpha(0.4f);
 	m_scene.entities[2]->SetAlpha(1.0f);
 }
@@ -94,11 +98,13 @@ void Application::RenderScene()
 		Mat4::CreateTranslation(0 , 0, -6 + m_cameraParams.zoomOffset) * 
 		Mat4::CreateRotation(45 + m_cameraParams.xRotationOffset, 45 + m_cameraParams.yRotationOffset, 0);
 
+	m_sharedContext.appInfos.secondCubeRotationOffset += 20 * m_sharedContext.appInfos.deltaTime;
+
 	const Mat4 matrix2 =
-		Mat4::CreateTranslation(m_cameraParams.xOffset, 0, 0).CreateInverse() *
-		Mat4::CreateTranslation(0, 0, -6 + m_cameraParams.zoomOffset) *
-		Mat4::CreateRotation(45, 45, 0) *
-		Mat4::CreateScale(2.f, 2.f, 2.f);
+		Mat4::CreateTranslation(0, 0, 0).CreateInverse() *
+		Mat4::CreateTranslation(0, 0, -6) *
+		Mat4::CreateRotation(m_sharedContext.appInfos.secondCubeRotationOffset, m_sharedContext.appInfos.secondCubeRotationOffset, 0) *
+		Mat4::CreateScale(1.5f, 1.5f, 1.5f);
 	m_scene.entities[0]->SetMatrix(matrix);
 	m_scene.entities[1]->SetMatrix(matrix);
 	m_scene.entities[2]->SetMatrix(matrix2);
@@ -158,7 +164,7 @@ void Application::UpdateCamera()
 	m_cameraParams.xRotationOffset += xRotationOffset * m_sharedContext.appInfos.deltaTime;
 	m_cameraParams.yRotationOffset += yRotationOffset * m_sharedContext.appInfos.deltaTime;
 
-	if (m_cameraParams.zoomOffset >= 4) m_cameraParams.zoomOffset = 4;
+	if (m_cameraParams.zoomOffset >= 3) m_cameraParams.zoomOffset = 3;
 	if (m_cameraParams.zoomOffset <= -15) m_cameraParams.zoomOffset = -15;
 }
 
