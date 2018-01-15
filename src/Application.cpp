@@ -80,6 +80,9 @@ void Application::Init()
 	m_scene.InitEntities();
 	m_scene.InitLights();
 	m_scene.entities[1]->GetMesh()->SetImage(m_image);
+	m_scene.entities[2]->GetMesh()->SetImage(m_image);
+	m_scene.entities[1]->SetAlpha(0.4f);
+	m_scene.entities[2]->SetAlpha(1.0f);
 }
 
 void Application::RenderScene()
@@ -116,11 +119,10 @@ void Application::RenderScene()
 	case 5:
 		m_rasterizer.RenderTexture(&m_scene);
 		break;
-	//case 6:
-		//m_rasterizer.RenderAlphaBlending(&m_scene);
-		//break;
+	case 6:
+		m_rasterizer.RenderAlphaBlending(&m_scene);
+		break;
 	}
-	
 }
 
 void Application::UpdateCamera()

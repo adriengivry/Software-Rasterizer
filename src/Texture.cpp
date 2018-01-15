@@ -3,7 +3,8 @@
 Texture::Texture(const uint16_t p_width, const uint16_t p_height) :
 	m_width(p_width),
 	m_height(p_height),
-	m_palette(nullptr)
+	m_palette(nullptr),
+	m_rbga(nullptr)
 {
 	m_pixelBuffer = new uint32_t[m_width * m_height];
 	ClearBuffer();
@@ -13,6 +14,7 @@ Texture::~Texture()
 {
 	delete m_pixelBuffer;
 	delete m_palette;
+	SDL_FreeSurface(m_rbga);
 }
 
 void Texture::SetPixelColor(const uint16_t p_x, const uint16_t p_y, Color& p_color)
@@ -26,6 +28,40 @@ void Texture::SetPixelColor(const uint16_t p_x, const uint16_t p_y, Color& p_col
 		return;
 	}
 		m_pixelBuffer[p_y * m_width + p_x] = p_color.CovertTo32();
+}
+
+Color Texture::GetPixelColor(const uint16_t p_x, const uint16_t p_y)
+{
+		uint32_t pixel	= m_pixelBuffer[p_y * m_width + p_x];
+		return CalculatePixelColor(pixel);
+}
+
+Color Texture::CalculatePixelColor(const uint32_t pixel)
+{
+	uint32_t index = 0;
+	uint8_t red, green, blue, alpha;
+	m_rbga = SDL_ConvertSurfaceFormat(m_rbga, SDL_PIXELFORMAT_RGBA32, 0);
+	index = pixel & m_rbga->format->Rmask;
+	index = index >> m_rbga->format->Rshift;
+	index = index << m_rbga->format->Rloss;
+	red = static_cast<uint8_t>(index);
+
+	index = pixel & m_rbga->format->Gmask;
+	index = index >> m_rbga->format->Gshift;
+	index = index << m_rbga->format->Gloss;
+	green = static_cast<uint8_t>(index);
+
+	index = pixel & m_rbga->format->Bmask;
+	index = index >> m_rbga->format->Bshift;
+	index = index << m_rbga->format->Gloss;
+	blue = static_cast<uint8_t>(index);
+
+	index = pixel & m_rbga->format->Amask;
+	index = index >> m_rbga->format->Ashift;
+	index = index << m_rbga->format->Aloss;
+	alpha = static_cast<uint8_t>(index);
+
+	return Color(red, green, blue, alpha);
 }
 
 uint16_t Texture::GetWidth()

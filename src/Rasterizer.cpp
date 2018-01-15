@@ -117,7 +117,7 @@ void Rasterizer::RenderTexture(Scene* p_pScene)
 
 void Rasterizer::RenderAlphaBlending(Scene* p_pScene)
 {
-	
+
 }
 
 void Rasterizer::Update()
