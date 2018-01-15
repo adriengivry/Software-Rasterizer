@@ -70,6 +70,7 @@ void EventManager::KeyInput(const SDL_Keysym& p_key, const bool p_state) const
 	case SDLK_0:
 		m_sharedContext.appInfos.selectedLight = SPECULAR;
 		break;
+	case SDLK_KP_PLUS:
 	case SDLK_PAGEUP:
 		switch (m_sharedContext.appInfos.selectedLight)
 		{
@@ -89,6 +90,7 @@ void EventManager::KeyInput(const SDL_Keysym& p_key, const bool p_state) const
 			break;
 		}
 		break;
+	case SDLK_KP_MINUS:
 	case SDLK_PAGEDOWN:
 		switch (m_sharedContext.appInfos.selectedLight)
 		{
