@@ -30,6 +30,7 @@ void Application::Update()
 	m_sharedContext.appInfos.lastTime = m_sharedContext.appInfos.currentTime;
 
 	UpdateCamera();
+	UpdateLights();
 	RenderScene();
 	m_eventManager->Update();
 	m_rasterizer.Update();
@@ -158,6 +159,49 @@ void Application::UpdateCamera()
 
 	if (m_cameraParams.zoomOffset >= 4) m_cameraParams.zoomOffset = 4;
 	if (m_cameraParams.zoomOffset <= -15) m_cameraParams.zoomOffset = -15;
+}
+
+void Application::UpdateLights()
+{
+	float lightOffset = 0;
+
+	const float lightIncrementPerSecond = 20;
+
+	if (m_sharedContext.actions.increaseLight)
+		lightOffset += lightIncrementPerSecond * m_sharedContext.appInfos.deltaTime;
+
+	if (m_sharedContext.actions.decreaseLight)
+		lightOffset -= lightIncrementPerSecond * m_sharedContext.appInfos.deltaTime;
+
+	switch (m_sharedContext.appInfos.selectedLight)
+	{
+	default: 
+		break;
+	case AMBIANT:
+		m_sharedContext.appInfos.lightParams.ambiant += lightOffset;
+		break;
+	case DIFFUSE:
+		m_sharedContext.appInfos.lightParams.diffuse += lightOffset;
+		break;
+	case SPECULAR:
+		m_sharedContext.appInfos.lightParams.specular += lightOffset;
+		break;
+	}
+
+	if (m_sharedContext.appInfos.lightParams.ambiant < 0)
+		m_sharedContext.appInfos.lightParams.ambiant = 0;
+	else if (m_sharedContext.appInfos.lightParams.ambiant > 100)
+		m_sharedContext.appInfos.lightParams.ambiant = 100;
+
+	if (m_sharedContext.appInfos.lightParams.diffuse < 0)
+		m_sharedContext.appInfos.lightParams.diffuse = 0;
+	else if (m_sharedContext.appInfos.lightParams.diffuse > 100)
+		m_sharedContext.appInfos.lightParams.diffuse = 100;
+
+	if (m_sharedContext.appInfos.lightParams.specular < 0)
+		m_sharedContext.appInfos.lightParams.specular = 0;
+	else if (m_sharedContext.appInfos.lightParams.specular > 100)
+		m_sharedContext.appInfos.lightParams.specular = 100;
 }
 
 SharedContext& Application::GetContext()

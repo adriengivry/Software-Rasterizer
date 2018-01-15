@@ -20,13 +20,15 @@ struct Actions
 	bool xTurnCounterClockwise;
 	bool yTurnClockwise;
 	bool yTurnCounterClockwise;
+	bool increaseLight;
+	bool decreaseLight;
 };
 
 struct LightParams
 {
-	uint8_t ambiant = 50;
-	uint8_t diffuse = 70;
-	uint8_t specular = 90;
+	float ambiant = 50;
+	float diffuse = 70;
+	float specular = 90;
 };
 
 struct ApplicationInfos

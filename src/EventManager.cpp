@@ -72,43 +72,11 @@ void EventManager::KeyInput(const SDL_Keysym& p_key, const bool p_state) const
 		break;
 	case SDLK_KP_PLUS:
 	case SDLK_PAGEUP:
-		switch (m_sharedContext.appInfos.selectedLight)
-		{
-		default:
-			break;
-		case AMBIANT:
-			if (m_sharedContext.appInfos.lightParams.ambiant < 100)
-				m_sharedContext.appInfos.lightParams.ambiant += 1;
-			break;
-		case DIFFUSE:
-			if (m_sharedContext.appInfos.lightParams.diffuse < 100)
-				m_sharedContext.appInfos.lightParams.diffuse += 1;
-			break;
-		case SPECULAR:
-			if (m_sharedContext.appInfos.lightParams.specular < 100)
-				m_sharedContext.appInfos.lightParams.specular += 1;
-			break;
-		}
+		m_sharedContext.actions.increaseLight = p_state;
 		break;
 	case SDLK_KP_MINUS:
 	case SDLK_PAGEDOWN:
-		switch (m_sharedContext.appInfos.selectedLight)
-		{
-		default:
-			break;
-		case AMBIANT:
-			if (m_sharedContext.appInfos.lightParams.ambiant > 0)
-				m_sharedContext.appInfos.lightParams.ambiant -= 1;
-			break;
-		case DIFFUSE:
-			if (m_sharedContext.appInfos.lightParams.diffuse > 0)
-				m_sharedContext.appInfos.lightParams.diffuse -= 1;
-			break;
-		case SPECULAR:
-			if (m_sharedContext.appInfos.lightParams.specular > 0)
-				m_sharedContext.appInfos.lightParams.specular -= 1;
-			break;
-		}
+		m_sharedContext.actions.decreaseLight = p_state;
 		break;
 	default:
 		break;

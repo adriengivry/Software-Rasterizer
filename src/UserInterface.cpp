@@ -36,9 +36,9 @@ void UserInterface::Draw() const
 		"5. Texture",
 		"6. Alpha-Blending",
 		"7. Antialiasing",
-		"8. Ambiant [" + std::to_string(m_sharedContext.appInfos.lightParams.ambiant) + "]",
-		"9. Diffuse [" + std::to_string(m_sharedContext.appInfos.lightParams.diffuse) + "]",
-		"0. Specular [" + std::to_string(m_sharedContext.appInfos.lightParams.specular) + "]" 
+		"8. Ambiant [" + std::to_string(static_cast<uint8_t>(m_sharedContext.appInfos.lightParams.ambiant)) + "]",
+		"9. Diffuse [" + std::to_string(static_cast<uint8_t>(m_sharedContext.appInfos.lightParams.diffuse)) + "]",
+		"0. Specular [" + std::to_string(static_cast<uint8_t>(m_sharedContext.appInfos.lightParams.specular)) + "]"
 	};
 
 	uint8_t r, g, b;

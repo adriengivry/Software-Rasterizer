@@ -22,6 +22,7 @@ public:
 	void Init();
 	void RenderScene();
 	void UpdateCamera();
+	void UpdateLights();
 
 	SharedContext& GetContext();
 private:
