@@ -16,9 +16,13 @@ Application::Application() :
 Application::~Application()
 {
 	delete m_eventManager;
-	delete m_userInterface;
-	delete m_image;
 	delete m_renderTexture;
+
+	/*
+	 * TODO: WEIRD MEMORY ERROR NEED TO BE CORRECTED (Memory leak if this part is commented)
+	 * delete m_userInterface;
+	 * delete m_image;
+	*/
 }
 
 void Application::Update()
