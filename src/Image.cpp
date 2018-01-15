@@ -44,7 +44,10 @@ Image::Image(std::string p_path)
     SDL_FreeSurface(image);
 }
 
-Image::~Image() { delete m_pColortable; }
+Image::~Image()
+{
+	delete m_pColortable;
+}
 
 uint32_t Image::GetPixel(SDL_Surface* p_src, int p_x, int p_y)
 {
