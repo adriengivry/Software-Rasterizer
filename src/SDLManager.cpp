@@ -34,5 +34,6 @@ bool Toolbox::InitSDL()
 void Toolbox::CloseSDL()
 {
 	TTF_Quit();
+	IMG_Quit();
 	SDL_Quit();
 }
