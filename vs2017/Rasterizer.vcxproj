@@ -134,26 +134,42 @@
       <WarningLevel>Level1</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\dependencies\SDL2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\dependencies\SDL2\include;$(ProjectDir)..\dependencies\SDL2_ttf\include;$(ProjectDir)..\dependencies\SDL2_image\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>$(ProjectDir)..\dependencies\SDL2\lib\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)..\dependencies\SDL2\lib\32bits;$(ProjectDir)..\dependencies\SDL2_ttf\lib\32bits;$(ProjectDir)..\dependencies\SDL2_image\lib\32bits;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_ttf.lib;SDL2_image.lib</AdditionalDependencies>
       <SubSystem>Console</SubSystem>
     </Link>
+    <PostBuildEvent>
+      <Command>copy /Y "$(ProjectDir)..\dependencies\SDL2\lib\32bits\*.dll" "$(ProjectDir)"
+copy /Y "$(ProjectDir)..\dependencies\SDL2_ttf\lib\32bits\*.dll" "$(ProjectDir)"
+copy /Y "$(ProjectDir)..\dependencies\SDL2_image\lib\32bits\*.dll" "$(ProjectDir)"</Command>
+    </PostBuildEvent>
+    <PreBuildEvent>
+      <Command>del "$(ProjectDir)*.dll"</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <WarningLevel>Level1</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\dependencies\SDL2\include;$(ProjectDir)..\dependencies\SDL2_ttf\include;$(ProjectDir)..\dependencies\SDL2_image\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\dependencies\SDL2\include;$(ProjectDir)..\dependencies\SDL2_ttf\include;$(ProjectDir)..\dependencies\SDL2_image\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>$(ProjectDir)..\dependencies\SDL2\lib\x64\;$(ProjectDir)..\dependencies\SDL2_ttf\lib\x64\;$(ProjectDir)..\dependencies\SDL2_image\lib\x64\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_ttf.lib;SDL2_image.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)..\dependencies\SDL2\lib\64bits;$(ProjectDir)..\dependencies\SDL2_ttf\lib\64bits;$(ProjectDir)..\dependencies\SDL2_image\lib\64bits</AdditionalLibraryDirectories>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_ttf.lib;SDL2_image.lib</AdditionalDependencies>
       <SubSystem>Windows</SubSystem>
     </Link>
+    <PostBuildEvent>
+      <Command>copy /Y "$(ProjectDir)..\dependencies\SDL2\lib\64bits\*.dll" "$(ProjectDir)"
+copy /Y "$(ProjectDir)..\dependencies\SDL2_ttf\lib\64bits\*.dll" "$(ProjectDir)"
+copy /Y "$(ProjectDir)..\dependencies\SDL2_image\lib\64bits\*.dll" "$(ProjectDir)"</Command>
+    </PostBuildEvent>
+    <PreBuildEvent>
+      <Command>del "$(ProjectDir)*.dll"</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -162,15 +178,23 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\dependencies\SDL2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\dependencies\SDL2\include;$(ProjectDir)..\dependencies\SDL2_ttf\include;$(ProjectDir)..\dependencies\SDL2_image\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>$(ProjectDir)..\dependencies\SDL2\lib\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)..\dependencies\SDL2\lib\32bits;$(ProjectDir)..\dependencies\SDL2_ttf\lib\32bits;$(ProjectDir)..\dependencies\SDL2_image\lib\32bits;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_ttf.lib;SDL2_image.lib</AdditionalDependencies>
       <SubSystem>Console</SubSystem>
     </Link>
+    <PostBuildEvent>
+      <Command>copy /Y "$(ProjectDir)..\dependencies\SDL2\lib\32bits\*.dll" "$(ProjectDir)"
+copy /Y "$(ProjectDir)..\dependencies\SDL2_ttf\lib\32bits\*.dll" "$(ProjectDir)"
+copy /Y "$(ProjectDir)..\dependencies\SDL2_image\lib\32bits\*.dll" "$(ProjectDir)"</Command>
+    </PostBuildEvent>
+    <PreBuildEvent>
+      <Command>del "$(ProjectDir)*.dll"</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -179,15 +203,23 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\dependencies\SDL2\include;$(ProjectDir)..\dependencies\SDL2_ttf\include;$(ProjectDir)..\dependencies\SDL2_img\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\dependencies\SDL2\include;$(ProjectDir)..\dependencies\SDL2_ttf\include;$(ProjectDir)..\dependencies\SDL2_image\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>$(ProjectDir)..\dependencies\SDL2\lib\;$(ProjectDir)..\dependencies\SDL2_ttf\lib\;$(ProjectDir)..\dependencies\SDL2_img\lib\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_ttf.lib;SDL2_image.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)..\dependencies\SDL2\lib\64bits;$(ProjectDir)..\dependencies\SDL2_ttf\lib\64bits;$(ProjectDir)..\dependencies\SDL2_image\lib\64bits</AdditionalLibraryDirectories>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_ttf.lib;SDL2_image.lib</AdditionalDependencies>
       <SubSystem>Windows</SubSystem>
     </Link>
+    <PostBuildEvent>
+      <Command>copy /Y "$(ProjectDir)..\dependencies\SDL2\lib\64bits\*.dll" "$(ProjectDir)"
+copy /Y "$(ProjectDir)..\dependencies\SDL2_ttf\lib\64bits\*.dll" "$(ProjectDir)"
+copy /Y "$(ProjectDir)..\dependencies\SDL2_image\lib\64bits\*.dll" "$(ProjectDir)"</Command>
+    </PostBuildEvent>
+    <PreBuildEvent>
+      <Command>del "$(ProjectDir)*.dll"</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
