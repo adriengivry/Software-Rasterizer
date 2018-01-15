@@ -164,7 +164,7 @@ void Application::UpdateCamera()
 	m_cameraParams.xRotationOffset += xRotationOffset * m_sharedContext.appInfos.deltaTime;
 	m_cameraParams.yRotationOffset += yRotationOffset * m_sharedContext.appInfos.deltaTime;
 
-	if (m_cameraParams.zoomOffset >= 3) m_cameraParams.zoomOffset = 3;
+	if (m_cameraParams.zoomOffset >= 2.5) m_cameraParams.zoomOffset = 2.5;
 	if (m_cameraParams.zoomOffset <= -15) m_cameraParams.zoomOffset = -15;
 }
 
