@@ -75,8 +75,8 @@ void Application::Draw()
 
 void Application::Init()
 {
-	SDL_SetRenderDrawBlendMode(m_window.GetRenderer(), SDL_BLENDMODE_BLEND);
-	SDL_SetTextureBlendMode(m_window.GetTexture(), SDL_BLENDMODE_BLEND);
+	//SDL_SetRenderDrawBlendMode(m_window.GetRenderer(), SDL_BLENDMODE_BLEND);
+	//SDL_SetTextureBlendMode(m_window.GetTexture(), SDL_BLENDMODE_BLEND);
 	m_image = new Image("../assets/texture.png");
 	m_scene.InitEntities();
 	m_scene.InitLights();
