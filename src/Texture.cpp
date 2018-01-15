@@ -21,7 +21,7 @@ Texture::Texture(const uint16_t p_width, const uint16_t p_height) :
 	bmask = 0x00ff0000;
 	amask = 0xff000000;
 #endif
-
+	
 	m_rbga = SDL_CreateRGBSurface(0, 1, 1, 32,
 		rmask, gmask, bmask, amask);
 	m_rbga = SDL_ConvertSurfaceFormat(m_rbga, SDL_PIXELFORMAT_RGBA32, 0);
@@ -53,33 +53,44 @@ Color Texture::GetPixelColor(const uint16_t p_x, const uint16_t p_y)
 		return CalculatePixelColor(pixel);
 }
 
-Color Texture::CalculatePixelColor(const uint32_t pixel)
+Color Texture::CalculatePixelColor(const uint32_t p_pixel)
 {
 	uint32_t index = 0;
 	uint8_t red, green, blue, alpha;
-	SDL_Surface *surface;
 	
-	index = pixel & m_rbga->format->Rmask;
+	red = p_pixel >> 8;
+	green = p_pixel >> 16;
+	blue = p_pixel >> 24;
+
+	/*
+	index = p_pixel & m_rbga->format->Rmask;
 	index = index >> m_rbga->format->Rshift;
 	index = index << m_rbga->format->Rloss;
 	red = static_cast<uint8_t>(index);
 
-	index = pixel & m_rbga->format->Gmask;
+
+	index = p_pixel & m_rbga->format->Gmask;
 	index = index >> m_rbga->format->Gshift;
 	index = index << m_rbga->format->Gloss;
 	green = static_cast<uint8_t>(index);
 
-	index = pixel & m_rbga->format->Bmask;
+	index = p_pixel & m_rbga->format->Bmask;
 	index = index >> m_rbga->format->Bshift;
 	index = index << m_rbga->format->Bloss;
 	blue = static_cast<uint8_t>(index);
 
-	index = pixel & m_rbga->format->Amask;
+	index = p_pixel & m_rbga->format->Amask;
 	index = index >> m_rbga->format->Ashift;
 	index = index << m_rbga->format->Aloss;
 	alpha = static_cast<uint8_t>(index);
+	*/
+	Color temp;
+	temp.r = red;
+	temp.g = green;
+	temp.b = blue;
+	temp.a = 255.0f;
 
-	return Color(red, green, blue, alpha);
+	return temp;
 }
 
 uint16_t Texture::GetWidth()

@@ -65,15 +65,84 @@ inline uint32_t Color::CovertTo32()
 
 inline Color Color::operator+(const Color& p_color) const
 {
-	return Color(this->r + p_color.r, this->g + p_color.g, this->b + p_color.b, 255);
+	Color temp;
+	temp.r = this->r + p_color.r;
+	if (temp.r >= 254.99f)
+		temp.r = 254.99f;
+
+	if (temp.r < 0.f)
+		temp.r = 0.f;
+
+	temp.g = this->g + p_color.g;
+	if (temp.g >= 254.99f)
+		temp.g = 254.99f;
+
+	if (temp.g < 0.f)
+		temp.g = 0.f;
+
+	temp.b = this->b + p_color.b;
+	if (temp.b >= 254.99f)
+		temp.b = 254.99f;
+
+	if (temp.b < 0.f)
+		temp.b = 0.f;
+
+	temp.a = 254.99f;
+	return temp;
 }
 inline Color Color::operator-(const Color& p_color) const
 {
-	return Color(this->r - p_color.r, this->g - p_color.g, this->b - p_color.b, 255);
+	Color temp;
+	temp.r = this->r - p_color.r;
+	if (temp.r >= 254.99f)
+		temp.r = 254.99f;
+
+	if (temp.r < 0.f)
+		temp.r = 0.f;
+
+	temp.g = this->g - p_color.g;
+	if (temp.g >= 254.99f)
+		temp.g = 254.99f;
+
+	if (temp.g < 0.f)
+		temp.g = 0.f;
+
+	temp.b = this->b - p_color.b;
+	if (temp.b >= 254.99f)
+		temp.b = 254.99f;
+
+	if (temp.b < 0.f)
+		temp.b = 0.f;
+
+	temp.a = 254.99f;
+	return temp;
 }
 inline Color Color::operator*(const float p_scale) const
 {
-	return Color(p_scale * this->r, p_scale * this->g, p_scale * this->b, 255);
+	Color temp;
+	temp.r = this->r * p_scale;
+	if (temp.r >= 254.99f)
+		temp.r = 254.99f;
+
+	if (temp.r < 0.f)
+		temp.r = 0.f;
+
+	temp.g = this->g * p_scale;
+	if (temp.g >= 254.99f)
+		temp.g = 254.99f;
+
+	if (temp.g < 0.f)
+		temp.g = 0.f;
+
+	temp.b = this->b * p_scale;
+	if (temp.b >= 254.99f)
+		temp.b = 254.99f;
+
+	if (temp.b < 0.f)
+		temp.b = 0.f;
+
+	temp.a = 254.99f;
+	return temp;
 }
 
 inline Color Color::operator/(float p_scale) const
@@ -82,7 +151,30 @@ inline Color Color::operator/(float p_scale) const
 	{
 		p_scale = 1;
 	}
-	return Color(this->r / p_scale, this->g / p_scale, this->b / p_scale, 255);
+	Color temp;
+	temp.r = this->r / p_scale;
+	if (temp.r >= 254.99f)
+		temp.r = 254.99f;
+
+	if (temp.r < 0.f)
+		temp.r = 0.f;
+
+	temp.g = this->g / p_scale;
+	if (temp.g >= 254.99f)
+		temp.g = 254.99f;
+
+	if (temp.g < 0.f)
+		temp.g = 0.f;
+
+	temp.b = this->b / p_scale;
+	if (temp.b >= 254.99f)
+		temp.b = 254.99f;
+
+	if (temp.b < 0.f)
+		temp.b = 0.f;
+
+	temp.a = 254.99f;
+	return temp;
 }
 
 inline Color& Color::operator=(const Color & p_color)

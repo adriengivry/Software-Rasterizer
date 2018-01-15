@@ -460,21 +460,24 @@ void Rasterizer::DrawTriangleAlphaBlending(Vertex& p_v0, Vertex& p_v1, Vertex& p
 
 				int ImgX = u * p_image->GetImageWidth();
 				int ImgY = u2 * p_image->GetImageHeight();
-				Color background = m_rtexture.GetPixelColor(int(positions.position.x), int(positions.position.y));
+				Color background; 
+				background.r = m_rtexture.GetPixelColor(int(positions.position.x), int(positions.position.y)).r;
+				background.g = m_rtexture.GetPixelColor(int(positions.position.x), int(positions.position.y)).g;
+				background.b = m_rtexture.GetPixelColor(int(positions.position.x), int(positions.position.y)).b;
 				Color source, final;
 				source.r = p_image->GetColorTable()[ImgX + ImgY * p_image->GetImageWidth()].r;
 				source.g = p_image->GetColorTable()[ImgX + ImgY * p_image->GetImageWidth()].g;
 				source.b = p_image->GetColorTable()[ImgX + ImgY * p_image->GetImageWidth()].b;
 				//source.a = p_alpha;
-				//final.r = (background.r - source.r) * p_alpha + source.r;
-				//final.g = (background.g - source.g) * p_alpha + source.g;
-				//final.b = (background.b - source.b) * p_alpha + source.b;
-				//final.a = 255.0f * p_alpha;
+				final.r = p_alpha * source.r + (1.f - p_alpha) * background.r;
+				final.g = p_alpha * source.g + (1.f - p_alpha) * background.g;
+				final.b = p_alpha * source.b + (1.f - p_alpha) * background.b;
+				final.a = 255.0f;
 				
-				final.r = p_alpha * background.r + (1 - p_alpha) * source.r;
-				final.g = p_alpha * background.g + (1 - p_alpha) * source.g;
-				final.b = p_alpha * background.b + (1 - p_alpha) * source.b;
-				final.a = 255.0f * p_alpha;
+				//final.r = p_alpha * source.r;
+				//final.g = p_alpha * source.g;
+				//final.b = p_alpha * source.b;
+				//final.a = 255.0f * p_alpha;
 				
 				m_rtexture.SetPixelColor(int(positions.position.x), int(positions.position.y), final);
 
