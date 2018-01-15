@@ -16,7 +16,7 @@ Application::Application() :
 Application::~Application()
 {
 	delete m_renderTexture;
-	delete m_image;
+	//delete m_image;
 }
 
 void Application::Update()
