@@ -2,10 +2,10 @@
 
 using namespace Toolbox;
 
-Triangle::Triangle(Vertex& p_v0, Vertex& p_v1, Vertex& p_v2) : m_v0(p_v0), m_v1(p_v1), m_v2(p_v2), m_aabb(Vec2(0, 0), Vec2(0, 0))
+Triangle::Triangle(Vertex& p_v0, Vertex& p_v1, Vertex& p_v2) : m_v0(p_v0.position.x, p_v0.position.y), m_v1(p_v1.position.x, p_v1.position.y), m_v2(p_v2.position.x, p_v2.position.y), m_aabb(Vec2(0, 0), Vec2(0, 0))
 {
-	m_V0 = Vec2(m_v2.position.x - m_v0.position.x, m_v2.position.y - m_v0.position.y);
-	m_V1 = Vec2(m_v1.position.x - m_v0.position.x, m_v1.position.y - m_v0.position.y);
+	m_V0 = Vec2(m_v2.x - m_v0.x, m_v2.y - m_v0.y);
+	m_V1 = Vec2(m_v1.x - m_v0.x, m_v1.y - m_v0.y);
 	m_d00 = m_V0.x * m_V0.x + m_V0.y * m_V0.y;
 	m_d01 = m_V0.x * m_V1.x + m_V0.y * m_V1.y;
 	m_d10 = m_V1.x * m_V0.x + m_V1.y * m_V1.y;
@@ -33,23 +33,23 @@ Vec3& Triangle::Barycentric(Vertex& p_v0, Vertex& p_point)
 
 AABB& Triangle::GetAABB()
 {
-	m_aabb.minPoint.x = std::min(std::min(m_v0.position.x, m_v1.position.x), m_v2.position.x);
-	m_aabb.minPoint.y = std::min(std::min(m_v0.position.y, m_v1.position.y), m_v2.position.y);
+	m_aabb.minPoint.x = std::min(std::min(m_v0.x, m_v1.x), m_v2.x);
+	m_aabb.minPoint.y = std::min(std::min(m_v0.y, m_v1.y), m_v2.y);
 
-	m_aabb.maxPoint.x = std::max(std::max(m_v0.position.x, m_v1.position.x), m_v2.position.x);
-	m_aabb.maxPoint.y = std::max(std::max(m_v0.position.y, m_v1.position.y), m_v2.position.y);
+	m_aabb.maxPoint.x = std::max(std::max(m_v0.x, m_v1.x), m_v2.x);
+	m_aabb.maxPoint.y = std::max(std::max(m_v0.y, m_v1.y), m_v2.y);
 
 	return m_aabb;
 }
 
 float Triangle::GetArea() const
 {
-	return	  m_v0.position.x * m_v1.position.y
-			- m_v1.position.x * m_v0.position.y
-			+ m_v1.position.x * m_v2.position.y
-			- m_v2.position.x * m_v1.position.y
-			+ m_v2.position.x * m_v0.position.y
-			- m_v0.position.x * m_v2.position.y;
+	return	  m_v0.x * m_v1.y
+			- m_v1.x * m_v0.y
+			+ m_v1.x * m_v2.y
+			- m_v2.x * m_v1.y
+			+ m_v2.x * m_v0.y
+			- m_v0.x * m_v2.y;
 }
 
 float Triangle::CrossProduct(Vertex& p_v0, Vertex& p_v1, Vertex& p_v2)
@@ -60,17 +60,17 @@ float Triangle::CrossProduct(Vertex& p_v0, Vertex& p_v1, Vertex& p_v2)
 			* (p_v2.position.x - p_v0.position.x);
 }
 
-Vertex& Triangle::getV0()
+Vec2& Triangle::getV0()
 {
 	return m_v0;
 }
 
-Vertex& Triangle::getV1()
+Vec2& Triangle::getV1()
 {
 	return m_v1;
 }
 
-Vertex& Triangle::getV2()
+Vec2& Triangle::getV2()
 {
 	return m_v2;
 }

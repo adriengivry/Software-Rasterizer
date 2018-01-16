@@ -34,13 +34,13 @@ public:
 	AABB& GetAABB();
 	float GetArea() const;
 	static float CrossProduct(Vertex& p_v0, Vertex& p_v1, Vertex& p_v2);
-	Vertex& getV0();
-	Vertex& getV1();
-	Vertex& getV2();
+	Toolbox::Vec2& getV0();
+	Toolbox::Vec2& getV1();
+	Toolbox::Vec2& getV2();
 private:
-	Vertex m_v0;
-	Vertex m_v1;
-	Vertex m_v2;
+	Toolbox::Vec2 m_v0;
+	Toolbox::Vec2 m_v1;
+	Toolbox::Vec2 m_v2;
 	Toolbox::Vec2 m_V0;
 	Toolbox::Vec2 m_V1;
 	float m_d00;
