@@ -311,24 +311,24 @@ void Rasterizer::DrawTriangle(Vertex& p_v0, Vertex& p_v1, Vertex& p_v2) const
 	const int minY = std::max(static_cast<int>(box.minPoint.y), 0);
 	const int maxX = std::min(static_cast<int>(box.maxPoint.x), m_rtexture.GetWidth() - 1);
 	const int maxY = std::min(static_cast<int>(box.maxPoint.y), m_rtexture.GetHeight() - 1);
-	Vertex positions(0, 0, 0);
-	for (positions.position.y = minY; positions.position.y <= maxY; ++positions.position.y)
+
+	Vec3 positions(0, 0, 0);
+	for (positions.y = minY; positions.y <= maxY; ++positions.y)
 	{
-		for (positions.position.x = minX; positions.position.x <= maxX; ++positions.position.x)
+		for (positions.x = minX; positions.x <= maxX; ++positions.x)
 		{
-			const Vec3 bary(triangle.Barycentric(v0, positions));
+			const Vec3 bary(triangle.Barycentric2(v0.position.x, v0.position.y, positions.x, positions.y));
 			if (bary.x >= 0 && bary.y >= 0 && bary.x + bary.y < 1)
 			{
-				positions.position.z = 0;
-				positions.position.z = v0.position.z * bary.z + v1.position.z * bary.x + bary.y * v2.position.z;
-				if (m_zBuffer[int(positions.position.x + positions.position.y * Window::WIDTH)] > positions.position.z)
+				positions.z = v0.position.z * bary.z + v1.position.z * bary.x + bary.y * v2.position.z;
+				if (m_zBuffer[int(positions.x + positions.y * Window::WIDTH)] > positions.z)
 				{
-					m_zBuffer[int(positions.position.x + positions.position.y * Window::WIDTH)] = positions.position.z;
+					m_zBuffer[int(positions.x + positions.y * Window::WIDTH)] = positions.z;
 					Color pixelColor;
 					pixelColor.r =  p_v0.color.r * bary.z + p_v1.color.r * bary.x + p_v2.color.r * bary.y;
 					pixelColor.g = p_v0.color.g * bary.z + p_v1.color.g * bary.x + p_v2.color.g * bary.y;
 					pixelColor.b = p_v0.color.b * bary.z + p_v1.color.b * bary.x + p_v2.color.b * bary.y;
-					m_rtexture.SetPixelColor(int(positions.position.x), int(positions.position.y), pixelColor);
+					m_rtexture.SetPixelColor(int(positions.x), int(positions.y), pixelColor);
 				}
 			}
 		}
@@ -353,18 +353,18 @@ void Rasterizer::DrawTriangleBlinnPhong(Vertex& p_v0, Vertex& p_v1, Vertex& p_v2
 	const int minY = std::max(static_cast<int>(box.minPoint.y), 0);
 	const int maxX = std::min(static_cast<int>(box.maxPoint.x), m_rtexture.GetWidth() - 1);
 	const int maxY = std::min(static_cast<int>(box.maxPoint.y), m_rtexture.GetHeight() - 1);
-	Vertex positions(0, 0, 0);
-	for (positions.position.y = minY; positions.position.y <= maxY; ++positions.position.y)
+	Vec3 positions(0, 0, 0);
+	for (positions.y = minY; positions.y <= maxY; ++positions.y)
 	{
-		for (positions.position.x = minX; positions.position.x <= maxX; ++positions.position.x)
+		for (positions.x = minX; positions.x <= maxX; ++positions.x)
 		{
-			const Vec3 bary(triangle.Barycentric(v0, positions));
+			const Vec3 bary(triangle.Barycentric2(v0.position.x, v0.position.y, positions.x, positions.y));
 			if (bary.x >= 0 && bary.y >= 0 && bary.x + bary.y <= 1)
 			{
-				positions.position.z = v0.position.z * bary.z + v1.position.z * bary.y + bary.x * v2.position.z;
-				if (m_zBuffer[int(positions.position.x + positions.position.y * Window::WIDTH)] > positions.position.z)
+				positions.z = v0.position.z * bary.z + v1.position.z * bary.y + bary.x * v2.position.z;
+				if (m_zBuffer[int(positions.x + positions.y * Window::WIDTH)] > positions.z)
 				{
-					m_zBuffer[int(positions.position.x + positions.position.y * Window::WIDTH)] = positions.position.z;
+					m_zBuffer[int(positions.x + positions.y * Window::WIDTH)] = positions.z;
 					Vec3 normal(bary.z * p_v0.normal.x + bary.y * p_v1.normal.x + bary.x * p_v2.normal.x,
 								bary.z * p_v0.normal.y + bary.y * p_v1.normal.y + bary.x * p_v2.normal.y,
 								bary.z * p_v0.normal.z + bary.y * p_v1.normal.z + bary.x * p_v2.normal.z);
@@ -375,7 +375,7 @@ void Rasterizer::DrawTriangleBlinnPhong(Vertex& p_v0, Vertex& p_v1, Vertex& p_v2
 					pixelColor.g = p_v0.color.g * bary.z + p_v1.color.g * bary.x + p_v2.color.g * bary.y;
 					pixelColor.b = p_v0.color.b * bary.z + p_v1.color.b * bary.x + p_v2.color.b * bary.y;
 					Color finalColor = this->BlinnPhongColor(positions, normal, p_lightPosition, p_lightcomp, pixelColor);
-					m_rtexture.SetPixelColor(int(positions.position.x), int(positions.position.y), finalColor);
+					m_rtexture.SetPixelColor(int(positions.x), int(positions.y), finalColor);
 				}
 			}
 		}
@@ -407,23 +407,23 @@ void Rasterizer::DrawTrianglePhong(Vertex& p_v0, Vertex& p_v1, Vertex& p_v2, Ver
 	const int minY = std::max(static_cast<int>(box.minPoint.y), 0);
 	const int maxX = std::min(static_cast<int>(box.maxPoint.x), m_rtexture.GetWidth() - 1);
 	const int maxY = std::min(static_cast<int>(box.maxPoint.y), m_rtexture.GetHeight() - 1);
-	Vertex positions(0, 0, 0);
-	for (positions.position.y = minY; positions.position.y <= maxY; ++positions.position.y)
+	Vec3 positions(0, 0, 0);
+	for (positions.y = minY; positions.y <= maxY; ++positions.y)
 	{
-		for (positions.position.x = minX; positions.position.x <= maxX; ++positions.position.x)
+		for (positions.x = minX; positions.x <= maxX; ++positions.x)
 		{
-			const Vec3 bary(triangle.Barycentric(v0, positions));
+			const Vec3 bary(triangle.Barycentric2(v0.position.x, v0.position.y, positions.x, positions.y));
 			if (bary.x >= 0 && bary.y >= 0 && bary.x + bary.y < 1)
 			{
-				positions.position.z = v0.position.z * bary.z + v1.position.z * bary.y + bary.x * v2.position.z;
-				if (m_zBuffer[int(positions.position.x + positions.position.y * Window::WIDTH)] > positions.position.z)
+				positions.z = v0.position.z * bary.z + v1.position.z * bary.y + bary.x * v2.position.z;
+				if (m_zBuffer[int(positions.x + positions.y * Window::WIDTH)] > positions.z)
 				{
-					m_zBuffer[int(positions.position.x + positions.position.y * Window::WIDTH)] = positions.position.z;
+					m_zBuffer[int(positions.x + positions.y * Window::WIDTH)] = positions.z;
 					Color pixelColor;
 					pixelColor.r = c0.r * bary.z + c1.r * bary.y + c2.r * bary.x;
 					pixelColor.g = c0.g * bary.z + c1.g * bary.y + c2.g * bary.x;
 					pixelColor.b = c0.b * bary.z + c1.b * bary.y + c2.b * bary.x;
-					m_rtexture.SetPixelColor(int(positions.position.x), int(positions.position.y), pixelColor);
+					m_rtexture.SetPixelColor(int(positions.x), int(positions.y), pixelColor);
 				}
 			}
 		}
@@ -464,12 +464,12 @@ void Rasterizer::DrawTriangleTexture(Vertex& p_v0, Vertex& p_v1, Vertex& p_v2, I
 	const int minY = std::max(static_cast<int>(box.minPoint.y), 0);
 	const int maxX = std::min(static_cast<int>(box.maxPoint.x), m_rtexture.GetWidth() - 1);
 	const int maxY = std::min(static_cast<int>(box.maxPoint.y), m_rtexture.GetHeight() - 1);
-	Vertex positions(0, 0, 0);
-	for (positions.position.y = minY; positions.position.y <= maxY; ++positions.position.y)
+	Vec3 positions(0, 0, 0);
+	for (positions.y = minY; positions.y <= maxY; ++positions.y)
 	{
-		for (positions.position.x = minX; positions.position.x <= maxX; ++positions.position.x)
+		for (positions.x = minX; positions.x <= maxX; ++positions.x)
 		{
-			const Vec3 bary(triangle.Barycentric(v0, positions));
+			const Vec3 bary(triangle.Barycentric2(v0.position.x, v0.position.y, positions.x, positions.y));
 			if (bary.x >= 0 && bary.y >= 0 && bary.x + bary.y < 1)
 			{
 				const float u = p_v0.texCoordinate.x * bary.z + p_v1.texCoordinate.x * bary.y + p_v2.texCoordinate.x * bary.x;
@@ -482,7 +482,7 @@ void Rasterizer::DrawTriangleTexture(Vertex& p_v0, Vertex& p_v1, Vertex& p_v2, I
 				final.g = p_image->GetColorTable()[ImgX + ImgY * p_image->GetImageWidth()].g;
 				final.b = p_image->GetColorTable()[ImgX + ImgY * p_image->GetImageWidth()].b;
 				final.a = 255.f;
-				m_rtexture.SetPixelColor(int(positions.position.x), int(positions.position.y), final);
+				m_rtexture.SetPixelColor(int(positions.x), int(positions.y), final);
 			}
 		}
 	}
@@ -505,13 +505,13 @@ void Rasterizer::DrawTriangleAlphaBlending(Vertex& p_v0, Vertex& p_v1, Vertex& p
 	const int minY = std::max(static_cast<int>(box.minPoint.y), 0);
 	const int maxX = std::min(static_cast<int>(box.maxPoint.x), m_rtexture.GetWidth() - 1);
 	const int maxY = std::min(static_cast<int>(box.maxPoint.y), m_rtexture.GetHeight() - 1);
-	Vertex positions(0, 0, 0);
-	for (positions.position.y = minY; positions.position.y <= maxY; ++positions.position.y)
+	Vec3 positions(0, 0, 0);
+	for (positions.y = minY; positions.y <= maxY; ++positions.y)
 	{
-		for (positions.position.x = minX; positions.position.x <= maxX; ++positions.position.x)
+		for (positions.x = minX; positions.x <= maxX; ++positions.x)
 		{
-			const Vec3 bary(triangle.Barycentric(v0, positions));
-			if (bary.x >= 0 && bary.y >= 0 && bary.x + bary.y <= 1)
+			const Vec3 bary(triangle.Barycentric2(v0.position.x, v0.position.y, positions.x, positions.y));
+			if (bary.x >= 0 && bary.y >= 0 && bary.x + bary.y < 1)
 			{
 				const float u = p_v0.texCoordinate.x * bary.z + p_v1.texCoordinate.x * bary.y + p_v2.texCoordinate.x * bary.x;
 				const float u2 = p_v0.texCoordinate.y * bary.z + p_v1.texCoordinate.y * bary.y + p_v2.texCoordinate.y * bary.x;
@@ -519,9 +519,9 @@ void Rasterizer::DrawTriangleAlphaBlending(Vertex& p_v0, Vertex& p_v1, Vertex& p
 				const int ImgX = u * p_image->GetImageWidth();
 				const int ImgY = u2 * p_image->GetImageHeight();
 				Color background; 
-				background.r = m_rtexture.GetPixelColor(int(positions.position.x), int(positions.position.y)).r;
-				background.g = m_rtexture.GetPixelColor(int(positions.position.x), int(positions.position.y)).g;
-				background.b = m_rtexture.GetPixelColor(int(positions.position.x), int(positions.position.y)).b;
+				background.r = m_rtexture.GetPixelColor(int(positions.x), int(positions.y)).r;
+				background.g = m_rtexture.GetPixelColor(int(positions.x), int(positions.y)).g;
+				background.b = m_rtexture.GetPixelColor(int(positions.x), int(positions.y)).b;
 				Color source, final;
 				source.r = p_image->GetColorTable()[ImgX + ImgY * p_image->GetImageWidth()].r;
 				source.g = p_image->GetColorTable()[ImgX + ImgY * p_image->GetImageWidth()].g;
@@ -531,18 +531,62 @@ void Rasterizer::DrawTriangleAlphaBlending(Vertex& p_v0, Vertex& p_v1, Vertex& p
 				final.b = p_alpha * source.b + (1.f - p_alpha) * background.b;
 				final.a = 255.0f * p_alpha;
 				
-				m_rtexture.SetPixelColor(int(positions.position.x), int(positions.position.y), final);
+				m_rtexture.SetPixelColor(int(positions.x), int(positions.y), final);
 
 			}
 		}
 	}
 }
 
-void Rasterizer::DrawTriangleNoAntialiasing(Vertex& p_v0, Vertex& p_v1, Vertex& p_v2) {}
-void Rasterizer::DrawTriangle2XAntialiasing(Vertex& p_v0, Vertex& p_v1, Vertex& p_v2) {}
-void Rasterizer::DrawTriangle4XAntialiasing(Vertex& p_v0, Vertex& p_v1, Vertex& p_v2) {}
-void Rasterizer::DrawTriangle8XAntialiasing(Vertex& p_v0, Vertex& p_v1, Vertex& p_v2) {}
-void Rasterizer::DrawTriangle16XAntialiasing(Vertex& p_v0, Vertex& p_v1, Vertex& p_v2) {}
+void Rasterizer::DrawTriangleNoAntialiasing(Vertex& p_v0, Vertex& p_v1, Vertex& p_v2) const
+{
+	Vertex v0(Mat4::ConvertToScreen(p_v0.position, m_rtexture.GetWidth(), m_rtexture.GetHeight()));
+	Vertex v1(Mat4::ConvertToScreen(p_v1.position, m_rtexture.GetWidth(), m_rtexture.GetHeight()));
+	Vertex v2(Mat4::ConvertToScreen(p_v2.position, m_rtexture.GetWidth(), m_rtexture.GetHeight()));
+	Vec2 v(v1.position.x - v0.position.x, v1.position.y - v0.position.y);
+	Vec2 w(v2.position.x - v0.position.x, v2.position.y - v0.position.y);
+	const float area = v.Cross(w);
+	if (area < 0)
+		return;
+
+	Triangle triangle(v0, v1, v2);
+	const AABB box = triangle.GetAABB();
+	const int minX = std::max(static_cast<int>(box.minPoint.x), 0);
+	const int minY = std::max(static_cast<int>(box.minPoint.y), 0);
+	const int maxX = std::min(static_cast<int>(box.maxPoint.x), m_rtexture.GetWidth() - 1);
+	const int maxY = std::min(static_cast<int>(box.maxPoint.y), m_rtexture.GetHeight() - 1);
+	Vec3 positions(0, 0, 0);
+	for (positions.y = minY; positions.y <= maxY; ++positions.y)
+	{
+		for (positions.x = minX; positions.x <= maxX; ++positions.x)
+		{
+			const Vec3 bary(triangle.Barycentric2(v0.position.x, v0.position.y, positions.x, positions.y));
+			if (bary.x >= 0 && bary.y >= 0 && bary.x + bary.y < 1)
+			{
+			}
+		}
+	}
+}
+
+void Rasterizer::DrawTriangle2XAntialiasing(Vertex& p_v0, Vertex& p_v1, Vertex& p_v2) const
+{
+	
+}
+
+void Rasterizer::DrawTriangle4XAntialiasing(Vertex& p_v0, Vertex& p_v1, Vertex& p_v2) const
+{
+	
+}
+
+void Rasterizer::DrawTriangle8XAntialiasing(Vertex& p_v0, Vertex& p_v1, Vertex& p_v2) const
+{
+	
+}
+
+void Rasterizer::DrawTriangle16XAntialiasing(Vertex& p_v0, Vertex& p_v1, Vertex& p_v2) const
+{
+	
+}
 
 void Rasterizer::ClearBuffer() const
 {
@@ -573,10 +617,10 @@ Color Rasterizer::PhongColor(Vertex& p_position, Vec3& p_normal, Vec3& p_lightco
 	return total;
 }
 
-Color Rasterizer::BlinnPhongColor(Vertex& p_position, Vec3& p_normal, Vertex& p_lightPosition, Vec3& p_lightcomp,
+Color Rasterizer::BlinnPhongColor(Vec3& p_position, Vec3& p_normal, Vertex& p_lightPosition, Vec3& p_lightcomp,
 	Color& p_color) const
 {
-	const Vertex position1(Mat4::ScreenToView(p_position.position, m_rtexture.GetWidth(), m_rtexture.GetHeight()));
+	const Vertex position1(Mat4::ScreenToView(p_position, m_rtexture.GetWidth(), m_rtexture.GetHeight()));
 	Vec3 lightDir(p_lightPosition.position.x - position1.position.x, p_lightPosition.position.y - position1.position.y, p_lightPosition.position.z - position1.position.z);
 	lightDir.Normalize();
 

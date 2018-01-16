@@ -14,10 +14,27 @@ Triangle::Triangle(Vertex& p_v0, Vertex& p_v1, Vertex& p_v2) : m_v0(p_v0.positio
 }
 	
 
-Vec3& Triangle::Barycentric(Vertex& p_v0, Vertex& p_point)
+Vec3& Triangle::Barycentric(Vec2& p_v0, Vec2& p_point)
 {
-	const float x = p_point.position.x - p_v0.position.x;
-	const float y = p_point.position.y - p_v0.position.y;
+	const float x = p_point.x - p_v0.x;
+	const float y = p_point.y - p_v0.y;
+
+	const float d02 = m_V0.x * x + m_V0.y * y;
+	const float d12 = m_V1.x * x + m_V1.y * y;
+	const float v = (m_d11 * d02 - m_d01 * d12) * m_Denom;
+	const float u = (m_d00 * d12 - m_d01 * d02) * m_Denom;
+
+	m_barycentric.x = v;
+	m_barycentric.y = u;
+	m_barycentric.z = 1.0f - v - u;
+
+	return m_barycentric;
+}
+
+Toolbox::Vec3& Triangle::Barycentric2(const float p_vertexX, const float p_vertexY, const float p_pointX, const float p_pointY)
+{
+	const float x = p_pointX - p_vertexX;
+	const float y = p_pointY - p_vertexY;
 
 	const float d02 = m_V0.x * x + m_V0.y * y;
 	const float d12 = m_V1.x * x + m_V1.y * y;

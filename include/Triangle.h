@@ -30,7 +30,8 @@ class Triangle
 {
 public:
 	Triangle(Vertex& p_v0, Vertex& p_v1, Vertex& p_v2);
-	Toolbox::Vec3& Barycentric(Vertex& p_v0, Vertex& p_point);
+	Toolbox::Vec3& Barycentric(Toolbox::Vec2& p_v0, Toolbox::Vec2&p_point);
+	Toolbox::Vec3& Barycentric2(const float p_vertexX, const float p_vertexY, const float p_pointX, const float p_pointY);
 	AABB& GetAABB();
 	float GetArea() const;
 	static float CrossProduct(Vertex& p_v0, Vertex& p_v1, Vertex& p_v2);
