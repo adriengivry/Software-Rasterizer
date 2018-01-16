@@ -17,60 +17,55 @@ UserInterface::~UserInterface()
 void UserInterface::Setup()
 {
 	m_font = TTF_OpenFont("../assets/arial.ttf", 20);
+
+	m_labelsVersions[0] = "VERSION SELECTION";
+	m_labelsVersions[1] = "1. Z-Buffer";
+	m_labelsVersions[2] = "2. Phong (Per-Vertex)";
+	m_labelsVersions[3] = "3. Blinn-Phong (Per-Pixel)";
+	m_labelsVersions[4] = "4. Wireframe with Backface Culling";
+	m_labelsVersions[5] = "5. Bilinear filtering";
+	m_labelsVersions[6] = "6. Alpha-Blending";
+	m_labelsVersions[7] = "7. Anti-aliasing";
 }
 
 void UserInterface::Update()
 {
 }
 
-void UserInterface::Draw() const
+void UserInterface::Draw()
 {
+	DrawFPS();
+	DrawVersionSelection();
+	DrawMeshProperties();
+	DrawLightProperties();	
+	DrawAntiAliasingProperties();
+}
+
+void UserInterface::DrawFPS()
+{
+	SetTextSelectedColor();
 	const std::string fps = std::to_string(m_sharedContext.appInfos.fpsCounter) + " FPS (" + std::to_string(m_sharedContext.appInfos.minFps) + " to " + std::to_string(m_sharedContext.appInfos.maxFps) + " FPS | ~" + std::to_string(m_sharedContext.appInfos.averageFps) + " FPS)";
 	DrawAt(fps, 0, 0);
+}
 
-	std::string items[] = 
-	{ 
-		"VERSION SELECTION",
-		"1. Z-Buffer",
-		"2. Phong (Per-Vertex)",
-		"3. Blinn-Phong (Per-Pixel)",
-		"4. Wireframe with Backface Culling",
-		"5. Bilinear filtering",
-		"6. Alpha-Blending",
-		"7. Anti-aliasing"
-	};
-
-	uint8_t r, g, b;
-
+void UserInterface::DrawVersionSelection()
+{
 	for (uint8_t i = 0; i < 8; ++i)
 	{
-		r = 125;
-		g = 125;
-		b = 125;
-
-		if (i == m_sharedContext.appInfos.selectedVersion)
-		{
-			r = 255;
-			g = 255;
-			b = 255;
-		}
-
-		if (i == 0)
-		{
-			r = 255;
-			g = 255;
-			b = 0;
-		}
-		
-		DrawAt(items[i], 0, 147 + i * 23, r, g, b);
+		SetTextDefaultColor();
+		if (i == m_sharedContext.appInfos.selectedVersion) SetTextSelectedColor();
+		if (i == 0) SetTextTitleColor();
+		DrawAt(m_labelsVersions[i], 0, 147 + i * 23);
 	}
+}
 
-
+void UserInterface::DrawMeshProperties()
+{
 	if (m_sharedContext.appInfos.selectedVersion < 5)
 	{
-		std::string cubeProperties[] =
+		std::string items[] =
 		{
-			"CUBE PROPERTIES",
+			"MESH PROPERTIES",
 			"[R]: " + std::to_string(static_cast<uint8_t>(m_sharedContext.appInfos.cubeParams.red)),
 			"[G]: " + std::to_string(static_cast<uint8_t>(m_sharedContext.appInfos.cubeParams.green)),
 			"[B]: " + std::to_string(static_cast<uint8_t>(m_sharedContext.appInfos.cubeParams.blue))
@@ -78,49 +73,46 @@ void UserInterface::Draw() const
 
 		for (uint8_t i = 0; i < 4; ++i)
 		{
+			SetTextDefaultColor();
 			bool colorIsChanging = false;
 
 			switch (i)
 			{
-			default:
-				break;
-			case 1:
-				colorIsChanging = m_sharedContext.actions.addRed;
-				break;
-			case 2:
-				colorIsChanging = m_sharedContext.actions.addGreen;
-				break;
-			case 3:
-				colorIsChanging = m_sharedContext.actions.addBlue;
-				break;
+				default: break;
+				case 1: colorIsChanging = m_sharedContext.actions.addRed;	break;
+				case 2: colorIsChanging = m_sharedContext.actions.addGreen; break;
+				case 3: colorIsChanging = m_sharedContext.actions.addBlue;	break;
 			}
 
-			r = 125;
-			g = 125;
-			b = 125;
-
-			if (i == 0)
-			{
-				r = 255;
-				g = 255;
-				b = 0;
-			}
-
-			if (colorIsChanging)
-			{
-				r = 255;
-				g = 255;
-				b = 255;
-			}
-
-			DrawAt(cubeProperties[i], 0, 350 + i * 23, r, g, b);
+			if (i == 0) SetTextTitleColor();
+			if (colorIsChanging) SetTextSelectedColor();
+			DrawAt(items[i], 0, 350 + i * 23);
 		}
 	}
 
+	if (m_sharedContext.appInfos.selectedVersion == 6)
+	{
+		std::string items[] =
+		{
+			"MESH PROPERTIES",
+			"[T]ransparency: " + std::to_string(static_cast<uint8_t>(m_sharedContext.appInfos.cubeParams.transparency)) + "%"
+		};
 
+		for (uint8_t i = 0; i < 2; ++i)
+		{
+			SetTextDefaultColor();
+			if (m_sharedContext.actions.addTransparency) SetTextSelectedColor();
+			if (i == 0) SetTextTitleColor();
+			DrawAt(items[i], 0, 350 + i * 23);
+		}
+	}
+}
+
+void UserInterface::DrawLightProperties()
+{
 	if (m_sharedContext.appInfos.selectedVersion == 2 || m_sharedContext.appInfos.selectedVersion == 3)
 	{
-		std::string lightParams[] =
+		std::string items[] =
 		{
 			"LIGHT PROPERTIES",
 			"8. Ambiant [" + std::to_string(static_cast<uint8_t>(m_sharedContext.appInfos.lightParams.ambiant)) + "]",
@@ -130,57 +122,52 @@ void UserInterface::Draw() const
 
 		for (uint8_t i = 0; i < 4; ++i)
 		{
-			r = 125;
-			g = 125;
-			b = 125;
-
-			if (i == m_sharedContext.appInfos.selectedLight)
-			{
-				r = 255;
-				g = 255;
-				b = 255;
-			}
-
-			if (i == 0)
-			{
-				r = 255;
-				g = 255;
-				b = 0;
-			}
-
-			DrawAt(lightParams[i], 0, 465 + i * 23, r, g, b);
+			SetTextDefaultColor();
+			if (i == m_sharedContext.appInfos.selectedLight) SetTextSelectedColor();
+			if (i == 0) SetTextTitleColor();
+			DrawAt(items[i], 0, 465 + i * 23);
 		}
 	}
+}
 
-	if (m_sharedContext.appInfos.selectedVersion == 6)
+void UserInterface::DrawAntiAliasingProperties()
+{
+	if (m_sharedContext.appInfos.selectedVersion == 7)
 	{
-		std::string cubeProperties[] =
+		std::string currentMode;
+		switch (m_sharedContext.appInfos.selectedAA)
 		{
-			"CUBE PROPERTIES",
-			"[T]ransparency: " + std::to_string(static_cast<uint8_t>(m_sharedContext.appInfos.cubeParams.transparency)) + "%"
+		case NOAA:
+			currentMode = "Off";
+			break;
+		case AA2X:
+			currentMode = "2x";
+			break;
+		case AA4X:
+			currentMode = "4x";
+			break;
+		case AA8X:
+			currentMode = "8x";
+			break;
+		case AA16X:
+			currentMode = "16x";
+			break;
+		default:
+			currentMode = "UNKNOWN";
+			break;
+		}
+		std::string items[] =
+		{
+			"ANTI-ALIASING PROPERTIES",
+			"[M]ode: " + currentMode
 		};
 
 		for (uint8_t i = 0; i < 2; ++i)
 		{
-			r = 125;
-			g = 125;
-			b = 125;
-
-			if (m_sharedContext.actions.addTransparency)
-			{
-				r = 255;
-				g = 255;
-				b = 255;
-			}
-
-			if (i == 0)
-			{
-				r = 255;
-				g = 255;
-				b = 0;
-			}
-
-			DrawAt(cubeProperties[i], 0, 350 + i * 23, r, g, b);
+			SetTextDefaultColor();
+			if (m_sharedContext.actions.changeAAValue) SetTextSelectedColor();
+			if (i == 0) SetTextTitleColor();
+			DrawAt(items[i], 0, 350 + i * 23);
 		}
 	}
 }
@@ -190,9 +177,24 @@ void UserInterface::Close()
 	TTF_CloseFont(m_font);
 }
 
-void UserInterface::DrawAt(std::string p_text, uint16_t p_x, uint16_t p_y, const uint8_t p_r, const uint8_t p_g, const uint8_t p_b) const
+void UserInterface::SetTextSelectedColor()
 {
-	SDL_Surface* itemSurface = TTF_RenderText_Blended(m_font, p_text.c_str(), { p_r, p_g, p_b, 255 });
+	m_textColor.Set(255, 255, 255);
+}
+
+void UserInterface::SetTextDefaultColor()
+{
+	m_textColor.Set(125, 125, 125);
+}
+
+void UserInterface::SetTextTitleColor()
+{
+	m_textColor.Set(255, 255, 0);
+}
+
+void UserInterface::DrawAt(const std::string& p_text, uint16_t p_x, uint16_t p_y) const
+{
+	SDL_Surface* itemSurface = TTF_RenderText_Blended(m_font, p_text.c_str(), { static_cast<uint8_t>(m_textColor.r), static_cast<uint8_t>(m_textColor.g), static_cast<uint8_t>(m_textColor.b), 255 });
 	SDL_Texture* itemTexture = SDL_CreateTextureFromSurface(m_sharedContext.window->GetRenderer(), itemSurface);
 	int itemTextureWidth = 0;
 	int itemTextureHeight = 0;

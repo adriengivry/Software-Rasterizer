@@ -11,12 +11,24 @@ public:
 
 	void Setup() override;
 	void Update() override;
-	void Draw() const;
+	void Draw();
+	void DrawFPS();
+	void DrawVersionSelection();
+	void DrawMeshProperties();
+	void DrawLightProperties();
+	void DrawAntiAliasingProperties();
 	void Close() override;
 
-	void DrawAt(std::string p_text, uint16_t p_x, uint16_t p_y, const uint8_t p_r = 255, const uint8_t p_g = 255, const uint8_t p_b = 255) const;
+	void SetTextSelectedColor();
+	void SetTextDefaultColor();
+	void SetTextTitleColor();
+
+	void DrawAt(const std::string& p_text, uint16_t p_x, uint16_t p_y) const;
 
 private:
 	TTF_Font* m_font;
+	Color m_textColor;
 	SharedContext& m_sharedContext;
+
+	std::string m_labelsVersions[8];
 };

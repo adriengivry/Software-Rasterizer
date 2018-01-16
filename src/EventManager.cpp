@@ -96,6 +96,15 @@ void EventManager::KeyInput(const SDL_Keysym& p_key, const bool p_state) const
 	case SDLK_x:
 		m_sharedContext.actions.antialiasingZoomOut = p_state;
 		break;
+	case SDLK_m:
+		m_sharedContext.actions.changeAAValue = p_state;
+		if (p_state && m_sharedContext.appInfos.selectedVersion == 7)
+		{
+			++m_sharedContext.appInfos.selectedAA;
+			if (m_sharedContext.appInfos.selectedAA > 4)
+				m_sharedContext.appInfos.selectedAA = 0;
+		}
+		break;
 	case SDLK_ESCAPE:
 		m_sharedContext.appInfos.Reset();
 		break;
