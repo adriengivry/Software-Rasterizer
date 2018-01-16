@@ -313,12 +313,9 @@ Mesh* Mesh::CreateSphere(int p_latitudeCount, int p_longitudeCount)
 Mesh* Mesh::CreateTriangle()
 {
 	Mesh* Triangle = new Mesh();
-	Triangle->m_vertices.push_back(Vertex(-0.5, -0.5, 0));
-	Triangle->m_vertices[0].SetColor(255, 0, 0, 255);
-	Triangle->m_vertices.push_back(Vertex(0.5, -0.5, 0));
-	Triangle->m_vertices[1].SetColor(0, 255, 0, 255);
-	Triangle->m_vertices.push_back(Vertex(0, 0.5, 0));
-	Triangle->m_vertices[2].SetColor(0, 0, 255, 255);
+	Triangle->m_vertices.push_back(Vertex(-3, -2, 0));
+	Triangle->m_vertices.push_back(Vertex(3, 3, 0));
+	Triangle->m_vertices.push_back(Vertex(-2, 2, 0));
 	Triangle->m_indices.push_back(0);
 	Triangle->m_indices.push_back(1);
 	Triangle->m_indices.push_back(2);

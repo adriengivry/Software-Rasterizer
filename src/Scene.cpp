@@ -19,9 +19,14 @@ void Scene::InitEntities()
 	
 	Entity* cube3 = new Entity();
 	cube3->SetMesh(*Mesh::CreateTextureCube());
+
+	Entity* triangle = new Entity();
+	triangle->SetMesh(*Mesh::CreateTriangle());
+	triangle->SetColor(255, 0, 0);
 	entities.push_back(cube);
 	entities.push_back(cube2);
 	entities.push_back(cube3);
+	entities.push_back(triangle);
 }
 
 void Scene::InitLights()

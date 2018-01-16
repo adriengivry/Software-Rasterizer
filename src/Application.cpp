@@ -1,4 +1,5 @@
 #include "Application.h"
+#include <memory>
 
 using namespace Toolbox;
 
@@ -115,6 +116,12 @@ void Application::RenderScene()
 		Mat4::CreateTranslation(0, 0, -6) *
 		Mat4::CreateRotation(m_sharedContext.appInfos.secondCubeRotationOffset, m_sharedContext.appInfos.secondCubeRotationOffset, 0) *
 		Mat4::CreateScale(1.5f, 1.5f, 1.5f);
+
+
+	const Mat4 matrix3 =
+		Mat4::CreateTranslation(m_cameraParams.xOffset, 0, 0).CreateInverse() *
+		Mat4::CreateTranslation(0, 0, -6 + m_cameraParams.antialiasingOffset);
+
 	m_scene.entities[0]->SetMatrix(matrix);
 	m_scene.entities[1]->SetMatrix(matrix);
 	m_scene.entities[2]->SetMatrix(matrix2);
@@ -147,6 +154,7 @@ void Application::UpdateCamera()
 {
 	float xOffset = 0;
 	float zoomOffset = 0;
+	float antialiasingOffset = 0;
 	float xRotationOffset = 0;
 	float yRotationOffset = 0;
 
@@ -159,6 +167,12 @@ void Application::UpdateCamera()
 		zoomOffset += 5;
 	if (m_sharedContext.actions.zoomOut)
 		zoomOffset -= 5;
+	
+	if (m_sharedContext.actions.antialiasingZoomIn)
+		antialiasingOffset += 5;
+
+	if (m_sharedContext.actions.antialiasingZoomOut)
+		antialiasingOffset -= 5;
 
 	if (m_sharedContext.actions.xTurnClockwise)
 		xRotationOffset += 90;
@@ -173,9 +187,12 @@ void Application::UpdateCamera()
 	m_cameraParams.zoomOffset += zoomOffset * m_sharedContext.appInfos.deltaTime;
 	m_cameraParams.xRotationOffset += xRotationOffset * m_sharedContext.appInfos.deltaTime;
 	m_cameraParams.yRotationOffset += yRotationOffset * m_sharedContext.appInfos.deltaTime;
+	m_cameraParams.antialiasingOffset += antialiasingOffset * m_sharedContext.appInfos.deltaTime;
 
 	if (m_cameraParams.zoomOffset >= 2.5) m_cameraParams.zoomOffset = 2.5;
 	if (m_cameraParams.zoomOffset <= -15) m_cameraParams.zoomOffset = -15;
+	if (m_cameraParams.antialiasingOffset >= 4.5) m_cameraParams.antialiasingOffset = 4.5;
+	if (m_cameraParams.antialiasingOffset <= -15) m_cameraParams.zoomOffset = -15;
 }
 
 void Application::UpdateLights()

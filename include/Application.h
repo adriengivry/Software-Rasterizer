@@ -8,6 +8,7 @@ struct CameraParams
 {
 	float xOffset = 0;
 	float zoomOffset = 0;
+	float antialiasingOffset = 0;
 	float xRotationOffset = 0;
 	float yRotationOffset = 0;
 };

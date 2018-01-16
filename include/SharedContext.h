@@ -16,6 +16,8 @@ struct Actions
 	bool moveRight;
 	bool zoomIn;
 	bool zoomOut;
+	bool antialiasingZoomIn;
+	bool antialiasingZoomOut;
 	bool xTurnClockwise;
 	bool xTurnCounterClockwise;
 	bool yTurnClockwise;
