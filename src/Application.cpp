@@ -90,8 +90,6 @@ void Application::Draw() const
 
 void Application::Init()
 {
-	//SDL_SetRenderDrawBlendMode(m_window.GetRenderer(), SDL_BLENDMODE_BLEND);
-	//SDL_SetTextureBlendMode(m_window.GetTexture(), SDL_BLENDMODE_BLEND);
 	m_image = new Image("../assets/texture.png");
 	m_image2 = new Image("../assets/texture2.png");
 	m_scene.InitEntities();
@@ -125,6 +123,7 @@ void Application::RenderScene()
 	m_scene.entities[0]->SetMatrix(matrix);
 	m_scene.entities[1]->SetMatrix(matrix);
 	m_scene.entities[2]->SetMatrix(matrix2);
+	m_scene.entities[3]->SetMatrix(matrix3);
 	switch (m_sharedContext.appInfos.selectedVersion)
 	{
 	default:

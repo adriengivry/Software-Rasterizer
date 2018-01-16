@@ -9,7 +9,14 @@ enum LIGHTS
 	DIFFUSE = 2,
 	SPECULAR = 3
 };
-
+enum AASELECTION
+{
+	NOAA,
+	AA2X,
+	AA4X,
+	AA8X,
+	AA16X
+};
 struct Actions
 {
 	bool moveLeft;
@@ -62,6 +69,7 @@ struct ApplicationInfos
 	uint8_t selectedLight = AMBIANT;
 	LightParams lightParams;
 	CubeParams cubeParams;
+	uint8_t selectedAA = NOAA;
 
 	void Reset()
 	{

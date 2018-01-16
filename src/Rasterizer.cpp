@@ -163,6 +163,33 @@ void Rasterizer::RenderAlphaBlending(Scene* p_pScene)
 	}
 }
 
+void Rasterizer::RenderAntialiasing(Scene* p_pScene)
+{
+	m_zBufferOn = false;
+	const Mat4 normalMatrix = p_pScene->entities[3]->GetMatrix();
+	const Mat4 modelProjection = Mat4::CreatePerspective(60, float(m_rtexture.GetWidth()) / float(m_rtexture.GetHeight()), 0.1f, 100.0f) * normalMatrix;
+	Vertex v0 = (p_pScene->entities[3]->GetMesh()->GetVertices()[p_pScene->entities[3]->GetMesh()->GetIndices()[0]]);
+	Vertex v1 = (p_pScene->entities[3]->GetMesh()->GetVertices()[p_pScene->entities[3]->GetMesh()->GetIndices()[1]]);
+	Vertex v2 = (p_pScene->entities[3]->GetMesh()->GetVertices()[p_pScene->entities[3]->GetMesh()->GetIndices()[2]]);
+	v0.VertexTransform(modelProjection);
+	v1.VertexTransform(modelProjection);
+	v2.VertexTransform(modelProjection);
+	switch(m_sharedContext.appInfos.selectedAA)
+	{
+	case NOAA: DrawTriangleNoAntialiasing(v0, v1, v2); break;
+
+	case AA2X: DrawTriangle2XAntialiasing(v0, v1, v2); break;
+
+	case AA4X: DrawTriangle4XAntialiasing(v0, v1, v2); break;
+
+	case AA8X: DrawTriangle8XAntialiasing(v0, v1, v2); break;
+
+	case AA16X: DrawTriangle16XAntialiasing(v0, v1, v2); break;
+	
+	default: break;
+	}
+}
+
 void Rasterizer::Update()
 {
 	SDL_UpdateTexture(m_sharedContext.window->GetTexture(), nullptr, m_rtexture.GetPixelBuffer(), m_rtexture.GetWidth() * sizeof(uint32_t));
@@ -510,6 +537,13 @@ void Rasterizer::DrawTriangleAlphaBlending(Vertex& p_v0, Vertex& p_v1, Vertex& p
 		}
 	}
 }
+
+void Rasterizer::DrawTriangleNoAntialiasing(Vertex& p_v0, Vertex& p_v1, Vertex& p_v2) {}
+void Rasterizer::DrawTriangle2XAntialiasing(Vertex& p_v0, Vertex& p_v1, Vertex& p_v2) {}
+void Rasterizer::DrawTriangle4XAntialiasing(Vertex& p_v0, Vertex& p_v1, Vertex& p_v2) {}
+void Rasterizer::DrawTriangle8XAntialiasing(Vertex& p_v0, Vertex& p_v1, Vertex& p_v2) {}
+void Rasterizer::DrawTriangle16XAntialiasing(Vertex& p_v0, Vertex& p_v1, Vertex& p_v2) {}
+
 void Rasterizer::ClearBuffer() const
 {
 	for (uint16_t i = m_rtexture.GetWidth() * m_rtexture.GetHeight(); i--;)

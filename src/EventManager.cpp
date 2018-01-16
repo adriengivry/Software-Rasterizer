@@ -90,15 +90,12 @@ void EventManager::KeyInput(const SDL_Keysym& p_key, const bool p_state) const
 	case SDLK_t:
 		m_sharedContext.actions.addTransparency = p_state;
 		break;
-
 	case SDLK_z:
 		m_sharedContext.actions.antialiasingZoomIn = p_state;
 		break;
-
 	case SDLK_x:
 		m_sharedContext.actions.antialiasingZoomOut = p_state;
 		break;
-
 	case SDLK_ESCAPE:
 		m_sharedContext.appInfos.Reset();
 		break;

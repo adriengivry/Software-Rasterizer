@@ -19,6 +19,7 @@ public:
 	void RenderSceneWireframe(Scene* p_pScene);
 	void RenderTexture(Scene* p_pScene);
 	void RenderAlphaBlending(Scene* p_pScene);
+	void RenderAntialiasing(Scene* p_pScene);
 	void Update() override;
 	void Draw() const;
 	void DrawLine(const float p_x1, const float p_y1, const float p_x2, const float p_y2, Color& p_color1, Color& p_color2) const;
@@ -28,6 +29,11 @@ public:
 	void DrawTriangleWire(Vertex& p_v0, Vertex& p_v1, Vertex& p_v2) const;
 	void DrawTriangleTexture(Vertex& p_v0, Vertex& p_v1, Vertex& p_v2, Image* p_image) const;
 	void DrawTriangleAlphaBlending(Vertex& p_v0, Vertex& p_v1, Vertex& p_v2, Image* p_image, float p_alpha) const;
+	void DrawTriangleNoAntialiasing(Vertex& p_v0, Vertex& p_v1, Vertex& p_v2);
+	void DrawTriangle2XAntialiasing(Vertex& p_v0, Vertex& p_v1, Vertex& p_v2);
+	void DrawTriangle4XAntialiasing(Vertex& p_v0, Vertex& p_v1, Vertex& p_v2);
+	void DrawTriangle8XAntialiasing(Vertex& p_v0, Vertex& p_v1, Vertex& p_v2);
+	void DrawTriangle16XAntialiasing(Vertex& p_v0, Vertex& p_v1, Vertex& p_v2);
 	void ClearBuffer() const;
 	Color PhongColor(Vertex& p_position, Toolbox::Vec3& p_normal, Toolbox::Vec3& p_lightcomp, Color& p_color) const;
 	Color BlinnPhongColor(Vertex& p_position, Toolbox::Vec3& p_normal, Vertex& p_lightPosition, Toolbox::Vec3& p_lightcomp, Color& p_color) const;
