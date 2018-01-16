@@ -4,6 +4,7 @@
 
 UserInterface::UserInterface(SharedContext& p_sharedContext)
 	: m_font(nullptr), 
+	m_smallFont(nullptr),
 	m_sharedContext(p_sharedContext)
 {
 	UserInterface::Setup();
@@ -17,8 +18,9 @@ UserInterface::~UserInterface()
 void UserInterface::Setup()
 {
 	m_font = TTF_OpenFont("../assets/arial.ttf", 20);
+	m_smallFont = TTF_OpenFont("../assets/arial.ttf", 12);
 
-	m_labelsVersions[0] = "VERSION SELECTION";
+	m_labelsVersions[0] = "RASTERIZER FEATURES";
 	m_labelsVersions[1] = "1. Z-Buffer";
 	m_labelsVersions[2] = "2. Phong (Per-Vertex)";
 	m_labelsVersions[3] = "3. Blinn-Phong (Per-Pixel)";
@@ -39,7 +41,7 @@ void UserInterface::Draw()
 	DrawMeshProperties();
 	DrawLightProperties();	
 	DrawAntiAliasingProperties();
-	// TODO: Draw guide on how to use interface on the right of the screen
+	DrawHelp();
 }
 
 void UserInterface::DrawFPS()
@@ -173,9 +175,43 @@ void UserInterface::DrawAntiAliasingProperties()
 	}
 }
 
+void UserInterface::DrawHelp()
+{
+	std::string lines[] =
+	{
+		"        HELP",
+		"Use [1-7] numbers to select",
+		"a feature to render on screen.",
+		"",
+		"Press the letter showed in",
+		"brackets [X] to activate the",
+		"effect attached to the item.",
+		"",
+		"Use [+] and [-] to adjust",
+		"light values after selecting",
+		"a light with [8] [9] or [0]"
+	};
+
+	for (uint8_t i = 0; i < 11; ++i)
+	{
+		SetTextDefaultColor();
+		SetTextSelectedColor();
+		if (i == 0)
+		{
+			SetTextTitleColor();
+			DrawAt(lines[i], 850, 285);
+		}
+		else
+		{
+			DrawAt(lines[i], 850, 300 + i * 15, m_smallFont);
+		}
+	}
+}
+
 void UserInterface::Close()
 {
 	TTF_CloseFont(m_font);
+	TTF_CloseFont(m_smallFont);
 }
 
 void UserInterface::SetTextSelectedColor()
@@ -193,9 +229,14 @@ void UserInterface::SetTextTitleColor()
 	m_textColor.Set(255, 255, 0);
 }
 
-void UserInterface::DrawAt(const std::string& p_text, uint16_t p_x, uint16_t p_y) const
+void UserInterface::DrawAt(const std::string& p_text, uint16_t p_x, uint16_t p_y, TTF_Font* p_font) const
 {
-	SDL_Surface* itemSurface = TTF_RenderText_Blended(m_font, p_text.c_str(), { static_cast<uint8_t>(m_textColor.r), static_cast<uint8_t>(m_textColor.g), static_cast<uint8_t>(m_textColor.b), 255 });
+	TTF_Font* fontToUse = m_font;
+
+	if (p_font)
+		fontToUse = p_font;
+
+	SDL_Surface* itemSurface = TTF_RenderText_Blended(fontToUse, p_text.c_str(), { static_cast<uint8_t>(m_textColor.r), static_cast<uint8_t>(m_textColor.g), static_cast<uint8_t>(m_textColor.b), 255 });
 	SDL_Texture* itemTexture = SDL_CreateTextureFromSurface(m_sharedContext.window->GetRenderer(), itemSurface);
 	int itemTextureWidth = 0;
 	int itemTextureHeight = 0;

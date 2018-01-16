@@ -17,16 +17,18 @@ public:
 	void DrawMeshProperties();
 	void DrawLightProperties();
 	void DrawAntiAliasingProperties();
+	void DrawHelp();
 	void Close() override;
 
 	void SetTextSelectedColor();
 	void SetTextDefaultColor();
 	void SetTextTitleColor();
 
-	void DrawAt(const std::string& p_text, uint16_t p_x, uint16_t p_y) const;
+	void DrawAt(const std::string& p_text, uint16_t p_x, uint16_t p_y, TTF_Font* p_font = nullptr) const;
 
 private:
 	TTF_Font* m_font;
+	TTF_Font* m_smallFont;
 	Color m_textColor;
 	SharedContext& m_sharedContext;
 
