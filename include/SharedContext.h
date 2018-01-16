@@ -35,6 +35,7 @@ struct Actions
 	bool addGreen;
 	bool addBlue;
 	bool addTransparency;
+	bool changeAAValue;
 };
 
 struct LightParams
