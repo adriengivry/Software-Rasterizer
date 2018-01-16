@@ -78,8 +78,6 @@ void Rasterizer::RenderScenePhong(Scene * p_pScene)
 	const Mat4 projection1 = Mat4::CreatePerspective(60, float(m_rtexture.GetWidth()) / float(m_rtexture.GetHeight()), 0.1f, 100.0f) * normalMatrix;
 	Mat4 normalMatrixTrans = normalMatrix.CreateTranspose();
 	normalMatrixTrans = normalMatrixTrans.CreateInverse();
-		
-	Vertex lightposition = p_pScene->lights[0]->GetPosition();
 	Vec3 Lightcomp(p_pScene->lights[0]->GetAmbient(), p_pScene->lights[0]->GetDiffuse(), p_pScene->lights[0]->GetSpecular());
 	for (int i = 0; i < p_pScene->entities[0]->GetMesh()->GetIndices().size() - 2; i += 3)
 	{
