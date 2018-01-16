@@ -10,8 +10,8 @@ struct Vertex
 	Color color;
 	Toolbox::Vec2 texCoordinate;
 
-    Vertex(const float p_x, const float p_y, const float p_z)
-    {
+	Vertex(const float p_x, const float p_y, const float p_z)
+	{
 		position.x = p_x;
 		position.y = p_y;
 		position.z = p_z;
@@ -19,7 +19,8 @@ struct Vertex
 		normal.y = 0;
 		normal.z = 0;
 		normal.w = 0;
-    }
+	}
+
 	Vertex(const Toolbox::Vec3& p_position)
 	{
 		position.x = p_position.x;
@@ -32,38 +33,43 @@ struct Vertex
 	}
 	void SetColor(Color& p_color)
 	{
-		color = p_color;
+		color.r = p_color.r;
+		color.g = p_color.g;
+		color.b = p_color.b;
+		color.a = p_color.a;
 	}
-	void SetColor(const float p_r,const float p_g,const float p_b,const float p_a)
+	void SetColor(const float p_r, const float p_g, const float p_b, const float p_a)
 	{
 		color.a = p_a;
 		color.r = p_r;
 		color.g = p_g;
 		color.b = p_b;
 	}
-	Vertex NormalTransform(const Toolbox::Mat4& p_transform)
+	Vertex& NormalTransform(const Toolbox::Mat4& p_transform)
 	{
 		this->normal = (p_transform * this->normal);
 		normal.Normalize();
 		return *this;
 	}
-	Vertex VertexTransform(const Toolbox::Mat4& p_transform)
+	Vertex& VertexTransform(const Toolbox::Mat4& p_transform)
 	{
 		Toolbox::Vec4 vector4 = p_transform * Toolbox::Vec4(position);
 		vector4.Homogenize();
-		this->position = Toolbox::Vec3(vector4.x, vector4.y, vector4.z);
+		this->position.x = vector4.x;
+		this->position.y = vector4.y;
+		this->position.z = vector4.z;
 		return *this;
 	}
 	Vertex FirstTransform(const Toolbox::Mat4& p_transform, const Toolbox::Mat4& p_normaltransform)
 	{
-		Toolbox::Vec4 vector4 = p_transform * Toolbox::Vec4(position);
-		Toolbox::Vec4 normal4 = p_normaltransform * normal;
+		const Toolbox::Vec4 vector4 = p_transform * Toolbox::Vec4(position);
 		Vertex temp(Toolbox::Vec3(vector4.x, vector4.y, vector4.z));
-		normal4.Normalize();
-		temp.normal = normal4;
+		temp.normal = p_normaltransform * normal;
+		temp.normal.Normalize();
 		return temp;
 	}
-	Vertex operator=(const Vertex& p_other)
+
+	Vertex& operator=(const Vertex& p_other)
 	{
 		this->position = p_other.position;
 		this->normal = p_other.normal;

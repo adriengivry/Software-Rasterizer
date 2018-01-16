@@ -2,7 +2,7 @@
 
 using namespace Toolbox;
 
-Triangle::Triangle(Vertex& p_v0, Vertex& p_v1, Vertex& p_v2) : m_v0(p_v0), m_v1(p_v1), m_v2(p_v2)
+Triangle::Triangle(Vertex& p_v0, Vertex& p_v1, Vertex& p_v2) : m_v0(p_v0), m_v1(p_v1), m_v2(p_v2), m_aabb(Vec3(0, 0, 0), Vec3(0, 0, 0))
 {
 	m_V0 = Vec2(m_v2.position.x - m_v0.position.x, m_v2.position.y - m_v0.position.y);
 	m_V1 = Vec2(m_v1.position.x - m_v0.position.x, m_v1.position.y - m_v0.position.y);
@@ -14,53 +14,65 @@ Triangle::Triangle(Vertex& p_v0, Vertex& p_v1, Vertex& p_v2) : m_v0(p_v0), m_v1(
 }
 	
 
-Vec3 Triangle::Barycentric(Vertex& p_v0, Vertex& p_v1, Vertex& p_v2, Vertex& p_point)
+Vec3& Triangle::Barycentric(Vertex& p_v0, Vertex& p_point)
 {
-	Vec2 V2(p_point.position.x - p_v0.position.x, p_point.position.y - p_v0.position.y);
-	float d02 = m_V0.x * V2.x + m_V0.y * V2.y;
-	float d12 = m_V1.x * V2.x + m_V1.y * V2.y;
-	float v = (m_d11 * d02 - m_d01 * d12) * m_Denom;
-	float u = (m_d00 * d12 - m_d01 * d02) * m_Denom;
-	return Vec3(v, u, 1.0f - v - u);
+	const float x = p_point.position.x - p_v0.position.x;
+	const float y = p_point.position.y - p_v0.position.y;
+
+	const float d02 = m_V0.x * x + m_V0.y * y;
+	const float d12 = m_V1.x * x + m_V1.y * y;
+	const float v = (m_d11 * d02 - m_d01 * d12) * m_Denom;
+	const float u = (m_d00 * d12 - m_d01 * d02) * m_Denom;
+
+	m_barycentric.x = v;
+	m_barycentric.y = u;
+	m_barycentric.z = 1.0f - v - u;
+
+	return m_barycentric;
 }
 
-AABB Triangle::getAABB()
+AABB& Triangle::GetAABB()
 {
-	Vec3 min(
-		std::min(std::min(m_v0.position.x, m_v1.position.x), m_v2.position.x),
-		std::min(std::min(m_v0.position.y, m_v1.position.y), m_v2.position.y),
-		std::min(std::min(m_v0.position.z, m_v1.position.z), m_v2.position.z)
-	);
+	m_aabb.minPoint.x = std::min(std::min(m_v0.position.x, m_v1.position.x), m_v2.position.x);
+	m_aabb.minPoint.y = std::min(std::min(m_v0.position.y, m_v1.position.y), m_v2.position.y);
+	m_aabb.minPoint.z = std::min(std::min(m_v0.position.z, m_v1.position.z), m_v2.position.z);
 
-	Vec3 max(
-		std::max(std::max(m_v0.position.x, m_v1.position.x), m_v2.position.x),
-		std::max(std::max(m_v0.position.y, m_v1.position.y), m_v2.position.y),
-		std::max(std::max(m_v0.position.z, m_v1.position.z), m_v2.position.z)
-	);
-	return AABB(min, max);
+	m_aabb.maxPoint.x = std::max(std::max(m_v0.position.x, m_v1.position.x), m_v2.position.x);
+	m_aabb.maxPoint.y = std::max(std::max(m_v0.position.y, m_v1.position.y), m_v2.position.y);
+	m_aabb.maxPoint.z = std::max(std::max(m_v0.position.z, m_v1.position.z), m_v2.position.z);
+
+	return m_aabb;
 }
 
-float Triangle::getArea()
+float Triangle::GetArea() const
 {
-	return (m_v0.position.x * m_v1.position.y) - (m_v1.position.x * m_v0.position.y) + (m_v1.position.x * m_v2.position.y) - (m_v2.position.x * m_v1.position.y) + (m_v2.position.x * m_v0.position.y) - (m_v0.position.x * m_v2.position.y);
+	return	  m_v0.position.x * m_v1.position.y
+			- m_v1.position.x * m_v0.position.y
+			+ m_v1.position.x * m_v2.position.y
+			- m_v2.position.x * m_v1.position.y
+			+ m_v2.position.x * m_v0.position.y
+			- m_v0.position.x * m_v2.position.y;
 }
 
 float Triangle::CrossProduct(Vertex& p_v0, Vertex& p_v1, Vertex& p_v2)
 {
-	return (p_v1.position.x - p_v0.position.x) * (p_v2.position.y - p_v0.position.y) - (p_v1.position.y - p_v0.position.y) * (p_v2.position.x - p_v0.position.x);
+	return	  (p_v1.position.x - p_v0.position.x)
+			* (p_v2.position.y - p_v0.position.y)
+			- (p_v1.position.y - p_v0.position.y)
+			* (p_v2.position.x - p_v0.position.x);
 }
 
-Vertex Triangle::getV0()
+Vertex& Triangle::getV0()
 {
 	return m_v0;
 }
 
-Vertex Triangle::getV1()
+Vertex& Triangle::getV1()
 {
 	return m_v1;
 }
 
-Vertex Triangle::getV2()
+Vertex& Triangle::getV2()
 {
 	return m_v2;
 }

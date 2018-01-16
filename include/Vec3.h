@@ -1,7 +1,5 @@
 #pragma once
-#include <math.h>
-#include <sdl_stdinc.h>
-//#define M_PI 3.1415926535f
+#include <cmath>
 #define DEG_TO_RAD 3.1415926535f/180.0f
 
 namespace Toolbox
@@ -21,7 +19,7 @@ namespace Toolbox
 		Vec3 operator-(const Vec3& p_other) const;
 		Vec3 operator*(const float p_scale) const;
 		Vec3 operator/(const float p_scale) const;
-		Vec3 operator=(const Vec3& p_other);
+		Vec3& operator=(const Vec3& p_other);
 		Vec3& operator+=(const Vec3& p_other);
 	};
 
@@ -81,7 +79,7 @@ namespace Toolbox
 		return Vec3(this->x / p_scale, this->y / p_scale, this->z / p_scale);
 	}
 
-	inline Vec3 Vec3::operator=(const Vec3 & p_other)
+	inline Vec3& Vec3::operator=(const Vec3 & p_other)
 	{
 		this->x = p_other.x;
 		this->y = p_other.y;

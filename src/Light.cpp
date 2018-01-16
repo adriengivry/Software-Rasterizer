@@ -4,11 +4,11 @@ using namespace Toolbox;
 
 Light::Light(const Vec3 & p_position) : m_position(p_position), m_ambientComponent(0.4f), m_diffuseComponent(0.3f), m_specularComponent(0.4f){}
 
-Light::~Light(){}
+Light::~Light() = default;
 
 Light::Light(const float p_x, const float p_y, const float p_z) : m_position(Vec3(p_x, p_y, p_z)), m_ambientComponent(0.4f), m_diffuseComponent(0.3f), m_specularComponent(0.4f) {}
 
-Vec3 Light::GetPosition()
+Vec3& Light::GetPosition()
 {
 	return m_position;
 }
@@ -20,17 +20,17 @@ void Light::SetPosition(const float p_x, const float p_y, const float p_z)
 	m_position.z = p_z;
 }
 
-float Light::GetAmbient()
+float Light::GetAmbient() const
 {
 	return m_ambientComponent;
 }
 
-float Light::GetDiffuse()
+float Light::GetDiffuse() const
 {
 	return m_diffuseComponent;
 }
 
-float Light::GetSpecular()
+float Light::GetSpecular() const
 {
 	return m_specularComponent;
 }

@@ -261,7 +261,7 @@ void Rasterizer::DrawTriangle(Vertex& p_v0, Vertex& p_v1, Vertex& p_v2)
 		return;
 
 	Triangle triangle(v0, v1, v2);
-	AABB box = triangle.getAABB();
+	AABB box = triangle.GetAABB();
 	int minX = std::max((int)box.minPoint.x, 0);
 	int minY = std::max((int)box.minPoint.y, 0);
 	int maxX = std::min((int)box.maxPoint.x, m_rtexture.GetWidth() - 1);
@@ -271,7 +271,7 @@ void Rasterizer::DrawTriangle(Vertex& p_v0, Vertex& p_v1, Vertex& p_v2)
 	{
 		for (positions.position.x = minX; positions.position.x <= maxX; positions.position.x++)
 		{
-			Vec3 bary(triangle.Barycentric(v0, v1, v2, positions));
+			Vec3 bary(triangle.Barycentric(v0, positions));
 			if (bary.x >= 0 && bary.y >= 0 && bary.x + bary.y < 1)
 			{
 				positions.position.z = 0;
@@ -303,7 +303,7 @@ void Rasterizer::DrawTriangle2(Vertex& p_v0, Vertex& p_v1, Vertex& p_v2, Vertex&
 		return;
 
 	Triangle triangle(v0, v1, v2);
-	AABB box = triangle.getAABB();
+	AABB box = triangle.GetAABB();
 	int minX = std::max(static_cast<int>(box.minPoint.x), 0);
 	int minY = std::max(static_cast<int>(box.minPoint.y), 0);
 	int maxX = std::min(static_cast<int>(box.maxPoint.x), m_rtexture.GetWidth() - 1);
@@ -313,7 +313,7 @@ void Rasterizer::DrawTriangle2(Vertex& p_v0, Vertex& p_v1, Vertex& p_v2, Vertex&
 	{
 		for (positions.position.x = minX; positions.position.x <= maxX; positions.position.x++)
 		{
-			Vec3 bary(triangle.Barycentric(v0, v1, v2, positions));
+			Vec3 bary(triangle.Barycentric(v0, positions));
 			if (bary.x >= 0 && bary.y >= 0 && bary.x + bary.y <= 1)
 			{
 				positions.position.z = v0.position.z * bary.z + v1.position.z * bary.y + bary.x * v2.position.z;
@@ -353,7 +353,7 @@ void Rasterizer::DrawTriangle3(Vertex& p_v0, Vertex& p_v1, Vertex& p_v2, Vertex&
 	Color c1 = this->PhongColor(p_light2, Vec3(p_light2.normal.x, p_light2.normal.y, p_light2.normal.z), p_lightPosition, p_lightcomp, p_v1.color);
 	Color c2 = this->PhongColor(p_light3, Vec3(p_light3.normal.x, p_light3.normal.y, p_light3.normal.z), p_lightPosition, p_lightcomp, p_v2.color);
 	Triangle triangle(v0, v1, v2);
-	AABB box = triangle.getAABB();
+	AABB box = triangle.GetAABB();
 	int minX = std::max((int)box.minPoint.x, 0);
 	int minY = std::max((int)box.minPoint.y, 0);
 	int maxX = std::min((int)box.maxPoint.x, m_rtexture.GetWidth() - 1);
@@ -363,7 +363,7 @@ void Rasterizer::DrawTriangle3(Vertex& p_v0, Vertex& p_v1, Vertex& p_v2, Vertex&
 	{
 		for (positions.position.x = minX; positions.position.x <= maxX; positions.position.x++)
 		{
-			Vec3 bary(triangle.Barycentric(v0, v1, v2, positions));
+			Vec3 bary(triangle.Barycentric(v0, positions));
 			if (bary.x >= 0 && bary.y >= 0 && bary.x + bary.y < 1)
 			{
 				positions.position.z = v0.position.z * bary.z + v1.position.z * bary.y + bary.x * v2.position.z;
@@ -410,7 +410,7 @@ void Rasterizer::DrawTriangleTexture(Vertex& p_v0, Vertex& p_v1, Vertex& p_v2, I
 		return;
 
 	Triangle triangle(v0, v1, v2);
-	AABB box = triangle.getAABB();
+	AABB box = triangle.GetAABB();
 	int minX = std::max((int)box.minPoint.x, 0);
 	int minY = std::max((int)box.minPoint.y, 0);
 	int maxX = std::min((int)box.maxPoint.x, m_rtexture.GetWidth() - 1);
@@ -420,7 +420,7 @@ void Rasterizer::DrawTriangleTexture(Vertex& p_v0, Vertex& p_v1, Vertex& p_v2, I
 	{
 		for (positions.position.x = minX; positions.position.x <= maxX; positions.position.x++)
 		{
-			Vec3 bary(triangle.Barycentric(v0, v1, v2, positions));
+			Vec3 bary(triangle.Barycentric(v0, positions));
 			if (bary.x >= 0 && bary.y >= 0 && bary.x + bary.y < 1)
 			{
 				float u = p_v0.texCoordinate.x * bary.z + p_v1.texCoordinate.x * bary.y + p_v2.texCoordinate.x * bary.x;
@@ -451,7 +451,7 @@ void Rasterizer::DrawTriangleAlphaBlending(Vertex& p_v0, Vertex& p_v1, Vertex& p
 		return;
 
 	Triangle triangle(v0, v1, v2);
-	AABB box = triangle.getAABB();
+	AABB box = triangle.GetAABB();
 	int minX = std::max((int)box.minPoint.x, 0);
 	int minY = std::max((int)box.minPoint.y, 0);
 	int maxX = std::min((int)box.maxPoint.x, m_rtexture.GetWidth() - 1);
@@ -461,7 +461,7 @@ void Rasterizer::DrawTriangleAlphaBlending(Vertex& p_v0, Vertex& p_v1, Vertex& p
 	{
 		for (positions.position.x = minX; positions.position.x <= maxX; positions.position.x++)
 		{
-			Vec3 bary(triangle.Barycentric(v0, v1, v2, positions));
+			Vec3 bary(triangle.Barycentric(v0, positions));
 			if (bary.x >= 0 && bary.y >= 0 && bary.x + bary.y <= 1)
 			{
 				float u = p_v0.texCoordinate.x * bary.z + p_v1.texCoordinate.x * bary.y + p_v2.texCoordinate.x * bary.x;

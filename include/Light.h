@@ -4,15 +4,15 @@
 class Light
 {
 public:
-	Light(const Toolbox::Vec3& p_position);
+	explicit Light(const Toolbox::Vec3& p_position);
 	~Light();
 	Light(const float p_x, const float p_y, const float p_z);
 
-	Toolbox::Vec3 GetPosition();
+	Toolbox::Vec3& GetPosition();
 	void SetPosition(const float p_x, const float p_y, const float p_z);
-	float GetAmbient();
-	float GetDiffuse();
-	float GetSpecular();
+	float GetAmbient() const;
+	float GetDiffuse() const;
+	float GetSpecular() const;
 	void SetLight(const float p_ambient, const float p_diffuse, const float p_specular);
 
 private:

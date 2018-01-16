@@ -7,7 +7,7 @@
 class Image
 {
 public:
-    Image(std::string p_path);
+	explicit Image(std::string p_path);
     ~Image();
     uint32_t GetPixel(SDL_Surface* p_src, int p_x, int p_y);
 

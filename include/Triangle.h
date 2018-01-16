@@ -30,13 +30,13 @@ class Triangle
 {
 public:
 	Triangle(Vertex& p_v0, Vertex& p_v1, Vertex& p_v2);
-	Toolbox::Vec3 Barycentric(Vertex& p_minX, Vertex& p_minY, Vertex& p_maxX, Vertex& p_point);
-	AABB getAABB();
-	float getArea();
-	float CrossProduct(Vertex& p_v0, Vertex& p_v1, Vertex& p_v2);
-	Vertex getV0();
-	Vertex getV1();
-	Vertex getV2();
+	Toolbox::Vec3& Barycentric(Vertex& p_v0, Vertex& p_point);
+	AABB& GetAABB();
+	float GetArea() const;
+	static float CrossProduct(Vertex& p_v0, Vertex& p_v1, Vertex& p_v2);
+	Vertex& getV0();
+	Vertex& getV1();
+	Vertex& getV2();
 private:
 	Vertex m_v0;
 	Vertex m_v1;
@@ -48,4 +48,7 @@ private:
 	float m_d01;
 	float m_d10;
 	float m_Denom;
+
+	AABB m_aabb;
+	Toolbox::Vec3 m_barycentric;
 };
