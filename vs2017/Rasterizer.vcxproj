@@ -36,7 +36,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\Color.h" />
-    <ClInclude Include="..\include\IComponent.h" />
     <ClInclude Include="..\include\Application.h" />
     <ClInclude Include="..\include\Entity.h" />
     <ClInclude Include="..\include\EventManager.h" />
@@ -45,7 +44,6 @@
     <ClInclude Include="..\include\IManager.h" />
     <ClInclude Include="..\include\Mat4.h" />
     <ClInclude Include="..\include\Mesh.h" />
-    <ClInclude Include="..\include\IObject.h" />
     <ClInclude Include="..\include\Rasterizer.h" />
     <ClInclude Include="..\include\Scene.h" />
     <ClInclude Include="..\include\SDLManager.h" />

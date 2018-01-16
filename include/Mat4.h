@@ -1,7 +1,7 @@
 #pragma once
 #include "Vec4.h"
 #include <iostream>
-#include <sdl_stdinc.h>
+#include <SDL_stdinc.h>
 #define EPSILON 0.00001f
 
 namespace Toolbox

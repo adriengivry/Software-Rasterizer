@@ -4,36 +4,46 @@
 #include "SDL_image.h"
 #include <iostream>
 
-
-bool Toolbox::InitSDL()
+void SDLManager::Setup()
 {
-	bool success = true;
+	m_initSuccess = false;
 
 	if (SDL_Init(SDL_INIT_VIDEO) != SDL_INIT_SUCCESS)
 	{
 		SDL_LOG("Failed to Init Core");
-		success = false;
+		return;
 	}
 
 	if (TTF_Init() != TTF_INIT_SUCCESS)
 	{
 		SDL_LOG("Failed to Init TTF");
-		success = false;
+		return;
 	}
 
-	int flag = IMG_INIT_PNG;
-	int initted = IMG_Init(flag);
+	const int flag = IMG_INIT_PNG;
+	const int initted = IMG_Init(flag);
 	if (initted&flag != flag)
 	{
 		SDL_LOG("Failed to Init Image");
-		success = false;
+		return;
 	}
-	return success;
+
+	m_initSuccess = true;
 }
 
-void Toolbox::CloseSDL()
+void SDLManager::Close()
 {
 	TTF_Quit();
 	IMG_Quit();
 	SDL_Quit();
+}
+
+void SDLManager::Update()
+{
+	// No Update needed for SDLManager
+}
+
+bool SDLManager::InitSucceed() const
+{
+	return m_initSuccess;
 }

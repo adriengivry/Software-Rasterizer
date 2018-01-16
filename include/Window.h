@@ -1,8 +1,7 @@
 #pragma once
-#include "IComponent.h"
 #include <SDL.h>
 
-class Window : public IComponent
+class Window
 {
 public:
 	static const uint16_t WIDTH = 1024;

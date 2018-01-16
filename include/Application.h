@@ -12,13 +12,15 @@ struct CameraParams
 	float yRotationOffset = 0;
 };
 
-class Application
+class Application : public IManager
 {
 public:
 	Application();
 	~Application();
-	void Update();
-	void Draw();
+	void Setup() override;
+	void Close() override;
+	void Update() override;
+	void Draw() const;
 	void Init();
 	void RenderScene();
 	void UpdateCamera();

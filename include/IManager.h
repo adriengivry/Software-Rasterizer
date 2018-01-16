@@ -1,10 +1,9 @@
 #pragma once
-#include "IObject.h"
 
-class IManager : public IObject
+class IManager
 {
 public:
-	virtual ~IManager() {}
+	virtual ~IManager() = default;
 
 	virtual void Setup() = 0;
 	virtual void Update() = 0;

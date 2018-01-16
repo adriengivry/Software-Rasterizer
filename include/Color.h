@@ -12,8 +12,7 @@ struct Color
 	Color operator*(const float p_scale) const;
 	Color operator/(float p_scale) const;
 	Color& operator=(const Color& p_color);
-	bool operator==(const Color& p_color);
-
+	bool operator==(const Color& p_color) const;
 	void Set(const float p_r = 0, const float p_g = 0, const float p_b = 0, const float p_a = 255);
 };
 
@@ -130,7 +129,7 @@ inline Color& Color::operator=(const Color & p_color)
 	return *this;
 }
 
-inline bool Color::operator==(const Color & p_color)
+inline bool Color::operator==(const Color & p_color) const
 {	
 	bool flag = false;
 	if (this->r == p_color.r && this->g == p_color.g && this->b == p_color.b && this->a == p_color.a)

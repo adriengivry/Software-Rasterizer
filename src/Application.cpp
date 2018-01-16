@@ -10,12 +10,22 @@ Application::Application() :
 	m_image(nullptr),
 	m_image2(nullptr)
 {
+	Application::Setup();
+}
+
+Application::~Application()
+{
+	Application::Close();
+}
+
+void Application::Setup()
+{
 	m_sharedContext.window = &m_window;
 	m_sharedContext.scene = &m_scene;
 	Init();
 }
 
-Application::~Application()
+void Application::Close()
 {
 	delete m_eventManager;
 	delete m_renderTexture;
@@ -23,8 +33,8 @@ Application::~Application()
 	delete m_image2;
 
 	/*
-	 * TODO: WEIRD MEMORY ERROR NEED TO BE CORRECTED (Memory leak if this part is commented)
-	 * delete m_userInterface;
+	* TODO: WEIRD MEMORY ERROR NEED TO BE CORRECTED (Memory leak if this part is commented)
+	* delete m_userInterface;
 	*/
 }
 
@@ -69,7 +79,7 @@ void Application::Update()
 		++m_sharedContext.appInfos.fpsValuesBuffer;
 }
 
-void Application::Draw()
+void Application::Draw() const
 {
 	SDL_RenderClear(m_window.GetRenderer());
 	m_rasterizer.Draw();
