@@ -103,9 +103,9 @@ void Application::Init()
 void Application::RenderScene()
 {
 	const Mat4 matrix = 
-		Mat4::CreateTranslation(m_cameraParams.xOffset, 0, 0).CreateInverse() * 
-		Mat4::CreateTranslation(0 , 0, -6 + m_cameraParams.zoomOffset) * 
-		Mat4::CreateRotation(45 + m_cameraParams.xRotationOffset, 45 + m_cameraParams.yRotationOffset, 0);
+		Mat4::CreateTranslation(m_sharedContext.appInfos.cameraParams.xOffset, 0, 0).CreateInverse() * 
+		Mat4::CreateTranslation(0 , 0, -6 + m_sharedContext.appInfos.cameraParams.zoomOffset) *
+		Mat4::CreateRotation(45 + m_sharedContext.appInfos.cameraParams.xRotationOffset, 45 + m_sharedContext.appInfos.cameraParams.yRotationOffset, 0);
 
 	m_sharedContext.appInfos.secondCubeRotationOffset += 20 * m_sharedContext.appInfos.deltaTime;
 
@@ -117,8 +117,8 @@ void Application::RenderScene()
 
 
 	const Mat4 matrix3 =
-		Mat4::CreateTranslation(m_cameraParams.xOffset, 0, 0).CreateInverse() *
-		Mat4::CreateTranslation(0, 0, -6 + m_cameraParams.antialiasingOffset);
+		Mat4::CreateTranslation(m_sharedContext.appInfos.cameraParams.xOffset, 0, 0).CreateInverse() *
+		Mat4::CreateTranslation(0, 0, -6 + m_sharedContext.appInfos.cameraParams.antialiasingOffset);
 
 	m_scene.entities[0]->SetMatrix(matrix);
 	m_scene.entities[1]->SetMatrix(matrix);
@@ -182,16 +182,16 @@ void Application::UpdateCamera()
 	if (m_sharedContext.actions.yTurnCounterClockwise)
 		yRotationOffset -= 90;
 
-	m_cameraParams.xOffset += xOffset * m_sharedContext.appInfos.deltaTime;
-	m_cameraParams.zoomOffset += zoomOffset * m_sharedContext.appInfos.deltaTime;
-	m_cameraParams.xRotationOffset += xRotationOffset * m_sharedContext.appInfos.deltaTime;
-	m_cameraParams.yRotationOffset += yRotationOffset * m_sharedContext.appInfos.deltaTime;
-	m_cameraParams.antialiasingOffset += antialiasingOffset * m_sharedContext.appInfos.deltaTime;
+	m_sharedContext.appInfos.cameraParams.xOffset += xOffset * m_sharedContext.appInfos.deltaTime;
+	m_sharedContext.appInfos.cameraParams.zoomOffset += zoomOffset * m_sharedContext.appInfos.deltaTime;
+	m_sharedContext.appInfos.cameraParams.xRotationOffset += xRotationOffset * m_sharedContext.appInfos.deltaTime;
+	m_sharedContext.appInfos.cameraParams.yRotationOffset += yRotationOffset * m_sharedContext.appInfos.deltaTime;
+	m_sharedContext.appInfos.cameraParams.antialiasingOffset += antialiasingOffset * m_sharedContext.appInfos.deltaTime;
 
-	if (m_cameraParams.zoomOffset >= 2.5) m_cameraParams.zoomOffset = 2.5;
-	if (m_cameraParams.zoomOffset <= -15) m_cameraParams.zoomOffset = -15;
-	if (m_cameraParams.antialiasingOffset >= 4.5) m_cameraParams.antialiasingOffset = 4.5;
-	if (m_cameraParams.antialiasingOffset <= -15) m_cameraParams.zoomOffset = -15;
+	if (m_sharedContext.appInfos.cameraParams.zoomOffset >= 2.5) m_sharedContext.appInfos.cameraParams.zoomOffset = 2.5;
+	if (m_sharedContext.appInfos.cameraParams.zoomOffset <= -15) m_sharedContext.appInfos.cameraParams.zoomOffset = -15;
+	if (m_sharedContext.appInfos.cameraParams.antialiasingOffset >= 4.5) m_sharedContext.appInfos.cameraParams.antialiasingOffset = 4.5;
+	if (m_sharedContext.appInfos.cameraParams.antialiasingOffset <= -15) m_sharedContext.appInfos.cameraParams.zoomOffset = -15;
 }
 
 void Application::UpdateLights()

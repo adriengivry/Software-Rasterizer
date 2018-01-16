@@ -40,17 +40,54 @@ struct Actions
 
 struct LightParams
 {
-	float ambiant = 50;
-	float diffuse = 70;
-	float specular = 90;
+	float ambiant;
+	float diffuse;
+	float specular;
+
+	LightParams() { Reset(); }
+
+	void Reset()
+	{
+		ambiant = 50;
+		diffuse = 70;
+		specular = 90;
+	}
 };
 
 struct CubeParams
 {
-	float red = 255;
-	float green = 0;
-	float blue = 0;
-	float transparency = 40;
+	float red;
+	float green;
+	float blue;
+	float transparency;
+
+	CubeParams() { Reset(); }
+
+	void Reset()
+	{
+		red = 255;
+		green = 0;
+		blue = 0;
+		transparency = 40;
+	}
+};
+
+struct CameraParams
+{
+	float xOffset;
+	float zoomOffset;
+	float antialiasingOffset;
+	float xRotationOffset;
+	float yRotationOffset;
+
+	void Reset()
+	{
+		xOffset = 0;
+		zoomOffset = 0;
+		antialiasingOffset = 0;
+		xRotationOffset = 0;
+		yRotationOffset = 0;
+	}
 };
 
 struct ApplicationInfos
@@ -70,18 +107,16 @@ struct ApplicationInfos
 	uint8_t selectedLight = AMBIANT;
 	LightParams lightParams;
 	CubeParams cubeParams;
+	CameraParams cameraParams;
 	uint8_t selectedAA = NOAA;
 
 	void Reset()
 	{
-		selectedVersion = 1;
 		selectedLight = AMBIANT;
-		lightParams.ambiant = 50;
-		lightParams.diffuse = 70;
-		lightParams.specular = 90;
-		cubeParams.red = 255;
-		cubeParams.green = 0;
-		cubeParams.blue = 0;
+		selectedAA = NOAA;
+		lightParams.Reset();
+		cubeParams.Reset();
+		cameraParams.Reset();
 	}
 };
 

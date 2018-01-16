@@ -39,6 +39,7 @@ void UserInterface::Draw()
 	DrawMeshProperties();
 	DrawLightProperties();	
 	DrawAntiAliasingProperties();
+	// TODO: Draw guide on how to use interface on the right of the screen
 }
 
 void UserInterface::DrawFPS()

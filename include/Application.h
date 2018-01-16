@@ -4,15 +4,6 @@
 #include <numeric>
 #include "EventManager.h"
 
-struct CameraParams
-{
-	float xOffset = 0;
-	float zoomOffset = 0;
-	float antialiasingOffset = 0;
-	float xRotationOffset = 0;
-	float yRotationOffset = 0;
-};
-
 class Application : public IManager
 {
 public:
@@ -39,6 +30,4 @@ private:
 	Image* m_image;
 	Image* m_image2;
 	Window m_window;
-
-	CameraParams m_cameraParams;
 };
