@@ -42,7 +42,7 @@ void UserInterface::Draw() const
 
 	uint8_t r, g, b;
 
-	for (uint8_t i = 0; i < 7; ++i)
+	for (uint8_t i = 0; i < 8; ++i)
 	{
 		r = 125;
 		g = 125;
@@ -62,7 +62,7 @@ void UserInterface::Draw() const
 			b = 0;
 		}
 		
-		DrawAt(items[i], 0, 170 + i * 23, r, g, b);
+		DrawAt(items[i], 0, 147 + i * 23, r, g, b);
 	}
 
 
