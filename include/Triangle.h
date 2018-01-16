@@ -5,9 +5,9 @@
 
 struct AABB
 {
-	Toolbox::Vec3 minPoint;
-	Toolbox::Vec3 maxPoint;
-	AABB(const Toolbox::Vec3& p_minPoint,const Toolbox::Vec3& p_maxPoint) : minPoint(p_minPoint), maxPoint(p_maxPoint) {};
+	Toolbox::Vec2 minPoint;
+	Toolbox::Vec2 maxPoint;
+	AABB(const Toolbox::Vec2& p_minPoint,const Toolbox::Vec2& p_maxPoint) : minPoint(p_minPoint), maxPoint(p_maxPoint) {};
 };
 
 struct Edge
