@@ -103,8 +103,8 @@ void Application::Init()
 void Application::RenderScene()
 {
 	const Mat4 matrix = 
-		Mat4::CreateTranslation(m_sharedContext.appInfos.cameraParams.xOffset, 0, 0).CreateInverse() * 
-		Mat4::CreateTranslation(0 , 0, -6 + m_sharedContext.appInfos.cameraParams.zoomOffset) *
+		Mat4::CreateTranslation(m_sharedContext.appInfos.cameraParams.xOffset, m_sharedContext.appInfos.cameraParams.yOffset, 0).CreateInverse() *
+		Mat4::CreateTranslation(0 , 0, m_sharedContext.appInfos.cameraParams.zoomOffset) *
 		Mat4::CreateRotation(m_sharedContext.appInfos.cameraParams.xRotationOffset, m_sharedContext.appInfos.cameraParams.yRotationOffset, 0);
 
 	m_sharedContext.appInfos.secondCubeRotationOffset += 20 * m_sharedContext.appInfos.deltaTime;
@@ -152,6 +152,7 @@ void Application::RenderScene()
 void Application::UpdateCamera()
 {
 	float xOffset = 0;
+	float yOffset = 0;
 	float zoomOffset = 0;
 	float antialiasingOffset = 0;
 	float xRotationOffset = 0;
@@ -161,6 +162,10 @@ void Application::UpdateCamera()
 		xOffset -= 2;
 	if (m_sharedContext.actions.moveRight)
 		xOffset += 2;
+	if (m_sharedContext.actions.moveUp)
+		yOffset += 2;
+	if (m_sharedContext.actions.moveDown)
+		yOffset -= 2;
 
 	if (m_sharedContext.actions.zoomIn)
 		zoomOffset += 5;
@@ -184,6 +189,7 @@ void Application::UpdateCamera()
 
 	// Update camera params
 	m_sharedContext.appInfos.cameraParams.xOffset += xOffset * m_sharedContext.appInfos.deltaTime;
+	m_sharedContext.appInfos.cameraParams.yOffset += yOffset * m_sharedContext.appInfos.deltaTime;
 	m_sharedContext.appInfos.cameraParams.zoomOffset += zoomOffset * m_sharedContext.appInfos.deltaTime;
 	m_sharedContext.appInfos.cameraParams.xRotationOffset += xRotationOffset * m_sharedContext.appInfos.deltaTime;
 	m_sharedContext.appInfos.cameraParams.yRotationOffset += yRotationOffset * m_sharedContext.appInfos.deltaTime;

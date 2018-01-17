@@ -80,7 +80,7 @@ void UserInterface::DrawCameraParams()
 	{
 		"Camera Parameters",
 		"X-Pos: " + std::to_string(m_sharedContext.appInfos.cameraParams.xOffset),
-		"Y-Pos: " + std::to_string(0),
+		"Y-Pos: " + std::to_string(m_sharedContext.appInfos.cameraParams.yOffset),
 		"Z-Pos: " + std::to_string(m_sharedContext.appInfos.cameraParams.zoomOffset),
 		"X-Rotation: " + std::to_string(m_sharedContext.appInfos.cameraParams.xRotationOffset),
 		"Y-Rotation: " + std::to_string(m_sharedContext.appInfos.cameraParams.yRotationOffset)
@@ -189,16 +189,16 @@ void UserInterface::DrawAntiAliasingProperties()
 			currentMode = "Off";
 			break;
 		case AA2X:
-			currentMode = "2x";
+			currentMode = "MSAA 2x";
 			break;
 		case AA4X:
-			currentMode = "4x";
+			currentMode = "MSAA 4x";
 			break;
 		case AA8X:
-			currentMode = "8x";
+			currentMode = "MSAA 8x";
 			break;
 		case AA16X:
-			currentMode = "16x";
+			currentMode = "MSAA 16x";
 			break;
 		default:
 			currentMode = "UNKNOWN";
@@ -324,7 +324,7 @@ void UserInterface::DrawHelp()
 void UserInterface::DrawCredits()
 {
 	SetTextSelectedColor();
-	DrawAt("CPU Rasterizer student project by Hanseul SHIN & Adrien GIVRY", 350, 750, m_smallFont);
+	DrawAt("CPU Rasterizer student project by Hanseul SHIN & Adrien GIVRY", 350, 754, m_smallFont);
 }
 
 void UserInterface::Close()

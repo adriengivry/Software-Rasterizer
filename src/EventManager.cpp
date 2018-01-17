@@ -49,6 +49,12 @@ void EventManager::KeyInput(const SDL_Keysym& p_key, const bool p_state) const
 	case SDLK_d:
 		m_sharedContext.actions.moveRight = p_state;
 		break;
+	case SDLK_q:
+		m_sharedContext.actions.moveDown = p_state;
+		break;
+	case SDLK_e:
+		m_sharedContext.actions.moveUp = p_state;
+		break;
 	case SDLK_LEFT:
 		m_sharedContext.actions.yTurnClockwise = p_state;
 		break;

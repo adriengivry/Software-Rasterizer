@@ -21,6 +21,8 @@ struct Actions
 {
 	bool moveLeft;
 	bool moveRight;
+	bool moveUp;
+	bool moveDown;
 	bool zoomIn;
 	bool zoomOut;
 	bool antialiasingZoomIn;
@@ -76,6 +78,7 @@ struct CubeParams
 struct CameraParams
 {
 	float xOffset;
+	float yOffset;
 	float zoomOffset;
 	float antialiasingOffset;
 	float xRotationOffset;
@@ -86,7 +89,8 @@ struct CameraParams
 	void Reset()
 	{
 		xOffset = 0;
-		zoomOffset = 0;
+		yOffset = 0;
+		zoomOffset = -6;
 		antialiasingOffset = 0;
 		xRotationOffset = 45;
 		yRotationOffset = 45;
