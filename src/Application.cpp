@@ -92,6 +92,7 @@ void Application::Init()
 {
 	m_image = new Image("../assets/texture.png");
 	m_image2 = new Image("../assets/texture2.png");
+	m_scene.InitMeshes();
 	m_scene.InitEntities();
 	m_scene.InitLights();
 	m_scene.entities[1]->GetMesh()->SetImage(m_image);

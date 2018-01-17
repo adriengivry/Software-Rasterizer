@@ -3,10 +3,7 @@
 using namespace Toolbox;
 
 Entity::Entity() : m_mesh(nullptr), m_alpha(1.f) {}
-Entity::~Entity() 
-{
-	delete m_mesh;
-}
+Entity::~Entity() = default;
 
 Mesh* Entity::GetMesh() const
 {
