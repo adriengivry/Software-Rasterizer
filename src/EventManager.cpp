@@ -171,7 +171,7 @@ void EventManager::KeyInput(const SDL_Keysym& p_key, const bool p_state) const
 		}
 		break;
 	case SDLK_F3:
-		if (p_state)
+		if (p_state && (m_sharedContext.appInfos.selectedVersion == 5 || m_sharedContext.appInfos.selectedVersion == 6))
 		{
 			if (m_sharedContext.appInfos.cubeParams.imageID == "ROCK")
 				m_sharedContext.appInfos.cubeParams.imageID = "BIRD";
@@ -182,6 +182,12 @@ void EventManager::KeyInput(const SDL_Keysym& p_key, const bool p_state) const
 			else if (m_sharedContext.appInfos.cubeParams.imageID == "EARTH")
 				m_sharedContext.appInfos.cubeParams.imageID = "WATER";
 			else if (m_sharedContext.appInfos.cubeParams.imageID == "WATER")
+				m_sharedContext.appInfos.cubeParams.imageID = "BRICK";
+			else if (m_sharedContext.appInfos.cubeParams.imageID == "BRICK")
+				m_sharedContext.appInfos.cubeParams.imageID = "REALISTIC_BRICK";
+			else if (m_sharedContext.appInfos.cubeParams.imageID == "REALISTIC_BRICK")
+				m_sharedContext.appInfos.cubeParams.imageID = "DIRT";
+			else if (m_sharedContext.appInfos.cubeParams.imageID == "DIRT")
 				m_sharedContext.appInfos.cubeParams.imageID = "ROCK";
 		}
 		break;

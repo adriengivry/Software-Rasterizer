@@ -255,6 +255,7 @@ void UserInterface::DrawHelp()
 			"[ESC] to reset settings",
 			"[F1] to hide/show interface",
 			"[F2] to switch Cube/Sphere",
+			"[F3] to change mesh texture",
 			"",
 			"Feature Selection",
 			"Use [1-7] numbers to select",
@@ -265,7 +266,7 @@ void UserInterface::DrawHelp()
 		{
 			SetTextDefaultColor();
 			SetTextSelectedColor();
-			if (i == 0 || i == 5)
+			if (i == 0 || i == 7)
 			{
 				SetTextTitleColor();
 				DrawAt(general[i], 850, yBuffer);

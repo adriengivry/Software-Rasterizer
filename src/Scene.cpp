@@ -8,6 +8,9 @@ Scene::Scene()
 	textures.insert(std::pair<std::string, Image*>("ROCK", new Image("../assets/rock.png")));
 	textures.insert(std::pair<std::string, Image*>("WATER", new Image("../assets/water.png")));
 	textures.insert(std::pair<std::string, Image*>("EARTH", new Image("../assets/earth.png")));
+	textures.insert(std::pair<std::string, Image*>("BRICK", new Image("../assets/brick.png")));
+	textures.insert(std::pair<std::string, Image*>("REALISTIC_BRICK", new Image("../assets/realistic_brick.png")));
+	textures.insert(std::pair<std::string, Image*>("DIRT", new Image("../assets/dirt.png")));
 }
 
 Scene::~Scene()
@@ -32,12 +35,19 @@ void Scene::ClearScene()
 
 void Scene::InitMeshes(const uint8_t p_rasterizerVersion, uint8_t p_meshMode)
 {
-	if (p_rasterizerVersion >= 1 && p_rasterizerVersion <= 4)
+	if (p_rasterizerVersion >= 1 && p_rasterizerVersion <= 2 || p_rasterizerVersion == 4)
 	{
 		if (p_meshMode == CUBE)
 			meshes.insert(std::pair<std::string, Mesh*>("CUBE", Mesh::CreateCube()));
 		else if (p_meshMode == SPHERE)
 			meshes.insert(std::pair<std::string, Mesh*>("SPHERE", Mesh::CreateSphere(20, 20)));
+	}
+	else if (p_rasterizerVersion == 3)
+	{
+		if (p_meshMode == CUBE)
+			meshes.insert(std::pair<std::string, Mesh*>("CUBE", Mesh::CreateCube()));
+		else if (p_meshMode == SPHERE)
+			meshes.insert(std::pair<std::string, Mesh*>("SPHERE", Mesh::CreateSphere(6, 6)));
 	}
 	else if (p_rasterizerVersion == 5)
 	{
@@ -98,7 +108,7 @@ void Scene::InitEntities(uint8_t p_rasterizerVersion, uint8_t p_meshMode)
 	{
 		Entity* entity = new Entity();
 		entity->SetMesh(*meshes["CUBE_WITH_TEXTURE"]);
-		entity->GetMesh()->SetImage(textures["ROCK"]);
+		entity->GetMesh()->SetImage(textures["BOX"]);
 		entity->SetAlpha(1.f);
 		entities.push_back(entity);
 

@@ -17,8 +17,8 @@ public:
 	void RenderScene();
 	void UpdateCamera();
 	void UpdateLights();
-	void UpdateCubeColor();
-	void UpdateMeshTexture();
+	void UpdateMeshColor();
+	void UpdateMeshTexture() const;
 
 	SharedContext& GetContext();
 private:

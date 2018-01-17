@@ -66,15 +66,15 @@ struct LightParams
 	}
 };
 
-struct CubeParams
+struct MeshParams
 {
 	float red;
 	float green;
 	float blue;
 	float transparency;
-	std::string imageID;
+	std::string imageID = "ROCK";
 
-	CubeParams() { Reset(); }
+	MeshParams() { Reset(); }
 
 	void Reset()
 	{
@@ -82,7 +82,6 @@ struct CubeParams
 		green = 0;
 		blue = 0;
 		transparency = 40;
-		imageID = "ROCK";
 	}
 };
 
@@ -125,7 +124,7 @@ struct ApplicationInfos
 	uint8_t selectedVersion = 1;
 	uint8_t selectedLight = AMBIANT;
 	LightParams lightParams;
-	CubeParams cubeParams;
+	MeshParams cubeParams;
 	CameraParams cameraParams;
 	uint8_t selectedAA = NOAA;
 	uint16_t polygons = 0;
@@ -135,6 +134,7 @@ struct ApplicationInfos
 	{
 		selectedLight = AMBIANT;
 		selectedAA = NOAA;
+		meshMode = CUBE;
 		lightParams.Reset();
 		cubeParams.Reset();
 		cameraParams.Reset();

@@ -40,7 +40,7 @@ void Application::Update()
 	m_sharedContext.appInfos.lastTime = m_sharedContext.appInfos.currentTime;
 
 	UpdateMeshTexture();
-	UpdateCubeColor();
+	UpdateMeshColor();
 	UpdateCamera();
 	UpdateLights();
 	RenderScene();
@@ -212,7 +212,7 @@ void Application::UpdateCamera()
 	while (m_sharedContext.appInfos.cameraParams.yRotationOffset < 0) m_sharedContext.appInfos.cameraParams.yRotationOffset += 360;
 
 	// Prevent zooming or de-zooming too much
-	if (m_sharedContext.appInfos.cameraParams.zoomOffset >= -3.5) m_sharedContext.appInfos.cameraParams.zoomOffset = -3.5;
+	if (m_sharedContext.appInfos.cameraParams.zoomOffset >= -3) m_sharedContext.appInfos.cameraParams.zoomOffset = -3;
 	if (m_sharedContext.appInfos.cameraParams.zoomOffset <= -40) m_sharedContext.appInfos.cameraParams.zoomOffset = -40;
 	if (m_sharedContext.appInfos.cameraParams.antialiasingOffset >= 1) m_sharedContext.appInfos.cameraParams.antialiasingOffset = 1;
 	if (m_sharedContext.appInfos.cameraParams.antialiasingOffset <= -15) m_sharedContext.appInfos.cameraParams.zoomOffset = -15;
@@ -264,7 +264,7 @@ void Application::UpdateLights()
 	}
 }
 
-void Application::UpdateCubeColor()
+void Application::UpdateMeshColor()
 {
 	if (m_sharedContext.appInfos.selectedVersion < 5)
 	{
@@ -309,10 +309,12 @@ void Application::UpdateCubeColor()
 	}
 }
 
-void Application::UpdateMeshTexture()
+void Application::UpdateMeshTexture() const
 {
-	if (m_sharedContext.appInfos.selectedVersion == 5 || m_sharedContext.appInfos.selectedVersion == 6)
+	if (m_sharedContext.appInfos.selectedVersion == 5)
 		m_sharedContext.scene->entities[0]->GetMesh()->SetImage(m_sharedContext.scene->textures[m_sharedContext.appInfos.cubeParams.imageID]);
+	else if (m_sharedContext.appInfos.selectedVersion == 6)
+		m_sharedContext.scene->entities[1]->GetMesh()->SetImage(m_sharedContext.scene->textures[m_sharedContext.appInfos.cubeParams.imageID]);
 }
 
 SharedContext& Application::GetContext()
