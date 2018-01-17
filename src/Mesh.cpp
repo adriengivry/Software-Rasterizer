@@ -266,6 +266,9 @@ Mesh* Mesh::CreateSphere(int p_latitudeCount, int p_longitudeCount)
 			Sphere->GetVertices().push_back(Vertex(x, y, z));
 			Sphere->GetVertices()[index].texCoordinate.x = 1 - (longNumber / p_longitudeCount);
 			Sphere->GetVertices()[index].texCoordinate.y = 1 - (latNumber / p_latitudeCount);
+			Sphere->GetVertices()[index].normal.x = -x;
+			Sphere->GetVertices()[index].normal.y = -y;
+			Sphere->GetVertices()[index].normal.z = -z;
 			index++;
 		}
 	}
@@ -273,29 +276,19 @@ Mesh* Mesh::CreateSphere(int p_latitudeCount, int p_longitudeCount)
 	{
 		for(int longNumber = 0; longNumber < p_longitudeCount; longNumber++)
 		{
-			int first = (latNumber * (p_longitudeCount + 1)) + longNumber;
-			int second = first + p_longitudeCount + 1;
+			{
+				int first = (latNumber * (p_longitudeCount + 1)) + longNumber;
+				int second = first + p_longitudeCount + 1;
 
-			Sphere->GetIndices().push_back(first); 
-			Sphere->GetIndices().push_back(first + 1);
-			Sphere->GetIndices().push_back(second);
-
-			Sphere->GetIndices().push_back(second);
-			Sphere->GetIndices().push_back(first + 1);
-			Sphere->GetIndices().push_back(second + 1);
+				Sphere->GetIndices().push_back(first);
+				Sphere->GetIndices().push_back(second);
+				Sphere->GetIndices().push_back(first + 1);
+				
+				Sphere->GetIndices().push_back(second);
+				Sphere->GetIndices().push_back(second + 1);
+				Sphere->GetIndices().push_back(first + 1);
+			}
 		}
-	}
-
-	for (uint16_t i = 0; i < Sphere->m_indices.size() - 2; i += 3)
-	{
-		Vec3 Normal;
-		Vec3 p1(Sphere->m_vertices[Sphere->m_indices[i + 1]].position - Sphere->m_vertices[Sphere->m_indices[i]].position);
-		Vec3 p2(Sphere->m_vertices[Sphere->m_indices[i + 2]].position - Sphere->m_vertices[Sphere->m_indices[i]].position);
-		Normal = p1.Cross(p2);
-		Normal.Normalize();
-		Sphere->m_vertices[Sphere->m_indices[i]].normal = Sphere->m_vertices[Sphere->m_indices[i]].normal + Vec4(Normal, 0);
-		Sphere->m_vertices[Sphere->m_indices[i + 1]].normal = Sphere->m_vertices[Sphere->m_indices[i + 1]].normal + Vec4(Normal, 0);
-		Sphere->m_vertices[Sphere->m_indices[i + 2]].normal = Sphere->m_vertices[Sphere->m_indices[i + 2]].normal + Vec4(Normal, 0);
 	}
 
 	for (uint16_t i = 0; i < Sphere->m_vertices.size(); ++i)
