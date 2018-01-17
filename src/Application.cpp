@@ -202,9 +202,9 @@ void Application::UpdateCamera()
 	while (m_sharedContext.appInfos.cameraParams.yRotationOffset < 0) m_sharedContext.appInfos.cameraParams.yRotationOffset += 360;
 
 	// Prevent zooming or de-zooming too much
-	if (m_sharedContext.appInfos.cameraParams.zoomOffset >= 2.5) m_sharedContext.appInfos.cameraParams.zoomOffset = 2.5;
-	if (m_sharedContext.appInfos.cameraParams.zoomOffset <= -15) m_sharedContext.appInfos.cameraParams.zoomOffset = -15;
-	if (m_sharedContext.appInfos.cameraParams.antialiasingOffset >= 4.5) m_sharedContext.appInfos.cameraParams.antialiasingOffset = 4.5;
+	if (m_sharedContext.appInfos.cameraParams.zoomOffset >= -3.5) m_sharedContext.appInfos.cameraParams.zoomOffset = -3.5;
+	if (m_sharedContext.appInfos.cameraParams.zoomOffset <= -40) m_sharedContext.appInfos.cameraParams.zoomOffset = -40;
+	if (m_sharedContext.appInfos.cameraParams.antialiasingOffset >= 1) m_sharedContext.appInfos.cameraParams.antialiasingOffset = 1;
 	if (m_sharedContext.appInfos.cameraParams.antialiasingOffset <= -15) m_sharedContext.appInfos.cameraParams.zoomOffset = -15;
 }
 
