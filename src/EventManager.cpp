@@ -70,58 +70,37 @@ void EventManager::KeyInput(const SDL_Keysym& p_key, const bool p_state) const
 	case SDLK_KP_1:
 	case SDLK_1:
 		m_sharedContext.appInfos.selectedVersion = 1;
-		m_sharedContext.scene->ClearScene();
-		m_sharedContext.scene->InitMeshes(m_sharedContext.appInfos.selectedVersion);
-		m_sharedContext.scene->InitEntities(m_sharedContext.appInfos.selectedVersion);
-		m_sharedContext.scene->InitLights();
+		m_sharedContext.RefreshScene();
 		break;
 	case SDLK_KP_2:
 	case SDLK_2:
 		m_sharedContext.appInfos.selectedVersion = 2;
-		m_sharedContext.scene->ClearScene();
-		m_sharedContext.scene->InitMeshes(m_sharedContext.appInfos.selectedVersion);
-		m_sharedContext.scene->InitEntities(m_sharedContext.appInfos.selectedVersion);
-		m_sharedContext.scene->InitLights();
+		m_sharedContext.RefreshScene();
 		break;
 	case SDLK_KP_3:
 	case SDLK_3:
 		m_sharedContext.appInfos.selectedVersion = 3;
-		m_sharedContext.scene->ClearScene();
-		m_sharedContext.scene->InitMeshes(m_sharedContext.appInfos.selectedVersion);
-		m_sharedContext.scene->InitEntities(m_sharedContext.appInfos.selectedVersion);
-		m_sharedContext.scene->InitLights();
+		m_sharedContext.RefreshScene();
 		break;
 	case SDLK_KP_4:
 	case SDLK_4:
 		m_sharedContext.appInfos.selectedVersion = 4;
-		m_sharedContext.scene->ClearScene();
-		m_sharedContext.scene->InitMeshes(m_sharedContext.appInfos.selectedVersion);
-		m_sharedContext.scene->InitEntities(m_sharedContext.appInfos.selectedVersion);
-		m_sharedContext.scene->InitLights();
+		m_sharedContext.RefreshScene();
 		break;
 	case SDLK_KP_5:
 	case SDLK_5:
 		m_sharedContext.appInfos.selectedVersion = 5;
-		m_sharedContext.scene->ClearScene();
-		m_sharedContext.scene->InitMeshes(m_sharedContext.appInfos.selectedVersion);
-		m_sharedContext.scene->InitEntities(m_sharedContext.appInfos.selectedVersion);
-		m_sharedContext.scene->InitLights();
+		m_sharedContext.RefreshScene();
 		break;
 	case SDLK_KP_6:
 	case SDLK_6:
 		m_sharedContext.appInfos.selectedVersion = 6;
-		m_sharedContext.scene->ClearScene();
-		m_sharedContext.scene->InitMeshes(m_sharedContext.appInfos.selectedVersion);
-		m_sharedContext.scene->InitEntities(m_sharedContext.appInfos.selectedVersion);
-		m_sharedContext.scene->InitLights();
+		m_sharedContext.RefreshScene();
 		break;
 	case SDLK_KP_7:
 	case SDLK_7:
 		m_sharedContext.appInfos.selectedVersion = 7;
-		m_sharedContext.scene->ClearScene();
-		m_sharedContext.scene->InitMeshes(m_sharedContext.appInfos.selectedVersion);
-		m_sharedContext.scene->InitEntities(m_sharedContext.appInfos.selectedVersion);
-		m_sharedContext.scene->InitLights();
+		m_sharedContext.RefreshScene();
 		break;
 	case SDLK_KP_8:
 	case SDLK_8:
@@ -179,6 +158,17 @@ void EventManager::KeyInput(const SDL_Keysym& p_key, const bool p_state) const
 	case SDLK_F1:
 		if (p_state)
 			m_sharedContext.appInfos.showInterface = !m_sharedContext.appInfos.showInterface;
+		break;
+	case SDLK_F2:
+		if (p_state)
+		{
+			if (m_sharedContext.appInfos.meshMode == CUBE)
+				m_sharedContext.appInfos.meshMode = SPHERE;
+			else if (m_sharedContext.appInfos.meshMode == SPHERE)
+				m_sharedContext.appInfos.meshMode = CUBE;
+
+			m_sharedContext.RefreshScene();
+		}
 		break;
 	default:
 		break;

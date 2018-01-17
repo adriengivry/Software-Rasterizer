@@ -1,4 +1,5 @@
 #include "../include/Scene.h"
+#include "SharedContext.h"
 
 Scene::Scene()
 {
@@ -24,21 +25,32 @@ void Scene::ClearScene()
 	textures.clear();
 }
 
-void Scene::InitMeshes(const uint8_t p_rasterizerVersion)
+void Scene::InitMeshes(const uint8_t p_rasterizerVersion, uint8_t p_meshMode)
 {
 	if (p_rasterizerVersion >= 1 && p_rasterizerVersion <= 4)
 	{
-		meshes.insert(std::pair<std::string, Mesh*>("CUBE", Mesh::CreateCube()));
+		if (p_meshMode == CUBE)
+			meshes.insert(std::pair<std::string, Mesh*>("CUBE", Mesh::CreateCube()));
+		else if (p_meshMode == SPHERE)
+			meshes.insert(std::pair<std::string, Mesh*>("SPHERE", Mesh::CreateSphere(20, 20)));
 	}
 	else if (p_rasterizerVersion == 5)
 	{
-		meshes.insert(std::pair<std::string, Mesh*>("CUBE_WITH_TEXTURE", Mesh::CreateTextureCube()));
+		if (p_meshMode == CUBE)
+			meshes.insert(std::pair<std::string, Mesh*>("CUBE_WITH_TEXTURE", Mesh::CreateTextureCube()));
+		else if (p_meshMode == SPHERE)
+			meshes.insert(std::pair<std::string, Mesh*>("SPHERE", Mesh::CreateSphere(20, 20)));
+
 		textures.push_back(new Image("../assets/texture.png"));	
 
 	}
 	else if (p_rasterizerVersion == 6)
 	{
-		meshes.insert(std::pair<std::string, Mesh*>("CUBE_WITH_TEXTURE", Mesh::CreateTextureCube()));
+		if (p_meshMode == CUBE)
+			meshes.insert(std::pair<std::string, Mesh*>("CUBE_WITH_TEXTURE", Mesh::CreateTextureCube()));
+		else if (p_meshMode == SPHERE)
+			meshes.insert(std::pair<std::string, Mesh*>("SPHERE", Mesh::CreateSphere(20, 20)));
+
 		textures.push_back(new Image("../assets/texture.png"));
 		textures.push_back(new Image("../assets/texture2.png"));
 
@@ -49,35 +61,55 @@ void Scene::InitMeshes(const uint8_t p_rasterizerVersion)
 	}
 }
 
-void Scene::InitEntities(uint8_t p_rasterizerVersion)
+void Scene::InitEntities(uint8_t p_rasterizerVersion, uint8_t p_meshMode)
 {
 	if (p_rasterizerVersion >= 1 && p_rasterizerVersion <= 4)
 	{
-		Entity* cube = new Entity();
-		cube->SetMesh(*meshes["CUBE"]);
-		cube->SetColor(255, 0, 0);
-		entities.push_back(cube);
+		Entity* entity = new Entity();
+
+		if (p_meshMode == CUBE)
+			entity->SetMesh(*meshes["CUBE"]);
+		else if (p_meshMode == SPHERE)
+			entity->SetMesh(*meshes["SPHERE"]);
+
+		entity->SetColor(255, 0, 0);
+		entities.push_back(entity);
 	}
 	else if (p_rasterizerVersion == 5)
 	{
-		Entity* cube = new Entity();
-		cube->SetMesh(*meshes["CUBE_WITH_TEXTURE"]);
-		cube->GetMesh()->SetImage(textures[0]);
-		entities.push_back(cube);
+		Entity* entity = new Entity();
+
+		if (p_meshMode == CUBE)
+			entity->SetMesh(*meshes["CUBE_WITH_TEXTURE"]);
+		else if (p_meshMode == SPHERE)
+			entity->SetMesh(*meshes["SPHERE"]);
+
+		entity->GetMesh()->SetImage(textures[0]);
+		entities.push_back(entity);
 	}
 	else if (p_rasterizerVersion == 6)
 	{
-		Entity* cube = new Entity();
-		cube->SetMesh(*meshes["CUBE_WITH_TEXTURE"]);
-		cube->GetMesh()->SetImage(textures[1]);
-		cube->SetAlpha(1.f);
-		entities.push_back(cube);
+		Entity* entity = new Entity();
 
-		Entity* cube2 = new Entity();
-		cube2->SetMesh(*meshes["CUBE_WITH_TEXTURE"]);
-		cube2->GetMesh()->SetImage(textures[0]);
-		cube2->SetAlpha(0.4f);
-		entities.push_back(cube2);
+		if (p_meshMode == CUBE)
+			entity->SetMesh(*meshes["CUBE_WITH_TEXTURE"]);
+		else if (p_meshMode == SPHERE)
+			entity->SetMesh(*meshes["SPHERE"]);
+
+		entity->GetMesh()->SetImage(textures[1]);
+		entity->SetAlpha(1.f);
+		entities.push_back(entity);
+
+		Entity* entity2 = new Entity();
+
+		if (p_meshMode == CUBE)
+			entity2->SetMesh(*meshes["CUBE_WITH_TEXTURE"]);
+		else if (p_meshMode == SPHERE)
+			entity2->SetMesh(*meshes["SPHERE"]);
+
+		entity2->GetMesh()->SetImage(textures[0]);
+		entity2->SetAlpha(0.4f);
+		entities.push_back(entity2);
 	}
 	else if (p_rasterizerVersion == 7)
 	{

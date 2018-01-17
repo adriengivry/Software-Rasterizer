@@ -2,6 +2,7 @@
 #include <cstdint>
 #include "Scene.h"
 #include "Window.h"
+#include <atomic>
 
 enum LIGHTS
 {
@@ -17,6 +18,14 @@ enum AASELECTION
 	AA8X,
 	AA16X
 };
+
+
+enum MESHMODE
+{
+	CUBE,
+	SPHERE
+};
+
 struct Actions
 {
 	bool moveLeft;
@@ -118,6 +127,7 @@ struct ApplicationInfos
 	CameraParams cameraParams;
 	uint8_t selectedAA = NOAA;
 	uint16_t polygons = 0;
+	uint8_t meshMode = CUBE;
 
 	void Reset()
 	{
@@ -136,4 +146,12 @@ struct SharedContext
 
 	ApplicationInfos appInfos;
 	Actions actions;
+
+	void RefreshScene()
+	{
+		scene->ClearScene();
+		scene->InitMeshes(appInfos.selectedVersion, appInfos.meshMode);
+		scene->InitEntities(appInfos.selectedVersion, appInfos.meshMode);
+		scene->InitLights();
+	}
 };

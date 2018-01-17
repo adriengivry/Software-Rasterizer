@@ -86,8 +86,8 @@ void Application::Draw() const
 
 void Application::Init()
 {
-	m_scene.InitMeshes(m_sharedContext.appInfos.selectedVersion);
-	m_scene.InitEntities(m_sharedContext.appInfos.selectedVersion);
+	m_scene.InitMeshes(m_sharedContext.appInfos.selectedVersion, m_sharedContext.appInfos.meshMode);
+	m_scene.InitEntities(m_sharedContext.appInfos.selectedVersion, m_sharedContext.appInfos.meshMode);
 	m_scene.InitLights();
 }
 

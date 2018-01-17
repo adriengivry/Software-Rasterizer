@@ -9,8 +9,8 @@ struct Scene
 	Scene();
 	~Scene();
 	void ClearScene();
-	void InitMeshes(uint8_t p_rasterizerVersion);
-	void InitEntities(uint8_t p_rasterizerVersion);
+	void InitMeshes(uint8_t p_rasterizerVersion, uint8_t p_meshMode);
+	void InitEntities(uint8_t p_rasterizerVersion, uint8_t p_meshMode);
 	void InitLights();
 	std::map<std::string, Mesh*> meshes;
 	std::vector<Entity*> entities;

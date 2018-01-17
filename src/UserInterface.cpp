@@ -255,13 +255,14 @@ void UserInterface::DrawHelp()
 			"Hold [H] for help",
 			"[ESC] to reset settings",
 			"[F1] to hide/show interface",
+			"[F2] to switch Cube/Sphere",
 			"",
 			"Feature Selection",
 			"Use [1-7] numbers to select",
 			"a feature to render on screen."
 		};
 
-		for (uint8_t i = 0; i < 8; ++i)
+		for (uint8_t i = 0; i < 9; ++i)
 		{
 			SetTextDefaultColor();
 			SetTextSelectedColor();
