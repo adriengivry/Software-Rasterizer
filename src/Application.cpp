@@ -105,7 +105,7 @@ void Application::RenderScene()
 	const Mat4 matrix = 
 		Mat4::CreateTranslation(m_sharedContext.appInfos.cameraParams.xOffset, 0, 0).CreateInverse() * 
 		Mat4::CreateTranslation(0 , 0, -6 + m_sharedContext.appInfos.cameraParams.zoomOffset) *
-		Mat4::CreateRotation(45 + m_sharedContext.appInfos.cameraParams.xRotationOffset, 45 + m_sharedContext.appInfos.cameraParams.yRotationOffset, 0);
+		Mat4::CreateRotation(m_sharedContext.appInfos.cameraParams.xRotationOffset, m_sharedContext.appInfos.cameraParams.yRotationOffset, 0);
 
 	m_sharedContext.appInfos.secondCubeRotationOffset += 20 * m_sharedContext.appInfos.deltaTime;
 
@@ -182,12 +182,20 @@ void Application::UpdateCamera()
 	if (m_sharedContext.actions.yTurnCounterClockwise)
 		yRotationOffset -= 90;
 
+	// Update camera params
 	m_sharedContext.appInfos.cameraParams.xOffset += xOffset * m_sharedContext.appInfos.deltaTime;
 	m_sharedContext.appInfos.cameraParams.zoomOffset += zoomOffset * m_sharedContext.appInfos.deltaTime;
 	m_sharedContext.appInfos.cameraParams.xRotationOffset += xRotationOffset * m_sharedContext.appInfos.deltaTime;
 	m_sharedContext.appInfos.cameraParams.yRotationOffset += yRotationOffset * m_sharedContext.appInfos.deltaTime;
 	m_sharedContext.appInfos.cameraParams.antialiasingOffset += antialiasingOffset * m_sharedContext.appInfos.deltaTime;
 
+	// Keep rotation between 0 and 360
+	while (m_sharedContext.appInfos.cameraParams.xRotationOffset >= 360) m_sharedContext.appInfos.cameraParams.xRotationOffset -= 360;
+	while (m_sharedContext.appInfos.cameraParams.yRotationOffset >= 360) m_sharedContext.appInfos.cameraParams.yRotationOffset -= 360;
+	while (m_sharedContext.appInfos.cameraParams.xRotationOffset < 0) m_sharedContext.appInfos.cameraParams.xRotationOffset += 360;
+	while (m_sharedContext.appInfos.cameraParams.yRotationOffset < 0) m_sharedContext.appInfos.cameraParams.yRotationOffset += 360;
+
+	// Prevent zooming or de-zooming too much
 	if (m_sharedContext.appInfos.cameraParams.zoomOffset >= 2.5) m_sharedContext.appInfos.cameraParams.zoomOffset = 2.5;
 	if (m_sharedContext.appInfos.cameraParams.zoomOffset <= -15) m_sharedContext.appInfos.cameraParams.zoomOffset = -15;
 	if (m_sharedContext.appInfos.cameraParams.antialiasingOffset >= 4.5) m_sharedContext.appInfos.cameraParams.antialiasingOffset = 4.5;

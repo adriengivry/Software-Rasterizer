@@ -36,6 +36,7 @@ struct Actions
 	bool addBlue;
 	bool addTransparency;
 	bool changeAAValue;
+	bool showHelp;
 };
 
 struct LightParams
@@ -80,19 +81,22 @@ struct CameraParams
 	float xRotationOffset;
 	float yRotationOffset;
 
+	CameraParams() { Reset(); }
+
 	void Reset()
 	{
 		xOffset = 0;
 		zoomOffset = 0;
 		antialiasingOffset = 0;
-		xRotationOffset = 0;
-		yRotationOffset = 0;
+		xRotationOffset = 45;
+		yRotationOffset = 45;
 	}
 };
 
 struct ApplicationInfos
 {
 	bool isRunning = true;
+	bool showInterface = true;
 	float lastTime = 0;
 	float currentTime = 0;
 	float deltaTime = 0;

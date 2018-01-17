@@ -17,17 +17,17 @@ UserInterface::~UserInterface()
 
 void UserInterface::Setup()
 {
-	m_font = TTF_OpenFont("../assets/arial.ttf", 20);
+	m_font = TTF_OpenFont("../assets/arial.ttf", 16);
 	m_smallFont = TTF_OpenFont("../assets/arial.ttf", 12);
 
 	m_labelsVersions[0] = "RASTERIZER FEATURES";
-	m_labelsVersions[1] = "1. Z-Buffer";
-	m_labelsVersions[2] = "2. Phong (Per-Vertex)";
-	m_labelsVersions[3] = "3. Blinn-Phong (Per-Pixel)";
-	m_labelsVersions[4] = "4. Wireframe with Backface Culling";
-	m_labelsVersions[5] = "5. Bilinear filtering";
-	m_labelsVersions[6] = "6. Alpha-Blending";
-	m_labelsVersions[7] = "7. Anti-aliasing";
+	m_labelsVersions[1] = "[1] Z-Buffer";
+	m_labelsVersions[2] = "[2] Phong (Per-Vertex)";
+	m_labelsVersions[3] = "[3] Blinn-Phong (Per-Pixel)";
+	m_labelsVersions[4] = "[4] Wireframe with Backface Culling";
+	m_labelsVersions[5] = "[5] Bilinear filtering";
+	m_labelsVersions[6] = "[6] Alpha-Blending";
+	m_labelsVersions[7] = "[7] Anti-aliasing";
 }
 
 void UserInterface::Update()
@@ -37,18 +37,63 @@ void UserInterface::Update()
 void UserInterface::Draw()
 {
 	DrawFPS();
-	DrawVersionSelection();
-	DrawMeshProperties();
-	DrawLightProperties();	
-	DrawAntiAliasingProperties();
 	DrawHelp();
+
+	if (m_sharedContext.appInfos.showInterface)
+	{
+		DrawCameraParams();
+		DrawVersionSelection();
+		DrawMeshProperties();
+		DrawLightProperties();
+		DrawAntiAliasingProperties();
+		DrawCredits();
+	}
+		
 }
 
 void UserInterface::DrawFPS()
 {
-	SetTextSelectedColor();
-	const std::string fps = std::to_string(m_sharedContext.appInfos.fpsCounter) + " FPS (" + std::to_string(m_sharedContext.appInfos.minFps) + " to " + std::to_string(m_sharedContext.appInfos.maxFps) + " FPS | ~" + std::to_string(m_sharedContext.appInfos.averageFps) + " FPS)";
-	DrawAt(fps, 0, 0);
+	
+	std::string fpsInfo[] =
+	{
+		"FPS counter",
+		"Current: " + std::to_string(m_sharedContext.appInfos.fpsCounter),
+		"Min.: " + std::to_string(m_sharedContext.appInfos.minFps),
+		"Max.: " + std::to_string(m_sharedContext.appInfos.maxFps),
+		"Average: " + std::to_string(m_sharedContext.appInfos.averageFps),
+
+	};
+	
+	for (uint8_t i = 0; i < 5; ++i)
+	{
+		if (i == 0)
+			SetTextTitleColor();
+		else
+			SetTextSelectedColor();
+		DrawAt(fpsInfo[i], 0, i * 15, m_smallFont);
+	}
+}
+
+void UserInterface::DrawCameraParams()
+{
+	std::string cameraParams[] =
+	{
+		"Camera Parameters",
+		"X-Pos: " + std::to_string(m_sharedContext.appInfos.cameraParams.xOffset),
+		"Y-Pos: " + std::to_string(0),
+		"Z-Pos: " + std::to_string(m_sharedContext.appInfos.cameraParams.zoomOffset),
+		"X-Rotation: " + std::to_string(m_sharedContext.appInfos.cameraParams.xRotationOffset),
+		"Y-Rotation: " + std::to_string(m_sharedContext.appInfos.cameraParams.yRotationOffset)
+	};
+
+	for (uint8_t i = 0; i < 6; ++i)
+	{
+		if (i == 0)
+			SetTextTitleColor();
+		else
+			SetTextSelectedColor();
+		DrawAt(cameraParams[i], 450, i * 15, m_smallFont);
+	}
 }
 
 void UserInterface::DrawVersionSelection()
@@ -58,7 +103,7 @@ void UserInterface::DrawVersionSelection()
 		SetTextDefaultColor();
 		if (i == m_sharedContext.appInfos.selectedVersion) SetTextSelectedColor();
 		if (i == 0) SetTextTitleColor();
-		DrawAt(m_labelsVersions[i], 0, 147 + i * 23);
+		DrawAt(m_labelsVersions[i], 0, 147 + i * 20);
 	}
 }
 
@@ -89,7 +134,7 @@ void UserInterface::DrawMeshProperties()
 
 			if (i == 0) SetTextTitleColor();
 			if (colorIsChanging) SetTextSelectedColor();
-			DrawAt(items[i], 0, 350 + i * 23);
+			DrawAt(items[i], 0, 350 + i * 20);
 		}
 	}
 
@@ -106,7 +151,7 @@ void UserInterface::DrawMeshProperties()
 			SetTextDefaultColor();
 			if (m_sharedContext.actions.addTransparency) SetTextSelectedColor();
 			if (i == 0) SetTextTitleColor();
-			DrawAt(items[i], 0, 350 + i * 23);
+			DrawAt(items[i], 0, 350 + i * 20);
 		}
 	}
 }
@@ -118,9 +163,9 @@ void UserInterface::DrawLightProperties()
 		std::string items[] =
 		{
 			"LIGHT PROPERTIES",
-			"8. Ambiant [" + std::to_string(static_cast<uint8_t>(m_sharedContext.appInfos.lightParams.ambiant)) + "]",
-			"9. Diffuse [" + std::to_string(static_cast<uint8_t>(m_sharedContext.appInfos.lightParams.diffuse)) + "]",
-			"0. Specular [" + std::to_string(static_cast<uint8_t>(m_sharedContext.appInfos.lightParams.specular)) + "]"
+			"[8] Ambiant: " + std::to_string(static_cast<uint8_t>(m_sharedContext.appInfos.lightParams.ambiant)),
+			"[9] Diffuse: " + std::to_string(static_cast<uint8_t>(m_sharedContext.appInfos.lightParams.diffuse)),
+			"[0] Specular: " + std::to_string(static_cast<uint8_t>(m_sharedContext.appInfos.lightParams.specular))
 		};
 
 		for (uint8_t i = 0; i < 4; ++i)
@@ -128,7 +173,7 @@ void UserInterface::DrawLightProperties()
 			SetTextDefaultColor();
 			if (i == m_sharedContext.appInfos.selectedLight) SetTextSelectedColor();
 			if (i == 0) SetTextTitleColor();
-			DrawAt(items[i], 0, 465 + i * 23);
+			DrawAt(items[i], 0, 465 + i * 20);
 		}
 	}
 }
@@ -170,42 +215,116 @@ void UserInterface::DrawAntiAliasingProperties()
 			SetTextDefaultColor();
 			if (m_sharedContext.actions.changeAAValue) SetTextSelectedColor();
 			if (i == 0) SetTextTitleColor();
-			DrawAt(items[i], 0, 350 + i * 23);
+			DrawAt(items[i], 0, 350 + i * 20);
 		}
 	}
 }
 
 void UserInterface::DrawHelp()
 {
-	std::string lines[] =
+	if (m_sharedContext.actions.showHelp)
 	{
-		"        HELP",
-		"Use [1-7] numbers to select",
-		"a feature to render on screen.",
-		"",
-		"Press the letter showed in",
-		"brackets [X] to activate the",
-		"effect attached to the item.",
-		"",
-		"Use [+] and [-] to adjust",
-		"light values after selecting",
-		"a light with [8] [9] or [0]"
-	};
+		uint16_t yBuffer = 250;
+		uint16_t xPos = 850;
+		std::string general[] =
+		{
+			"Shortcuts",
+			"Hold [H] for help",
+			"[ESC] to reset settings",
+			"[F1] to hide/show interface",
+			"",
+			"Feature Selection",
+			"Use [1-7] numbers to select",
+			"a feature to render on screen."
+		};
 
-	for (uint8_t i = 0; i < 11; ++i)
-	{
-		SetTextDefaultColor();
-		SetTextSelectedColor();
-		if (i == 0)
+		for (uint8_t i = 0; i < 8; ++i)
 		{
-			SetTextTitleColor();
-			DrawAt(lines[i], 850, 285);
+			SetTextDefaultColor();
+			SetTextSelectedColor();
+			if (i == 0 || i == 5)
+			{
+				SetTextTitleColor();
+				DrawAt(general[i], 850, yBuffer);
+				yBuffer += 20;
+			}
+			else
+			{
+				DrawAt(general[i], xPos, yBuffer, m_smallFont);
+				yBuffer += 15;
+			}
 		}
-		else
+
+		if (m_sharedContext.appInfos.selectedVersion != 5)
 		{
-			DrawAt(lines[i], 850, 300 + i * 15, m_smallFont);
+			yBuffer += 15;
+			std::string bracketHelp[] =
+			{
+				"Changing values",
+				"Press the key relative to the",
+				"letter in brackets [X] to modify",
+				"the value attached to the item."
+			};
+
+			for (uint8_t i = 0; i < 4; ++i)
+			{
+				SetTextDefaultColor();
+				SetTextSelectedColor();
+				if (i == 0)
+				{
+					SetTextTitleColor();
+					DrawAt(bracketHelp[i], 850, yBuffer);
+					yBuffer += 20;
+				}
+				else
+				{
+					DrawAt(bracketHelp[i], xPos, yBuffer, m_smallFont);
+					yBuffer += 15;
+				}
+			}
+		}
+
+		if (m_sharedContext.appInfos.selectedVersion == 2 || m_sharedContext.appInfos.selectedVersion == 3)
+		{
+			yBuffer += 15;
+			std::string lightHelp[] =
+			{
+				"Modifying lights",
+				"Use [+] and [-] or [PAGEUP]",
+				"and [PAGEDOWN] to adjust",
+				"light values after selecting",
+				"a light with [8] [9] or [0]"
+			};
+
+			for (uint8_t i = 0; i < 5; ++i)
+			{
+				SetTextDefaultColor();
+				SetTextSelectedColor();
+				if (i == 0)
+				{
+					SetTextTitleColor();
+					DrawAt(lightHelp[i], 850, yBuffer);
+					yBuffer += 20;
+				}
+				else
+				{
+					DrawAt(lightHelp[i], xPos, yBuffer, m_smallFont);
+					yBuffer += 15;
+				}
+			}
 		}
 	}
+	else
+	{
+		SetTextSelectedColor();
+		DrawAt("Press [H] for help!", 925, 0, m_smallFont);
+	}
+}
+
+void UserInterface::DrawCredits()
+{
+	SetTextSelectedColor();
+	DrawAt("CPU Rasterizer student project by Hanseul SHIN & Adrien GIVRY", 350, 750, m_smallFont);
 }
 
 void UserInterface::Close()

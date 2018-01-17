@@ -61,12 +61,43 @@ void EventManager::KeyInput(const SDL_Keysym& p_key, const bool p_state) const
 	case SDLK_DOWN:
 		m_sharedContext.actions.xTurnCounterClockwise = p_state;
 		break;
+	case SDLK_KP_1:
+	case SDLK_1:
+		m_sharedContext.appInfos.selectedVersion = 1;
+		break;
+	case SDLK_KP_2:
+	case SDLK_2:
+		m_sharedContext.appInfos.selectedVersion = 2;
+		break;
+	case SDLK_KP_3:
+	case SDLK_3:
+		m_sharedContext.appInfos.selectedVersion = 3;
+		break;
+	case SDLK_KP_4:
+	case SDLK_4:
+		m_sharedContext.appInfos.selectedVersion = 4;
+		break;
+	case SDLK_KP_5:
+	case SDLK_5:
+		m_sharedContext.appInfos.selectedVersion = 5;
+		break;
+	case SDLK_KP_6:
+	case SDLK_6:
+		m_sharedContext.appInfos.selectedVersion = 6;
+		break;
+	case SDLK_KP_7:
+	case SDLK_7:
+		m_sharedContext.appInfos.selectedVersion = 7;
+		break;
+	case SDLK_KP_8:
 	case SDLK_8:
 		m_sharedContext.appInfos.selectedLight = AMBIANT;
 		break;
+	case SDLK_KP_9:
 	case SDLK_9:
 		m_sharedContext.appInfos.selectedLight = DIFFUSE;
 		break;
+	case SDLK_KP_0:
 	case SDLK_0:
 		m_sharedContext.appInfos.selectedLight = SPECULAR;
 		break;
@@ -96,6 +127,9 @@ void EventManager::KeyInput(const SDL_Keysym& p_key, const bool p_state) const
 	case SDLK_x:
 		m_sharedContext.actions.antialiasingZoomOut = p_state;
 		break;
+	case SDLK_h:
+		m_sharedContext.actions.showHelp = p_state;
+		break;
 	case SDLK_m:
 		m_sharedContext.actions.changeAAValue = p_state;
 		if (p_state && m_sharedContext.appInfos.selectedVersion == 7)
@@ -108,12 +142,13 @@ void EventManager::KeyInput(const SDL_Keysym& p_key, const bool p_state) const
 	case SDLK_ESCAPE:
 		m_sharedContext.appInfos.Reset();
 		break;
+	case SDLK_F1:
+		if (p_state)
+			m_sharedContext.appInfos.showInterface = !m_sharedContext.appInfos.showInterface;
+		break;
 	default:
 		break;
 	}
-
-	if (p_key.sym >= 49 && p_key.sym <= 55)
-		m_sharedContext.appInfos.selectedVersion = p_key.sym - 48;
 }
 
 

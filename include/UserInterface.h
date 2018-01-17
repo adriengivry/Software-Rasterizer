@@ -13,11 +13,13 @@ public:
 	void Update() override;
 	void Draw();
 	void DrawFPS();
+	void DrawCameraParams();
 	void DrawVersionSelection();
 	void DrawMeshProperties();
 	void DrawLightProperties();
 	void DrawAntiAliasingProperties();
 	void DrawHelp();
+	void DrawCredits();
 	void Close() override;
 
 	void SetTextSelectedColor();
