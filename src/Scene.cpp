@@ -33,8 +33,8 @@ void Scene::InitMeshes(const uint8_t p_rasterizerVersion)
 	else if (p_rasterizerVersion == 5)
 	{
 		meshes.insert(std::pair<std::string, Mesh*>("CUBE_WITH_TEXTURE", Mesh::CreateTextureCube()));
-		textures.push_back(new Image("../assets/texture.png"));
-		
+		textures.push_back(new Image("../assets/texture.png"));	
+
 	}
 	else if (p_rasterizerVersion == 6)
 	{

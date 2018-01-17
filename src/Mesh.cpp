@@ -246,66 +246,61 @@ Mesh* Mesh::CreateTextureCube()
 
 Mesh* Mesh::CreateSphere(int p_latitudeCount, int p_longitudeCount)
 {
-	int i, j, k, l;
-	float x, y, z, preXZ;
-	int pitch = p_longitudeCount + 1;
-
-	//Calculate angles to be used for X and Y, it depends on the nbr of Lines for Latitudes and Longitudes
-	float yAngle = (180.0f / (float)pitch) * DEG_TO_RAD;
-	float xAngle = (360.0f / (float)p_latitudeCount) * DEG_TO_RAD;
-
 	Mesh* Sphere = new Mesh();
-	//It's easier to calculate a sphere from top to bottom.
-	for (i = 0; i <= pitch; i++)
+	int index = 0;
+	for(float latNumber = 0; latNumber <= p_latitudeCount; latNumber++)
 	{
-		preXZ = sin((float)i * yAngle);
-		if (preXZ < 0)
+		float theta = latNumber * M_PI / p_latitudeCount;
+		float sinTheta = sin(theta);
+		float cosTheta = cos(theta);
+
+		for(float longNumber = 0; longNumber <= p_longitudeCount; longNumber++)
 		{
-			preXZ = -preXZ;
-		}
-		y = cos((float)i * yAngle);
-		for (j = 0; j < p_latitudeCount; j++)
-		{
-			x = preXZ * cos((float)j * xAngle);
-			z = preXZ * sin((float)j * xAngle);
-			Sphere->m_vertices.push_back(Vertex(x, y, z));
+			float phi = longNumber * 2 * M_PI / p_longitudeCount;
+			float sinPhi = sin(phi);
+			float cosPhi = cos(phi);
+
+			float x = cosPhi * sinTheta;
+			float y = cosTheta;
+			float z = sinPhi * sinTheta;
+			Sphere->GetVertices().push_back(Vertex(x, y, z));
+			Sphere->GetVertices()[index].texCoordinate.x = 1 - (longNumber / p_longitudeCount);
+			Sphere->GetVertices()[index].texCoordinate.y = 1 - (latNumber / p_latitudeCount);
+			index++;
 		}
 	}
-	//Calculate indices
-	//we can draw square(2 triangles) faces first or triangle on the top/bottom first.
-
-	uint16_t lastVertice = Sphere->m_vertices.size() - 1;
-	uint16_t bottomTriangles = p_latitudeCount * (p_longitudeCount - 1);
-	//Triangles for Top/bottom
-	for (i = 0; i < p_latitudeCount; i++)
+	for(int latNumber = 0; latNumber < p_latitudeCount; latNumber++)
 	{
-		j = (i == p_latitudeCount - 1) ? -1 : i;
-		//top triangles
-		Sphere->m_indices.push_back(0);
-		Sphere->m_indices.push_back(j + 2);
-		Sphere->m_indices.push_back(i + 1);
-
-		//bottom triangles
-		Sphere->m_indices.push_back(lastVertice);
-		Sphere->m_indices.push_back(i + 1 + bottomTriangles);
-		Sphere->m_indices.push_back(j + 2 + bottomTriangles);
-	}
-	//Square faces in the middle
-	for (i = 1; i < p_longitudeCount; i++)
-	{
-		for (j = 0; j < p_latitudeCount; j++)
+		for(int longNumber = 0; longNumber < p_longitudeCount; longNumber++)
 		{
-			k = i * p_latitudeCount + j;
-			l = (j == p_latitudeCount - 1) ? k - p_latitudeCount : k;
-			//first Triangle
-			Sphere->m_indices.push_back(k + 1 - p_latitudeCount);
-			Sphere->m_indices.push_back(l + 2 - p_latitudeCount);
-			Sphere->m_indices.push_back(k + 1);
-			//second Triangle
-			Sphere->m_indices.push_back(l + 2 - p_latitudeCount);
-			Sphere->m_indices.push_back(k + 1);
-			Sphere->m_indices.push_back(l + 2);
+			int first = (latNumber * (p_longitudeCount + 1)) + longNumber;
+			int second = first + p_longitudeCount + 1;
+
+			Sphere->GetIndices().push_back(first);
+			Sphere->GetIndices().push_back(second);
+			Sphere->GetIndices().push_back(first + 1);
+
+			Sphere->GetIndices().push_back(second);
+			Sphere->GetIndices().push_back(second + 1);
+			Sphere->GetIndices().push_back(first + 1);
 		}
+	}
+
+	for (uint16_t i = 0; i < Sphere->m_indices.size() - 2; i += 3)
+	{
+		Vec3 Normal;
+		Vec3 p1(Sphere->m_vertices[Sphere->m_indices[i + 1]].position - Sphere->m_vertices[Sphere->m_indices[i]].position);
+		Vec3 p2(Sphere->m_vertices[Sphere->m_indices[i + 2]].position - Sphere->m_vertices[Sphere->m_indices[i]].position);
+		Normal = p1.Cross(p2);
+		Normal.Normalize();
+		Sphere->m_vertices[Sphere->m_indices[i]].normal = Sphere->m_vertices[Sphere->m_indices[i]].normal + Vec4(Normal, 0);
+		Sphere->m_vertices[Sphere->m_indices[i + 1]].normal = Sphere->m_vertices[Sphere->m_indices[i + 1]].normal + Vec4(Normal, 0);
+		Sphere->m_vertices[Sphere->m_indices[i + 2]].normal = Sphere->m_vertices[Sphere->m_indices[i + 2]].normal + Vec4(Normal, 0);
+	}
+
+	for (uint16_t i = 0; i < Sphere->m_vertices.size(); ++i)
+	{
+		Sphere->m_vertices[i].normal.Normalize();
 	}
 	return Sphere;
 }
