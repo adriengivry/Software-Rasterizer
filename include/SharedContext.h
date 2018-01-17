@@ -117,6 +117,7 @@ struct ApplicationInfos
 	CubeParams cubeParams;
 	CameraParams cameraParams;
 	uint8_t selectedAA = NOAA;
+	uint16_t polygons = 0;
 
 	void Reset()
 	{

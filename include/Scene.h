@@ -8,10 +8,12 @@ struct Scene
 {
 	Scene();
 	~Scene();
-	void InitMeshes();
-	void InitEntities();
+	void ClearScene();
+	void InitMeshes(uint8_t p_rasterizerVersion);
+	void InitEntities(uint8_t p_rasterizerVersion);
 	void InitLights();
 	std::map<std::string, Mesh*> meshes;
 	std::vector<Entity*> entities;
 	std::vector<Light*> lights;
+	std::vector<Image*> textures;
 };

@@ -7,9 +7,7 @@ Application::Application() :
 	m_renderTexture(new Texture(Window::WIDTH, Window::HEIGHT)),
 	m_rasterizer(*m_renderTexture, m_sharedContext),
 	m_userInterface(new UserInterface(m_sharedContext)),
-	m_eventManager(new EventManager(m_sharedContext)),
-	m_image(nullptr),
-	m_image2(nullptr)
+	m_eventManager(new EventManager(m_sharedContext))
 {
 	Application::Setup();
 }
@@ -30,8 +28,6 @@ void Application::Close()
 {
 	delete m_eventManager;
 	delete m_renderTexture;
-	delete m_image;
-	delete m_image2;
 
 	/*
 	* TODO: WEIRD MEMORY ERROR NEED TO BE CORRECTED (Memory leak if this part is commented)
@@ -90,15 +86,9 @@ void Application::Draw() const
 
 void Application::Init()
 {
-	m_image = new Image("../assets/texture.png");
-	m_image2 = new Image("../assets/texture2.png");
-	m_scene.InitMeshes();
-	m_scene.InitEntities();
+	m_scene.InitMeshes(m_sharedContext.appInfos.selectedVersion);
+	m_scene.InitEntities(m_sharedContext.appInfos.selectedVersion);
 	m_scene.InitLights();
-	m_scene.entities[1]->GetMesh()->SetImage(m_image);
-	m_scene.entities[2]->GetMesh()->SetImage(m_image2);
-	m_scene.entities[1]->SetAlpha(0.4f);
-	m_scene.entities[2]->SetAlpha(1.0f);
 }
 
 void Application::RenderScene()
@@ -116,15 +106,33 @@ void Application::RenderScene()
 		Mat4::CreateRotation(m_sharedContext.appInfos.secondCubeRotationOffset, m_sharedContext.appInfos.secondCubeRotationOffset, 0) *
 		Mat4::CreateScale(1.5f, 1.5f, 1.5f);
 
-
 	const Mat4 matrix3 =
 		Mat4::CreateTranslation(m_sharedContext.appInfos.cameraParams.xOffset, 0, 0).CreateInverse() *
 		Mat4::CreateTranslation(0, 0, -6 + m_sharedContext.appInfos.cameraParams.antialiasingOffset);
 
-	m_scene.entities[0]->SetMatrix(matrix);
-	m_scene.entities[1]->SetMatrix(matrix);
-	m_scene.entities[2]->SetMatrix(matrix2);
-	m_scene.entities[3]->SetMatrix(matrix3);
+	if (m_sharedContext.appInfos.selectedVersion < 5)
+	{
+		m_scene.entities[0]->SetMatrix(matrix);
+	}
+
+	if (m_sharedContext.appInfos.selectedVersion == 5)
+	{
+		m_scene.entities[0]->SetMatrix(matrix);
+	}
+
+	if (m_sharedContext.appInfos.selectedVersion == 6)
+	{
+		m_scene.entities[0]->SetMatrix(matrix2);
+		m_scene.entities[1]->SetMatrix(matrix);
+	}
+
+	if (m_sharedContext.appInfos.selectedVersion == 7)
+	{
+		m_scene.entities[0]->SetMatrix(matrix3);
+	}
+
+	m_sharedContext.appInfos.polygons = 0;
+
 	switch (m_sharedContext.appInfos.selectedVersion)
 	{
 	default:

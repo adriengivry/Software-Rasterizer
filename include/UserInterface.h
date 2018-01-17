@@ -14,6 +14,7 @@ public:
 	void Draw();
 	void DrawFPS();
 	void DrawCameraParams();
+	void DrawSceneInfo();
 	void DrawVersionSelection();
 	void DrawMeshProperties();
 	void DrawLightProperties();

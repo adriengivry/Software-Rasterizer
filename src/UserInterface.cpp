@@ -42,6 +42,7 @@ void UserInterface::Draw()
 	if (m_sharedContext.appInfos.showInterface)
 	{
 		DrawCameraParams();
+		DrawSceneInfo();
 		DrawVersionSelection();
 		DrawMeshProperties();
 		DrawLightProperties();
@@ -92,7 +93,29 @@ void UserInterface::DrawCameraParams()
 			SetTextTitleColor();
 		else
 			SetTextSelectedColor();
-		DrawAt(cameraParams[i], 450, i * 15, m_smallFont);
+		DrawAt(cameraParams[i], 350, i * 15, m_smallFont);
+	}
+}
+
+void UserInterface::DrawSceneInfo()
+{
+	std::string sceneInfo[] =
+	{
+		"Scene Info",
+		"Polygons: " + std::to_string(m_sharedContext.appInfos.polygons),
+		"Entities: " + std::to_string(m_sharedContext.scene->entities.size()),
+		"Meshes: " + std::to_string(m_sharedContext.scene->meshes.size()),
+		"Textures: " + std::to_string(m_sharedContext.scene->textures.size()),
+		"Lights: " + std::to_string(m_sharedContext.scene->lights.size())
+	};
+
+	for (uint8_t i = 0; i < 6; ++i)
+	{
+		if (i == 0)
+			SetTextTitleColor();
+		else
+			SetTextSelectedColor();
+		DrawAt(sceneInfo[i], 600, i * 15, m_smallFont);
 	}
 }
 
