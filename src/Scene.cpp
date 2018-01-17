@@ -3,10 +3,18 @@
 
 Scene::Scene()
 {
+	textures.insert(std::pair<std::string, Image*>("BOX", new Image("../assets/box.png")));
+	textures.insert(std::pair<std::string, Image*>("BIRD", new Image("../assets/bird.png")));
+	textures.insert(std::pair<std::string, Image*>("ROCK", new Image("../assets/rock.png")));
+	textures.insert(std::pair<std::string, Image*>("WATER", new Image("../assets/water.png")));
+	textures.insert(std::pair<std::string, Image*>("EARTH", new Image("../assets/earth.png")));
 }
 
 Scene::~Scene()
 {
+	for (auto pair : textures)
+		delete pair.second;
+
 	ClearScene();
 }
 
@@ -20,9 +28,6 @@ void Scene::ClearScene()
 
 	for (auto mesh : meshes) delete mesh.second;
 	meshes.clear();
-
-	for (auto texture : textures) delete texture;
-	textures.clear();
 }
 
 void Scene::InitMeshes(const uint8_t p_rasterizerVersion, uint8_t p_meshMode)
@@ -40,20 +45,16 @@ void Scene::InitMeshes(const uint8_t p_rasterizerVersion, uint8_t p_meshMode)
 			meshes.insert(std::pair<std::string, Mesh*>("CUBE_WITH_TEXTURE", Mesh::CreateTextureCube()));
 		else if (p_meshMode == SPHERE)
 			meshes.insert(std::pair<std::string, Mesh*>("SPHERE", Mesh::CreateSphere(20, 20)));
-
-		textures.push_back(new Image("../assets/texture.png"));	
-
 	}
 	else if (p_rasterizerVersion == 6)
 	{
 		if (p_meshMode == CUBE)
 			meshes.insert(std::pair<std::string, Mesh*>("CUBE_WITH_TEXTURE", Mesh::CreateTextureCube()));
 		else if (p_meshMode == SPHERE)
+		{
+			meshes.insert(std::pair<std::string, Mesh*>("CUBE_WITH_TEXTURE", Mesh::CreateTextureCube()));
 			meshes.insert(std::pair<std::string, Mesh*>("SPHERE", Mesh::CreateSphere(20, 20)));
-
-		textures.push_back(new Image("../assets/texture.png"));
-		textures.push_back(new Image("../assets/texture2.png"));
-
+		}
 	}
 	else if (p_rasterizerVersion == 7)
 	{
@@ -80,34 +81,41 @@ void Scene::InitEntities(uint8_t p_rasterizerVersion, uint8_t p_meshMode)
 		Entity* entity = new Entity();
 
 		if (p_meshMode == CUBE)
+		{
 			entity->SetMesh(*meshes["CUBE_WITH_TEXTURE"]);
+			entity->GetMesh()->SetImage(textures["ROCK"]);
+		}
 		else if (p_meshMode == SPHERE)
+		{
 			entity->SetMesh(*meshes["SPHERE"]);
+			entity->GetMesh()->SetImage(textures["ROCK"]);
+		}
 
-		entity->GetMesh()->SetImage(textures[0]);
+		
 		entities.push_back(entity);
 	}
 	else if (p_rasterizerVersion == 6)
 	{
 		Entity* entity = new Entity();
-
-		if (p_meshMode == CUBE)
-			entity->SetMesh(*meshes["CUBE_WITH_TEXTURE"]);
-		else if (p_meshMode == SPHERE)
-			entity->SetMesh(*meshes["SPHERE"]);
-
-		entity->GetMesh()->SetImage(textures[1]);
+		entity->SetMesh(*meshes["CUBE_WITH_TEXTURE"]);
+		entity->GetMesh()->SetImage(textures["ROCK"]);
 		entity->SetAlpha(1.f);
 		entities.push_back(entity);
 
 		Entity* entity2 = new Entity();
 
 		if (p_meshMode == CUBE)
+		{
 			entity2->SetMesh(*meshes["CUBE_WITH_TEXTURE"]);
+			entity2->GetMesh()->SetImage(textures["ROCK"]);
+		}
 		else if (p_meshMode == SPHERE)
+		{
 			entity2->SetMesh(*meshes["SPHERE"]);
+			entity2->GetMesh()->SetImage(textures["ROCK"]);
+		}
 
-		entity2->GetMesh()->SetImage(textures[0]);
+		
 		entity2->SetAlpha(0.4f);
 		entities.push_back(entity2);
 	}

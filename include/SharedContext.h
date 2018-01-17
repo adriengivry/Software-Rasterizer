@@ -72,6 +72,7 @@ struct CubeParams
 	float green;
 	float blue;
 	float transparency;
+	std::string imageID;
 
 	CubeParams() { Reset(); }
 
@@ -81,6 +82,7 @@ struct CubeParams
 		green = 0;
 		blue = 0;
 		transparency = 40;
+		imageID = "ROCK";
 	}
 };
 

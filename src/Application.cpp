@@ -39,6 +39,7 @@ void Application::Update()
 {
 	m_sharedContext.appInfos.lastTime = m_sharedContext.appInfos.currentTime;
 
+	UpdateMeshTexture();
 	UpdateCubeColor();
 	UpdateCamera();
 	UpdateLights();
@@ -306,6 +307,12 @@ void Application::UpdateCubeColor()
 
 		m_scene.entities[1]->SetAlpha(m_sharedContext.appInfos.cubeParams.transparency / 100.f);
 	}
+}
+
+void Application::UpdateMeshTexture()
+{
+	if (m_sharedContext.appInfos.selectedVersion == 5 || m_sharedContext.appInfos.selectedVersion == 6)
+		m_sharedContext.scene->entities[0]->GetMesh()->SetImage(m_sharedContext.scene->textures[m_sharedContext.appInfos.cubeParams.imageID]);
 }
 
 SharedContext& Application::GetContext()

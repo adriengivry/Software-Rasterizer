@@ -170,6 +170,21 @@ void EventManager::KeyInput(const SDL_Keysym& p_key, const bool p_state) const
 			m_sharedContext.RefreshScene();
 		}
 		break;
+	case SDLK_F3:
+		if (p_state)
+		{
+			if (m_sharedContext.appInfos.cubeParams.imageID == "ROCK")
+				m_sharedContext.appInfos.cubeParams.imageID = "BIRD";
+			else if (m_sharedContext.appInfos.cubeParams.imageID == "BIRD")
+				m_sharedContext.appInfos.cubeParams.imageID = "BOX";
+			else if (m_sharedContext.appInfos.cubeParams.imageID == "BOX")
+				m_sharedContext.appInfos.cubeParams.imageID = "EARTH";
+			else if (m_sharedContext.appInfos.cubeParams.imageID == "EARTH")
+				m_sharedContext.appInfos.cubeParams.imageID = "WATER";
+			else if (m_sharedContext.appInfos.cubeParams.imageID == "WATER")
+				m_sharedContext.appInfos.cubeParams.imageID = "ROCK";
+		}
+		break;
 	default:
 		break;
 	}

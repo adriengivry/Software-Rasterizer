@@ -18,6 +18,7 @@ public:
 	void UpdateCamera();
 	void UpdateLights();
 	void UpdateCubeColor();
+	void UpdateMeshTexture();
 
 	SharedContext& GetContext();
 private:

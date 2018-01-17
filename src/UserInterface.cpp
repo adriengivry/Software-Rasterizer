@@ -105,11 +105,10 @@ void UserInterface::DrawSceneInfo()
 		"Polygons: " + std::to_string(m_sharedContext.appInfos.polygons),
 		"Entities: " + std::to_string(m_sharedContext.scene->entities.size()),
 		"Meshes: " + std::to_string(m_sharedContext.scene->meshes.size()),
-		"Textures: " + std::to_string(m_sharedContext.scene->textures.size()),
 		"Lights: " + std::to_string(m_sharedContext.scene->lights.size())
 	};
 
-	for (uint8_t i = 0; i < 6; ++i)
+	for (uint8_t i = 0; i < 5; ++i)
 	{
 		if (i == 0)
 			SetTextTitleColor();
