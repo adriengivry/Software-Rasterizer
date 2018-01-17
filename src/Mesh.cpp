@@ -276,13 +276,13 @@ Mesh* Mesh::CreateSphere(int p_latitudeCount, int p_longitudeCount)
 			int first = (latNumber * (p_longitudeCount + 1)) + longNumber;
 			int second = first + p_longitudeCount + 1;
 
-			Sphere->GetIndices().push_back(first);
-			Sphere->GetIndices().push_back(second);
+			Sphere->GetIndices().push_back(first); 
 			Sphere->GetIndices().push_back(first + 1);
+			Sphere->GetIndices().push_back(second);
 
 			Sphere->GetIndices().push_back(second);
-			Sphere->GetIndices().push_back(second + 1);
 			Sphere->GetIndices().push_back(first + 1);
+			Sphere->GetIndices().push_back(second + 1);
 		}
 	}
 
