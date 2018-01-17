@@ -41,7 +41,7 @@ void Scene::InitMeshes(const uint8_t p_rasterizerVersion, uint8_t p_meshMode)
 		else if (p_meshMode == SPHERE)
 			meshes.insert(std::pair<std::string, Mesh*>("SPHERE", Mesh::CreateSphere(20, 20)));
 
-		textures.push_back(new Image("../assets/texture.png"));	
+		textures.push_back(new Image("../assets/texture.png"));
 
 	}
 	else if (p_rasterizerVersion == 6)
