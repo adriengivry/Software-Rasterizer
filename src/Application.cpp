@@ -180,9 +180,9 @@ void Application::UpdateCamera()
 		yOffset -= 2;
 
 	if (m_sharedContext.actions.zoomIn)
-		zoomOffset += 5;
+		zoomOffset += 2;
 	if (m_sharedContext.actions.zoomOut)
-		zoomOffset -= 5;
+		zoomOffset -= 2;
 
 	if (m_sharedContext.actions.xTurnClockwise)
 		xRotationOffset += 90;
