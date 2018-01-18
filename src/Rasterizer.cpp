@@ -209,7 +209,7 @@ void Rasterizer::RenderZelda(Scene* p_pScene)
 			v0.VertexTransform(modelProjection);
 			v1.VertexTransform(modelProjection);
 			v2.VertexTransform(modelProjection);
-			DrawTriangle(v0, v1, v2);
+			DrawTriangleWire(v0, v1, v2);
 		}
 	}
 }
@@ -323,11 +323,6 @@ void Rasterizer::DrawTriangle(Vertex& p_v0, Vertex& p_v1, Vertex& p_v2) const
 	Vertex v0(Mat4::ConvertToScreen(p_v0.position, m_rtexture.GetWidth(), m_rtexture.GetHeight()));
 	Vertex v1(Mat4::ConvertToScreen(p_v1.position, m_rtexture.GetWidth(), m_rtexture.GetHeight()));
 	Vertex v2(Mat4::ConvertToScreen(p_v2.position, m_rtexture.GetWidth(), m_rtexture.GetHeight()));
-	Vec2 v(v1.position.x - v0.position.x, v1.position.y - v0.position.y);
-	Vec2 w(v2.position.x - v0.position.x, v2.position.y - v0.position.y);
-	const float area = v.Cross(w);
-	if (area < 0)
-		return;
 
 	Triangle triangle(v0, v1, v2);
 	const AABB box = triangle.GetAABB();

@@ -146,7 +146,7 @@ void Scene::InitEntities(uint8_t p_rasterizerVersion, uint8_t p_meshMode)
 		{
 			Entity* triangle = new Entity();
 			triangle->SetMesh(*meshes["TRIANGLE"]);
-			triangle->SetColor(255, 0, 0);
+			triangle->SetColor(204, 153, 0);
 			entities.push_back(triangle);
 		}
 	}
