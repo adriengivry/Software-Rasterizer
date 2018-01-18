@@ -558,7 +558,7 @@ void Rasterizer::DrawTriangleNoAntialiasing(Vertex& p_v0, Vertex& p_v1, Vertex& 
 	const int maxX = std::min(static_cast<int>(box.maxPoint.x), m_rtexture.GetWidth() - 1);
 	const int maxY = std::min(static_cast<int>(box.maxPoint.y), m_rtexture.GetHeight() - 1);
 	Vec2 positions(0, 0);
-	Color final(255, 0, 0);
+	Color final(p_v0.color.r, p_v0.color.g, p_v0.color.b);
 	for (positions.y = minY; positions.y <= maxY; ++positions.y)
 	{
 		for (positions.x = minX; positions.x <= maxX; ++positions.x)
@@ -617,9 +617,9 @@ void Rasterizer::DrawTriangle2XAntialiasing(Vertex& p_v0, Vertex& p_v1, Vertex& 
 				}
 				float average = in / (in + out);
 				Color final;
-				final.r = pre.r * average;
-				final.g = pre.g * average;
-				final.b = pre.g * average;
+				final.r = p_v0.color.r * average;
+				final.g = p_v0.color.g * average;
+				final.b = p_v0.color.b * average;
 				final.a = 255.0;
 				m_rtexture.SetPixelColor(int(positions.x), int(positions.y), final);
 				in = 0;
@@ -674,9 +674,9 @@ void Rasterizer::DrawTriangle4XAntialiasing(Vertex& p_v0, Vertex& p_v1, Vertex& 
 				}
 				float average = in / (in + out);
 				Color final;
-				final.r = pre.r * average;
-				final.g = pre.g * average;
-				final.b = pre.g * average;
+				final.r = p_v0.color.r * average;
+				final.g = p_v0.color.g * average;
+				final.b = p_v0.color.b * average;
 				final.a = 255.0;
 				m_rtexture.SetPixelColor(int(positions.x), int(positions.y), final);
 				in = 0;
@@ -692,7 +692,6 @@ void Rasterizer::DrawTriangle8XAntialiasing(Vertex& p_v0, Vertex& p_v1, Vertex& 
 	Vertex v1(Mat4::ConvertToScreen(p_v1.position, m_rtexture.GetWidth(), m_rtexture.GetHeight()));
 	Vertex v2(Mat4::ConvertToScreen(p_v2.position, m_rtexture.GetWidth(), m_rtexture.GetHeight()));
 
-
 	Triangle triangle(v0, v1, v2);
 	const AABB box = triangle.GetAABB();
 	const int minX = std::max(static_cast<int>(box.minPoint.x), 0);
@@ -700,7 +699,6 @@ void Rasterizer::DrawTriangle8XAntialiasing(Vertex& p_v0, Vertex& p_v1, Vertex& 
 	const int maxX = std::min(static_cast<int>(box.maxPoint.x), m_rtexture.GetWidth() - 1);
 	const int maxY = std::min(static_cast<int>(box.maxPoint.y), m_rtexture.GetHeight() - 1);
 	Vec2 positions(0, 0);
-	Color pre(255, 0, 0);
 	float in = 0;
 	float out = 0;
 	float perX = 1.f / 4;
@@ -731,9 +729,9 @@ void Rasterizer::DrawTriangle8XAntialiasing(Vertex& p_v0, Vertex& p_v1, Vertex& 
 				}
 				float average = in / (in + out);
 				Color final;
-				final.r = pre.r * average;
-				final.g = pre.g * average;
-				final.b = pre.g * average;
+				final.r = p_v0.color.r * average;
+				final.g = p_v0.color.g * average;
+				final.b = p_v0.color.b * average;
 				final.a = 255.0;
 				m_rtexture.SetPixelColor(int(positions.x), int(positions.y), final);
 				in = 0;
@@ -757,7 +755,6 @@ void Rasterizer::DrawTriangle16XAntialiasing(Vertex& p_v0, Vertex& p_v1, Vertex&
 	const int maxX = std::min(static_cast<int>(box.maxPoint.x), m_rtexture.GetWidth() - 1);
 	const int maxY = std::min(static_cast<int>(box.maxPoint.y), m_rtexture.GetHeight() - 1);
 	Vec2 positions(0, 0);
-	Color pre(255, 0, 0);
 	float in = 0;
 	float out = 0;
 	float perX = 1.f / 4;
@@ -788,9 +785,9 @@ void Rasterizer::DrawTriangle16XAntialiasing(Vertex& p_v0, Vertex& p_v1, Vertex&
 				}
 				float average = in / (in + out);
 				Color final;
-				final.r = pre.r * average;
-				final.g = pre.g * average;
-				final.b = pre.g * average;
+				final.r = p_v0.color.r * average;
+				final.g = p_v0.color.g * average;
+				final.b = p_v0.color.b * average;
 				final.a = 255.0;
 				m_rtexture.SetPixelColor(int(positions.x), int(positions.y), final);
 				in = 0;
