@@ -56,10 +56,16 @@ void EventManager::KeyInput(const SDL_Keysym& p_key, const bool p_state) const
 		m_sharedContext.actions.moveUp = p_state;
 		break;
 	case SDLK_LEFT:
-		m_sharedContext.actions.yTurnClockwise = p_state;
+		if (m_sharedContext.appInfos.selectedVersion == 7)
+			m_sharedContext.actions.zTurnClockwise = p_state;
+		else
+			m_sharedContext.actions.yTurnClockwise = p_state;
 		break;
 	case SDLK_RIGHT:
-		m_sharedContext.actions.yTurnCounterClockwise = p_state;
+		if (m_sharedContext.appInfos.selectedVersion == 7)
+			m_sharedContext.actions.zTurnCounterClockwise = p_state;
+		else
+			m_sharedContext.actions.yTurnCounterClockwise = p_state;
 		break;
 	case SDLK_UP:
 		m_sharedContext.actions.xTurnClockwise = p_state;
@@ -100,6 +106,10 @@ void EventManager::KeyInput(const SDL_Keysym& p_key, const bool p_state) const
 	case SDLK_KP_7:
 	case SDLK_7:
 		m_sharedContext.appInfos.selectedVersion = 7;
+		m_sharedContext.RefreshScene();
+		break;
+	case SDLK_z:
+		m_sharedContext.appInfos.selectedVersion = 8;
 		m_sharedContext.RefreshScene();
 		break;
 	case SDLK_KP_8:
@@ -167,22 +177,22 @@ void EventManager::KeyInput(const SDL_Keysym& p_key, const bool p_state) const
 	case SDLK_F3:
 		if (p_state && (m_sharedContext.appInfos.selectedVersion == 5 || m_sharedContext.appInfos.selectedVersion == 6))
 		{
-			if (m_sharedContext.appInfos.cubeParams.imageID == "ROCK")
-				m_sharedContext.appInfos.cubeParams.imageID = "BIRD";
-			else if (m_sharedContext.appInfos.cubeParams.imageID == "BIRD")
-				m_sharedContext.appInfos.cubeParams.imageID = "BOX";
-			else if (m_sharedContext.appInfos.cubeParams.imageID == "BOX")
-				m_sharedContext.appInfos.cubeParams.imageID = "EARTH";
-			else if (m_sharedContext.appInfos.cubeParams.imageID == "EARTH")
-				m_sharedContext.appInfos.cubeParams.imageID = "WATER";
-			else if (m_sharedContext.appInfos.cubeParams.imageID == "WATER")
-				m_sharedContext.appInfos.cubeParams.imageID = "BRICK";
-			else if (m_sharedContext.appInfos.cubeParams.imageID == "BRICK")
-				m_sharedContext.appInfos.cubeParams.imageID = "REALISTIC_BRICK";
-			else if (m_sharedContext.appInfos.cubeParams.imageID == "REALISTIC_BRICK")
-				m_sharedContext.appInfos.cubeParams.imageID = "DIRT";
-			else if (m_sharedContext.appInfos.cubeParams.imageID == "DIRT")
-				m_sharedContext.appInfos.cubeParams.imageID = "ROCK";
+			if (m_sharedContext.appInfos.meshParams.imageID == "ROCK")
+				m_sharedContext.appInfos.meshParams.imageID = "BIRD";
+			else if (m_sharedContext.appInfos.meshParams.imageID == "BIRD")
+				m_sharedContext.appInfos.meshParams.imageID = "BOX";
+			else if (m_sharedContext.appInfos.meshParams.imageID == "BOX")
+				m_sharedContext.appInfos.meshParams.imageID = "EARTH";
+			else if (m_sharedContext.appInfos.meshParams.imageID == "EARTH")
+				m_sharedContext.appInfos.meshParams.imageID = "WATER";
+			else if (m_sharedContext.appInfos.meshParams.imageID == "WATER")
+				m_sharedContext.appInfos.meshParams.imageID = "BRICK";
+			else if (m_sharedContext.appInfos.meshParams.imageID == "BRICK")
+				m_sharedContext.appInfos.meshParams.imageID = "REALISTIC_BRICK";
+			else if (m_sharedContext.appInfos.meshParams.imageID == "REALISTIC_BRICK")
+				m_sharedContext.appInfos.meshParams.imageID = "DIRT";
+			else if (m_sharedContext.appInfos.meshParams.imageID == "DIRT")
+				m_sharedContext.appInfos.meshParams.imageID = "ROCK";
 		}
 		break;
 	default:

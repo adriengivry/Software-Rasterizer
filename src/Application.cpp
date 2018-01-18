@@ -109,7 +109,20 @@ void Application::RenderScene()
 
 	const Mat4 matrix3 =
 		Mat4::CreateTranslation(m_sharedContext.appInfos.cameraParams.xOffset, m_sharedContext.appInfos.cameraParams.yOffset, 0).CreateInverse() *
-		Mat4::CreateTranslation(0, 0, m_sharedContext.appInfos.cameraParams.zoomOffset);
+		Mat4::CreateTranslation(0, 0, m_sharedContext.appInfos.cameraParams.zoomOffset) *
+		Mat4::CreateRotation(0, 0, m_sharedContext.appInfos.cameraParams.zRotationOffset);
+
+	const Mat4 matrix4 =
+		Mat4::CreateTranslation(-3, -3, 0) *
+		Mat4::CreateRotation(0, 0, 0);
+
+	const Mat4 matrix5 =
+		Mat4::CreateTranslation(3, -3, -6) *
+		Mat4::CreateRotation(0, 0, 0);
+
+	const Mat4 matrix6 =
+		Mat4::CreateTranslation(0, 3, -6) *
+		Mat4::CreateRotation(0, 0, 0);
 
 	if (m_sharedContext.appInfos.selectedVersion < 5)
 	{
@@ -132,7 +145,18 @@ void Application::RenderScene()
 		m_scene.entities[0]->SetMatrix(matrix3);
 	}
 
+	if (m_sharedContext.appInfos.selectedVersion == 8)
+	{
+		m_scene.entities[0]->SetMatrix(matrix4);
+		m_scene.entities[1]->SetMatrix(matrix5);
+		m_scene.entities[2]->SetMatrix(matrix6);
+	}
+
+	// POLYGON COUNTER
 	m_sharedContext.appInfos.polygons = 0;
+	for (auto & entitie : m_sharedContext.scene->entities)
+		m_sharedContext.appInfos.polygons += entitie->GetMesh()->GetIndices().size();
+	m_sharedContext.appInfos.polygons /= 3;
 
 	switch (m_sharedContext.appInfos.selectedVersion)
 	{
@@ -159,6 +183,9 @@ void Application::RenderScene()
 	case 7:
 		m_rasterizer.RenderAntialiasing(&m_scene);
 		break;
+	case 8:
+		m_rasterizer.RenderZelda(&m_scene);
+		break;
 	}
 }
 
@@ -169,6 +196,7 @@ void Application::UpdateCamera()
 	float zoomOffset = 0;
 	float xRotationOffset = 0;
 	float yRotationOffset = 0;
+	float zRotationOffset = 0;
 
 	if (m_sharedContext.actions.moveLeft)
 		xOffset -= 2;
@@ -192,6 +220,10 @@ void Application::UpdateCamera()
 		yRotationOffset += 90;
 	if (m_sharedContext.actions.yTurnCounterClockwise)
 		yRotationOffset -= 90;
+	if (m_sharedContext.actions.zTurnClockwise)
+		zRotationOffset += 90;
+	if (m_sharedContext.actions.zTurnCounterClockwise)
+		zRotationOffset -= 90;
 
 	// Update camera params
 	m_sharedContext.appInfos.cameraParams.xOffset += xOffset * m_sharedContext.appInfos.deltaTime;
@@ -204,12 +236,18 @@ void Application::UpdateCamera()
 		m_sharedContext.appInfos.cameraParams.xRotationOffset += xRotationOffset * m_sharedContext.appInfos.deltaTime;
 		m_sharedContext.appInfos.cameraParams.yRotationOffset += yRotationOffset * m_sharedContext.appInfos.deltaTime;
 	}
+	else
+	{
+		m_sharedContext.appInfos.cameraParams.zRotationOffset += zRotationOffset * m_sharedContext.appInfos.deltaTime;
+	}
 
 	// Keep rotation between 0 and 360
 	while (m_sharedContext.appInfos.cameraParams.xRotationOffset >= 360) m_sharedContext.appInfos.cameraParams.xRotationOffset -= 360;
 	while (m_sharedContext.appInfos.cameraParams.yRotationOffset >= 360) m_sharedContext.appInfos.cameraParams.yRotationOffset -= 360;
+	while (m_sharedContext.appInfos.cameraParams.zRotationOffset >= 360) m_sharedContext.appInfos.cameraParams.zRotationOffset -= 360;
 	while (m_sharedContext.appInfos.cameraParams.xRotationOffset < 0) m_sharedContext.appInfos.cameraParams.xRotationOffset += 360;
 	while (m_sharedContext.appInfos.cameraParams.yRotationOffset < 0) m_sharedContext.appInfos.cameraParams.yRotationOffset += 360;
+	while (m_sharedContext.appInfos.cameraParams.zRotationOffset < 0) m_sharedContext.appInfos.cameraParams.zRotationOffset += 360;
 
 	// Prevent zooming or de-zooming too much
 	if (m_sharedContext.appInfos.selectedVersion != 7)
@@ -288,16 +326,16 @@ void Application::UpdateMeshColor()
 		if (m_sharedContext.actions.addBlue)
 			blueOffset += colorIncrementPerSecond * m_sharedContext.appInfos.deltaTime;
 
-		m_sharedContext.appInfos.cubeParams.red += redOffset;
-		while (m_sharedContext.appInfos.cubeParams.red > 255.f) m_sharedContext.appInfos.cubeParams.red /= 255;
+		m_sharedContext.appInfos.meshParams.red += redOffset;
+		while (m_sharedContext.appInfos.meshParams.red > 255.f) m_sharedContext.appInfos.meshParams.red /= 255;
 
-		m_sharedContext.appInfos.cubeParams.green += greenOffset;
-		while (m_sharedContext.appInfos.cubeParams.green > 255.f) m_sharedContext.appInfos.cubeParams.green /= 255;
+		m_sharedContext.appInfos.meshParams.green += greenOffset;
+		while (m_sharedContext.appInfos.meshParams.green > 255.f) m_sharedContext.appInfos.meshParams.green /= 255;
 
-		m_sharedContext.appInfos.cubeParams.blue += blueOffset;
-		while (m_sharedContext.appInfos.cubeParams.blue > 255.f) m_sharedContext.appInfos.cubeParams.blue /= 255;
+		m_sharedContext.appInfos.meshParams.blue += blueOffset;
+		while (m_sharedContext.appInfos.meshParams.blue > 255.f) m_sharedContext.appInfos.meshParams.blue /= 255;
 
-		m_scene.entities[0]->SetColor(m_sharedContext.appInfos.cubeParams.red, m_sharedContext.appInfos.cubeParams.green, m_sharedContext.appInfos.cubeParams.blue);
+		m_scene.entities[0]->SetColor(m_sharedContext.appInfos.meshParams.red, m_sharedContext.appInfos.meshParams.green, m_sharedContext.appInfos.meshParams.blue);
 	}
 
 	if (m_sharedContext.appInfos.selectedVersion == 6)
@@ -308,19 +346,19 @@ void Application::UpdateMeshColor()
 		if (m_sharedContext.actions.addTransparency)
 			transparencyOffset += transparencyIncrementPerSecond * m_sharedContext.appInfos.deltaTime;
 
-		m_sharedContext.appInfos.cubeParams.transparency += transparencyOffset;
-		while (m_sharedContext.appInfos.cubeParams.transparency > 100) m_sharedContext.appInfos.cubeParams.transparency /= 100;
+		m_sharedContext.appInfos.meshParams.transparency += transparencyOffset;
+		while (m_sharedContext.appInfos.meshParams.transparency > 100) m_sharedContext.appInfos.meshParams.transparency /= 100;
 
-		m_scene.entities[1]->SetAlpha(m_sharedContext.appInfos.cubeParams.transparency / 100.f);
+		m_scene.entities[1]->SetAlpha(m_sharedContext.appInfos.meshParams.transparency / 100.f);
 	}
 }
 
 void Application::UpdateMeshTexture() const
 {
 	if (m_sharedContext.appInfos.selectedVersion == 5)
-		m_sharedContext.scene->entities[0]->GetMesh()->SetImage(m_sharedContext.scene->textures[m_sharedContext.appInfos.cubeParams.imageID]);
+		m_sharedContext.scene->entities[0]->GetMesh()->SetImage(m_sharedContext.scene->textures[m_sharedContext.appInfos.meshParams.imageID]);
 	else if (m_sharedContext.appInfos.selectedVersion == 6)
-		m_sharedContext.scene->entities[1]->GetMesh()->SetImage(m_sharedContext.scene->textures[m_sharedContext.appInfos.cubeParams.imageID]);
+		m_sharedContext.scene->entities[1]->GetMesh()->SetImage(m_sharedContext.scene->textures[m_sharedContext.appInfos.meshParams.imageID]);
 }
 
 SharedContext& Application::GetContext()

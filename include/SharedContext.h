@@ -38,6 +38,8 @@ struct Actions
 	bool xTurnCounterClockwise;
 	bool yTurnClockwise;
 	bool yTurnCounterClockwise;
+	bool zTurnClockwise;
+	bool zTurnCounterClockwise;
 	bool increaseLight;
 	bool decreaseLight;
 	bool addRed;
@@ -90,6 +92,7 @@ struct CameraParams
 	float zoomOffset;
 	float xRotationOffset;
 	float yRotationOffset;
+	float zRotationOffset;
 
 	CameraParams() { Reset(); }
 
@@ -100,6 +103,7 @@ struct CameraParams
 		zoomOffset = -6;
 		xRotationOffset = 45;
 		yRotationOffset = 45;
+		zRotationOffset = 0;
 	}
 };
 
@@ -120,7 +124,7 @@ struct ApplicationInfos
 	uint8_t selectedVersion = 1;
 	uint8_t selectedLight = AMBIANT;
 	LightParams lightParams;
-	MeshParams cubeParams;
+	MeshParams meshParams;
 	CameraParams cameraParams;
 	uint8_t selectedAA = NOAA;
 	uint16_t polygons = 0;
@@ -131,7 +135,7 @@ struct ApplicationInfos
 		selectedLight = AMBIANT;
 		selectedAA = NOAA;
 		lightParams.Reset();
-		cubeParams.Reset();
+		meshParams.Reset();
 		cameraParams.Reset();
 	}
 };
@@ -144,7 +148,7 @@ struct SharedContext
 	ApplicationInfos appInfos;
 	Actions actions;
 
-	void RefreshScene()
+	void RefreshScene() const
 	{
 		scene->ClearScene();
 		scene->InitMeshes(appInfos.selectedVersion, appInfos.meshMode);

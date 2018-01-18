@@ -143,9 +143,9 @@ void UserInterface::DrawMeshProperties()
 		std::string items[] =
 		{
 			"MESH PROPERTIES",
-			"[R]: " + std::to_string(static_cast<uint8_t>(m_sharedContext.appInfos.cubeParams.red)),
-			"[G]: " + std::to_string(static_cast<uint8_t>(m_sharedContext.appInfos.cubeParams.green)),
-			"[B]: " + std::to_string(static_cast<uint8_t>(m_sharedContext.appInfos.cubeParams.blue))
+			"[R]: " + std::to_string(static_cast<uint8_t>(m_sharedContext.appInfos.meshParams.red)),
+			"[G]: " + std::to_string(static_cast<uint8_t>(m_sharedContext.appInfos.meshParams.green)),
+			"[B]: " + std::to_string(static_cast<uint8_t>(m_sharedContext.appInfos.meshParams.blue))
 		};
 
 		for (uint8_t i = 0; i < 4; ++i)
@@ -172,7 +172,7 @@ void UserInterface::DrawMeshProperties()
 		std::string items[] =
 		{
 			"MESH PROPERTIES",
-			"[T]ransparency: " + std::to_string(static_cast<uint8_t>(m_sharedContext.appInfos.cubeParams.transparency)) + "%"
+			"[T]ransparency: " + std::to_string(static_cast<uint8_t>(m_sharedContext.appInfos.meshParams.transparency)) + "%"
 		};
 
 		for (uint8_t i = 0; i < 2; ++i)

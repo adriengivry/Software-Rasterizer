@@ -70,6 +70,10 @@ void Scene::InitMeshes(const uint8_t p_rasterizerVersion, uint8_t p_meshMode)
 	{
 		meshes.insert(std::pair<std::string, Mesh*>("TRIANGLE", Mesh::CreateTriangle()));
 	}
+	else if (p_rasterizerVersion == 8)
+	{
+		meshes.insert(std::pair<std::string, Mesh*>("TRIANGLE", Mesh::CreateTriangle()));
+	}
 }
 
 void Scene::InitEntities(uint8_t p_rasterizerVersion, uint8_t p_meshMode)
@@ -135,7 +139,17 @@ void Scene::InitEntities(uint8_t p_rasterizerVersion, uint8_t p_meshMode)
 		triangle->SetMesh(*meshes["TRIANGLE"]);
 		triangle->SetColor(255, 0, 0);
 		entities.push_back(triangle);
-	}	
+	}
+	else if (p_rasterizerVersion == 8)
+	{
+		for (uint8_t i = 0; i < 3; ++i)
+		{
+			Entity* triangle = new Entity();
+			triangle->SetMesh(*meshes["TRIANGLE"]);
+			triangle->SetColor(255, 0, 0);
+			entities.push_back(triangle);
+		}
+	}
 }
 
 void Scene::InitLights()

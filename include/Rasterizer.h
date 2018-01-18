@@ -20,6 +20,7 @@ public:
 	void RenderTexture(Scene* p_pScene);
 	void RenderAlphaBlending(Scene* p_pScene);
 	void RenderAntialiasing(Scene* p_pScene);
+	void RenderZelda(Scene* p_pScene);
 	void Update() override;
 	void Draw() const;
 	void DrawLine(const float p_x1, const float p_y1, const float p_x2, const float p_y2, Color& p_color1, Color& p_color2) const;

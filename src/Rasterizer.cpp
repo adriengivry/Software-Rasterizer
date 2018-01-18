@@ -37,7 +37,6 @@ void Rasterizer::RenderScene(Scene * p_pScene)
 		const Mat4 positionMatrix = Mat4::CreatePerspective(60, float(m_rtexture.GetWidth()) / float(m_rtexture.GetHeight()), 0.1f, 100.0f) * normalMatrix;
 		for (int i = 0; i < p_pScene->entities[0]->GetMesh()->GetIndices().size() - 2; i += 3)
 		{
-			++m_sharedContext.appInfos.polygons;
 			Vertex v0 = (p_pScene->entities[entityID]->GetMesh()->GetVertices()[p_pScene->entities[entityID]->GetMesh()->GetIndices()[i]]);
 			Vertex v1 = (p_pScene->entities[entityID]->GetMesh()->GetVertices()[p_pScene->entities[entityID]->GetMesh()->GetIndices()[i + 1]]);
 			Vertex v2 = (p_pScene->entities[entityID]->GetMesh()->GetVertices()[p_pScene->entities[entityID]->GetMesh()->GetIndices()[i + 2]]);
@@ -64,7 +63,6 @@ void Rasterizer::RenderSceneBlinnPhong(Scene * p_pScene)
 		normalMatrixTrans = normalMatrixTrans.CreateTranspose();
 		for (uint8_t i = 0; i < p_pScene->entities[entityID]->GetMesh()->GetIndices().size() - 2; i += 3)
 		{
-			++m_sharedContext.appInfos.polygons;
 			Vertex v0 = (p_pScene->entities[entityID]->GetMesh()->GetVertices()[p_pScene->entities[entityID]->GetMesh()->GetIndices()[i]]);
 			Vertex v1 = (p_pScene->entities[entityID]->GetMesh()->GetVertices()[p_pScene->entities[entityID]->GetMesh()->GetIndices()[i + 1]]);
 			Vertex v2 = (p_pScene->entities[entityID]->GetMesh()->GetVertices()[p_pScene->entities[entityID]->GetMesh()->GetIndices()[i + 2]]);
@@ -92,7 +90,6 @@ void Rasterizer::RenderScenePhong(Scene * p_pScene)
 		Vec3 Lightcomp(p_pScene->lights[0]->GetAmbient(), p_pScene->lights[0]->GetDiffuse(), p_pScene->lights[0]->GetSpecular());
 		for (int i = 0; i < p_pScene->entities[entityID]->GetMesh()->GetIndices().size() - 2; i += 3)
 		{
-			++m_sharedContext.appInfos.polygons;
 			Vertex v0 = (p_pScene->entities[entityID]->GetMesh()->GetVertices()[p_pScene->entities[entityID]->GetMesh()->GetIndices()[i]]);
 			Vertex v1 = (p_pScene->entities[entityID]->GetMesh()->GetVertices()[p_pScene->entities[entityID]->GetMesh()->GetIndices()[i + 1]]);
 			Vertex v2 = (p_pScene->entities[entityID]->GetMesh()->GetVertices()[p_pScene->entities[entityID]->GetMesh()->GetIndices()[i + 2]]);
@@ -115,7 +112,6 @@ void Rasterizer::RenderSceneWireframe(Scene * p_pScene)
 		const Mat4 positionMatrix = Mat4::CreatePerspective(60, float(m_rtexture.GetWidth()) / float(m_rtexture.GetHeight()), 0.1f, 100.0f) * normalMatrix;
 		for (int i = 0; i < p_pScene->entities[entityID]->GetMesh()->GetIndices().size() - 2; i += 3)
 		{
-			++m_sharedContext.appInfos.polygons;
 			Vertex v0 = (p_pScene->entities[entityID]->GetMesh()->GetVertices()[p_pScene->entities[entityID]->GetMesh()->GetIndices()[i]]);
 			Vertex v1 = (p_pScene->entities[entityID]->GetMesh()->GetVertices()[p_pScene->entities[entityID]->GetMesh()->GetIndices()[i + 1]]);
 			Vertex v2 = (p_pScene->entities[entityID]->GetMesh()->GetVertices()[p_pScene->entities[entityID]->GetMesh()->GetIndices()[i + 2]]);
@@ -136,7 +132,6 @@ void Rasterizer::RenderTexture(Scene* p_pScene)
 		const Mat4 positionMatrix = Mat4::CreatePerspective(60, float(m_rtexture.GetWidth()) / float(m_rtexture.GetHeight()), 0.1f, 100.0f) * normalMatrix;
 		for (int i = 0; i < p_pScene->entities[entityID]->GetMesh()->GetIndices().size() - 2; i += 3)
 		{
-			++m_sharedContext.appInfos.polygons;
 			Vertex v0 = (p_pScene->entities[entityID]->GetMesh()->GetVertices()[p_pScene->entities[entityID]->GetMesh()->GetIndices()[i]]);
 			Vertex v1 = (p_pScene->entities[entityID]->GetMesh()->GetVertices()[p_pScene->entities[entityID]->GetMesh()->GetIndices()[i + 1]]);
 			Vertex v2 = (p_pScene->entities[entityID]->GetMesh()->GetVertices()[p_pScene->entities[entityID]->GetMesh()->GetIndices()[i + 2]]);
@@ -158,7 +153,6 @@ void Rasterizer::RenderAlphaBlending(Scene* p_pScene)
 
 		for (uint16_t j = 0; j < p_pScene->entities[entityID]->GetMesh()->GetIndices().size() - 2; j += 3)
 		{
-			++m_sharedContext.appInfos.polygons;
 			Vertex v0 = (p_pScene->entities[entityID]->GetMesh()->GetVertices()[p_pScene->entities[entityID]->GetMesh()->GetIndices()[j]]);
 			Vertex v1 = (p_pScene->entities[entityID]->GetMesh()->GetVertices()[p_pScene->entities[entityID]->GetMesh()->GetIndices()[j + 1]]);
 			Vertex v2 = (p_pScene->entities[entityID]->GetMesh()->GetVertices()[p_pScene->entities[entityID]->GetMesh()->GetIndices()[j + 2]]);
@@ -173,27 +167,47 @@ void Rasterizer::RenderAlphaBlending(Scene* p_pScene)
 void Rasterizer::RenderAntialiasing(Scene* p_pScene)
 {
 	m_zBufferOn = false;
-	const Mat4 normalMatrix = p_pScene->entities[0]->GetMatrix();
-	const Mat4 modelProjection = Mat4::CreatePerspective(60, float(m_rtexture.GetWidth()) / float(m_rtexture.GetHeight()), 0.1f, 100.0f) * normalMatrix;
-	Vertex v0 = (p_pScene->entities[0]->GetMesh()->GetVertices()[p_pScene->entities[0]->GetMesh()->GetIndices()[0]]);
-	Vertex v1 = (p_pScene->entities[0]->GetMesh()->GetVertices()[p_pScene->entities[0]->GetMesh()->GetIndices()[1]]);
-	Vertex v2 = (p_pScene->entities[0]->GetMesh()->GetVertices()[p_pScene->entities[0]->GetMesh()->GetIndices()[2]]);
-	v0.VertexTransform(modelProjection);
-	v1.VertexTransform(modelProjection);
-	v2.VertexTransform(modelProjection);
-	switch(m_sharedContext.appInfos.selectedAA)
+	for (uint8_t entityID = 0; entityID < m_sharedContext.scene->entities.size(); ++entityID)
 	{
-	case NOAA: DrawTriangleNoAntialiasing(v0, v1, v2); break;
+		const Mat4 normalMatrix = p_pScene->entities[entityID]->GetMatrix();
+		const Mat4 modelProjection = Mat4::CreatePerspective(60, float(m_rtexture.GetWidth()) / float(m_rtexture.GetHeight()), 0.1f, 100.0f) * normalMatrix;
+		Vertex v0 = (p_pScene->entities[entityID]->GetMesh()->GetVertices()[p_pScene->entities[entityID]->GetMesh()->GetIndices()[0]]);
+		Vertex v1 = (p_pScene->entities[entityID]->GetMesh()->GetVertices()[p_pScene->entities[entityID]->GetMesh()->GetIndices()[1]]);
+		Vertex v2 = (p_pScene->entities[entityID]->GetMesh()->GetVertices()[p_pScene->entities[entityID]->GetMesh()->GetIndices()[2]]);
+		v0.VertexTransform(modelProjection);
+		v1.VertexTransform(modelProjection);
+		v2.VertexTransform(modelProjection);
+		switch (m_sharedContext.appInfos.selectedAA)
+		{
+		case NOAA: DrawTriangleNoAntialiasing(v0, v1, v2); break;
 
-	case AA2X: DrawTriangle2XAntialiasing(v0, v1, v2); break;
+		case AA2X: DrawTriangle2XAntialiasing(v0, v1, v2); break;
 
-	case AA4X: DrawTriangle4XAntialiasing(v0, v1, v2); break;
+		case AA4X: DrawTriangle4XAntialiasing(v0, v1, v2); break;
 
-	case AA8X: DrawTriangle8XAntialiasing(v0, v1, v2); break;
+		case AA8X: DrawTriangle8XAntialiasing(v0, v1, v2); break;
 
-	case AA16X: DrawTriangle16XAntialiasing(v0, v1, v2); break;
-	
-	default: break;
+		case AA16X: DrawTriangle16XAntialiasing(v0, v1, v2); break;
+
+		default: break;
+		}
+	}
+}
+
+void Rasterizer::RenderZelda(Scene* p_pScene)
+{
+	m_zBufferOn = false;
+	for (uint8_t entityID = 0; entityID < m_sharedContext.scene->entities.size(); ++entityID)
+	{
+		const Mat4 normalMatrix = p_pScene->entities[entityID]->GetMatrix();
+		const Mat4 modelProjection = Mat4::CreatePerspective(60, float(m_rtexture.GetWidth()) / float(m_rtexture.GetHeight()), 0.1f, 100.0f) * normalMatrix;
+		Vertex v0 = (p_pScene->entities[entityID]->GetMesh()->GetVertices()[p_pScene->entities[entityID]->GetMesh()->GetIndices()[0]]);
+		Vertex v1 = (p_pScene->entities[entityID]->GetMesh()->GetVertices()[p_pScene->entities[entityID]->GetMesh()->GetIndices()[1]]);
+		Vertex v2 = (p_pScene->entities[entityID]->GetMesh()->GetVertices()[p_pScene->entities[entityID]->GetMesh()->GetIndices()[2]]);
+		v0.VertexTransform(modelProjection);
+		v1.VertexTransform(modelProjection);
+		v2.VertexTransform(modelProjection);
+		DrawTriangleNoAntialiasing(v0, v1, v2);
 	}
 }
 

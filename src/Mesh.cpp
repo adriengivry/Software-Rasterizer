@@ -301,9 +301,9 @@ Mesh* Mesh::CreateSphere(int p_latitudeCount, int p_longitudeCount)
 Mesh* Mesh::CreateTriangle()
 {
 	Mesh* Triangle = new Mesh();
-	Triangle->m_vertices.push_back(Vertex(-3, -2, 0));
-	Triangle->m_vertices.push_back(Vertex(3, 3, 0));
-	Triangle->m_vertices.push_back(Vertex(-2, 2, 0));
+	Triangle->m_vertices.push_back(Vertex(sqrt(3), -1, 0));
+	Triangle->m_vertices.push_back(Vertex(0, 2, 0));
+	Triangle->m_vertices.push_back(Vertex(-sqrt(3), -1, 0));
 	Triangle->m_indices.push_back(0);
 	Triangle->m_indices.push_back(2);
 	Triangle->m_indices.push_back(1);
