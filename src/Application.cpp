@@ -156,6 +156,9 @@ void Application::RenderScene()
 	case 6:
 		m_rasterizer.RenderAlphaBlending(&m_scene);
 		break;
+	case 7:
+		m_rasterizer.RenderAntialiasing(&m_scene);
+		break;
 	}
 }
 

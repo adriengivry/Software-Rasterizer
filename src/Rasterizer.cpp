@@ -173,11 +173,11 @@ void Rasterizer::RenderAlphaBlending(Scene* p_pScene)
 void Rasterizer::RenderAntialiasing(Scene* p_pScene)
 {
 	m_zBufferOn = false;
-	const Mat4 normalMatrix = p_pScene->entities[3]->GetMatrix();
+	const Mat4 normalMatrix = p_pScene->entities[0]->GetMatrix();
 	const Mat4 modelProjection = Mat4::CreatePerspective(60, float(m_rtexture.GetWidth()) / float(m_rtexture.GetHeight()), 0.1f, 100.0f) * normalMatrix;
-	Vertex v0 = (p_pScene->entities[0]->GetMesh()->GetVertices()[p_pScene->entities[3]->GetMesh()->GetIndices()[0]]);
-	Vertex v1 = (p_pScene->entities[0]->GetMesh()->GetVertices()[p_pScene->entities[3]->GetMesh()->GetIndices()[1]]);
-	Vertex v2 = (p_pScene->entities[0]->GetMesh()->GetVertices()[p_pScene->entities[3]->GetMesh()->GetIndices()[2]]);
+	Vertex v0 = (p_pScene->entities[0]->GetMesh()->GetVertices()[p_pScene->entities[0]->GetMesh()->GetIndices()[0]]);
+	Vertex v1 = (p_pScene->entities[0]->GetMesh()->GetVertices()[p_pScene->entities[0]->GetMesh()->GetIndices()[1]]);
+	Vertex v2 = (p_pScene->entities[0]->GetMesh()->GetVertices()[p_pScene->entities[0]->GetMesh()->GetIndices()[2]]);
 	v0.VertexTransform(modelProjection);
 	v1.VertexTransform(modelProjection);
 	v2.VertexTransform(modelProjection);
@@ -550,26 +550,23 @@ void Rasterizer::DrawTriangleNoAntialiasing(Vertex& p_v0, Vertex& p_v1, Vertex& 
 	Vertex v0(Mat4::ConvertToScreen(p_v0.position, m_rtexture.GetWidth(), m_rtexture.GetHeight()));
 	Vertex v1(Mat4::ConvertToScreen(p_v1.position, m_rtexture.GetWidth(), m_rtexture.GetHeight()));
 	Vertex v2(Mat4::ConvertToScreen(p_v2.position, m_rtexture.GetWidth(), m_rtexture.GetHeight()));
-	Vec2 v(v1.position.x - v0.position.x, v1.position.y - v0.position.y);
-	Vec2 w(v2.position.x - v0.position.x, v2.position.y - v0.position.y);
-	const float area = v.Cross(w);
-	if (area < 0)
-		return;
-
+	
 	Triangle triangle(v0, v1, v2);
 	const AABB box = triangle.GetAABB();
 	const int minX = std::max(static_cast<int>(box.minPoint.x), 0);
 	const int minY = std::max(static_cast<int>(box.minPoint.y), 0);
 	const int maxX = std::min(static_cast<int>(box.maxPoint.x), m_rtexture.GetWidth() - 1);
 	const int maxY = std::min(static_cast<int>(box.maxPoint.y), m_rtexture.GetHeight() - 1);
-	Vec3 positions(0, 0, 0);
+	Vec2 positions(0, 0);
+	Color final(255, 0, 0);
 	for (positions.y = minY; positions.y <= maxY; ++positions.y)
 	{
 		for (positions.x = minX; positions.x <= maxX; ++positions.x)
 		{
 			const Vec3 bary(triangle.Barycentric2(v0.position.x, v0.position.y, positions.x, positions.y));
-			if (bary.x >= 0 && bary.y >= 0 && bary.x + bary.y < 1)
+			if (bary.x >= 0 && bary.y >= 0 && bary.x + bary.y <= 1)
 			{
+				m_rtexture.SetPixelColor(int(positions.x), int(positions.y), final);
 			}
 		}
 	}
@@ -577,22 +574,494 @@ void Rasterizer::DrawTriangleNoAntialiasing(Vertex& p_v0, Vertex& p_v1, Vertex& 
 
 void Rasterizer::DrawTriangle2XAntialiasing(Vertex& p_v0, Vertex& p_v1, Vertex& p_v2) const
 {
-	
+	Vertex v0(Mat4::ConvertToScreen(p_v0.position, m_rtexture.GetWidth(), m_rtexture.GetHeight()));
+	Vertex v1(Mat4::ConvertToScreen(p_v1.position, m_rtexture.GetWidth(), m_rtexture.GetHeight()));
+	Vertex v2(Mat4::ConvertToScreen(p_v2.position, m_rtexture.GetWidth(), m_rtexture.GetHeight()));
+
+
+	Triangle triangle(v0, v1, v2);
+	const AABB box = triangle.GetAABB();
+	const int minX = std::max(static_cast<int>(box.minPoint.x), 0);
+	const int minY = std::max(static_cast<int>(box.minPoint.y), 0);
+	const int maxX = std::min(static_cast<int>(box.maxPoint.x), m_rtexture.GetWidth() - 1);
+	const int maxY = std::min(static_cast<int>(box.maxPoint.y), m_rtexture.GetHeight() - 1);
+	Vec2 positions(0, 0);
+	Color pre(255, 0, 0);
+	float in = 0;
+	float out = 0;
+	float perX = 1.f / 2;
+	float perY = 1.f / 2;
+	for (positions.y = minY; positions.y <= maxY; ++positions.y)
+	{
+		for (positions.x = minX; positions.x <= maxX; ++positions.x)
+		{
+			const Vec3 bary(triangle.Barycentric2(v0.position.x, v0.position.y, positions.x, positions.y));
+			if (bary.x >= 0 && bary.y >= 0 && bary.x + bary.y <= 1)
+			{
+			
+				if(bary.x >= 0.f && bary.x < 0.01f && bary.x + bary.y <= 1)
+				{
+					for(uint8_t y = 0; y < 1; ++y)
+					{
+						for(uint8_t x = 0; x <1; x++)
+						{
+							float samplePosX = positions.x + perX * (x + 1);
+							float samplePosY = positions.y + perY * (y + 1);
+							const Vec3 barytest(triangle.Barycentric2(v0.position.x, v0.position.y, samplePosX, samplePosY));
+							if(barytest.x >= 0 && barytest.y >= 0 && bary.x + barytest.y <= 1)
+							{
+								in++;
+							}
+							else
+							{
+								out++;
+							}
+						}
+					}
+					float average = in / (in + out);
+					Color final;
+					final.r = pre.r * average;
+					final.g = pre.g * average;
+					final.b = pre.g * average;
+					final.a = 255.0;
+					m_rtexture.SetPixelColor(int(positions.x), int(positions.y), final);
+					in = 0;
+					out = 0;
+				}
+				else if(bary.y >= 0.f && bary.y < 0.01f && bary.x + bary.y <= 1)
+				{
+					for (uint8_t y = 0; y < 1; ++y)
+					{
+						for (uint8_t x = 0; x <1; x++)
+						{
+							float samplePosX = positions.x + perX * (x + 1);
+							float samplePosY = positions.y + perY * (y + 1);
+							const Vec3 barytest(triangle.Barycentric2(v0.position.x, v0.position.y, samplePosX, samplePosY));
+							if (barytest.x >= 0 && barytest.y >= 0 && bary.x + barytest.y <= 1)
+							{
+								in++;
+							}
+							else
+							{
+								out++;
+							}
+						}
+					}
+					float average = in / (in + out);
+					Color final;
+					final.r = pre.r * average;
+					final.g = pre.g * average;
+					final.b = pre.g * average;
+					final.a = 255.0;
+					m_rtexture.SetPixelColor(int(positions.x), int(positions.y), final);
+					in = 0;
+					out = 0;
+				}
+				else if(bary.x > 0.f && bary.y > 0.f && bary.x + bary.y <= 1.f && bary.x + bary.y > 0.999f)
+				{
+					for (uint8_t y = 0; y < 1; ++y)
+					{
+						for (uint8_t x = 0; x <1; x++)
+						{
+							float samplePosX = positions.x + perX * (x + 1);
+							float samplePosY = positions.y + perY * (y + 1);
+							const Vec3 barytest(triangle.Barycentric2(v0.position.x, v0.position.y, samplePosX, samplePosY));
+							if (barytest.x >= 0 && barytest.y >= 0 && bary.x + barytest.y <= 1)
+							{
+								in++;
+							}
+							else
+							{
+								out++;
+							}
+						}
+					}
+					float average = in / (in + out);
+					Color final;
+					final.r = pre.r * average;
+					final.g = pre.g * average;
+					final.b = pre.g * average;
+					final.a = 255.0;
+					m_rtexture.SetPixelColor(int(positions.x), int(positions.y), final);
+					in = 0;
+					out = 0;
+				}
+				else
+				{
+					m_rtexture.SetPixelColor(int(positions.x), int(positions.y), pre);
+				}
+			}
+		}
+	}
 }
 
 void Rasterizer::DrawTriangle4XAntialiasing(Vertex& p_v0, Vertex& p_v1, Vertex& p_v2) const
 {
-	
+	Vertex v0(Mat4::ConvertToScreen(p_v0.position, m_rtexture.GetWidth(), m_rtexture.GetHeight()));
+	Vertex v1(Mat4::ConvertToScreen(p_v1.position, m_rtexture.GetWidth(), m_rtexture.GetHeight()));
+	Vertex v2(Mat4::ConvertToScreen(p_v2.position, m_rtexture.GetWidth(), m_rtexture.GetHeight()));
+
+
+	Triangle triangle(v0, v1, v2);
+	const AABB box = triangle.GetAABB();
+	const int minX = std::max(static_cast<int>(box.minPoint.x), 0);
+	const int minY = std::max(static_cast<int>(box.minPoint.y), 0);
+	const int maxX = std::min(static_cast<int>(box.maxPoint.x), m_rtexture.GetWidth() - 1);
+	const int maxY = std::min(static_cast<int>(box.maxPoint.y), m_rtexture.GetHeight() - 1);
+	Vec2 positions(0, 0);
+	Color pre(255, 0, 0);
+	float in = 0;
+	float out = 0;
+	float perX = 1.f / 4;
+	float perY = 1.f / 4;
+	for (positions.y = minY; positions.y <= maxY; ++positions.y)
+	{
+		for (positions.x = minX; positions.x <= maxX; ++positions.x)
+		{
+			const Vec3 bary(triangle.Barycentric2(v0.position.x, v0.position.y, positions.x, positions.y));
+			if (bary.x >= 0 && bary.y >= 0 && bary.x + bary.y <= 1)
+			{
+
+				if (bary.x >= 0.f && bary.x < 0.01f && bary.x + bary.y <= 1)
+				{
+					for (uint8_t y = 0; y < 2; ++y)
+					{
+						for (uint8_t x = 0; x < 2; x++)
+						{
+							float samplePosX = positions.x + perX * (x + 1);
+							float samplePosY = positions.y + perY * (y + 1);
+							const Vec3 barytest(triangle.Barycentric2(v0.position.x, v0.position.y, samplePosX, samplePosY));
+							if (barytest.x >= 0 && barytest.y >= 0 && bary.x + barytest.y <= 1)
+							{
+								in++;
+							}
+							else
+							{
+								out++;
+							}
+						}
+					}
+					float average = in / (in + out);
+					Color final;
+					final.r = pre.r * average;
+					final.g = pre.g * average;
+					final.b = pre.g * average;
+					final.a = 255.0;
+					m_rtexture.SetPixelColor(int(positions.x), int(positions.y), final);
+					in = 0;
+					out = 0;
+				}
+				else if (bary.y >= 0.f && bary.y < 0.01f && bary.x + bary.y <= 1)
+				{
+					for (uint8_t y = 0; y < 2; ++y)
+					{
+						for (uint8_t x = 0; x < 2; x++)
+						{
+							float samplePosX = positions.x + perX * (x + 1);
+							float samplePosY = positions.y + perY * (y + 1);
+							const Vec3 barytest(triangle.Barycentric2(v0.position.x, v0.position.y, samplePosX, samplePosY));
+							if (barytest.x >= 0 && barytest.y >= 0 && bary.x + barytest.y <= 1)
+							{
+								in++;
+							}
+							else
+							{
+								out++;
+							}
+						}
+					}
+					float average = in / (in + out);
+					Color final;
+					final.r = pre.r * average;
+					final.g = pre.g * average;
+					final.b = pre.g * average;
+					final.a = 255.0;
+					m_rtexture.SetPixelColor(int(positions.x), int(positions.y), final);
+					in = 0;
+					out = 0;
+				}
+				else if (bary.x > 0.f && bary.y > 0.f && bary.x + bary.y <= 1.f && bary.x + bary.y > 0.999f)
+				{
+					for (uint8_t y = 0; y < 2; ++y)
+					{
+						for (uint8_t x = 0; x < 2; x++)
+						{
+							float samplePosX = positions.x + perX * (x + 1);
+							float samplePosY = positions.y + perY * (y + 1);
+							const Vec3 barytest(triangle.Barycentric2(v0.position.x, v0.position.y, samplePosX, samplePosY));
+							if (barytest.x >= 0 && barytest.y >= 0 && bary.x + barytest.y <= 1)
+							{
+								in++;
+							}
+							else
+							{
+								out++;
+							}
+						}
+					}
+					float average = in / (in + out);
+					Color final;
+					final.r = pre.r * average;
+					final.g = pre.g * average;
+					final.b = pre.g * average;
+					final.a = 255.0;
+					m_rtexture.SetPixelColor(int(positions.x), int(positions.y), final);
+					in = 0;
+					out = 0;
+				}
+				else
+				{
+					m_rtexture.SetPixelColor(int(positions.x), int(positions.y), pre);
+				}
+			}
+		}
+	}
 }
 
 void Rasterizer::DrawTriangle8XAntialiasing(Vertex& p_v0, Vertex& p_v1, Vertex& p_v2) const
 {
-	
+	Vertex v0(Mat4::ConvertToScreen(p_v0.position, m_rtexture.GetWidth(), m_rtexture.GetHeight()));
+	Vertex v1(Mat4::ConvertToScreen(p_v1.position, m_rtexture.GetWidth(), m_rtexture.GetHeight()));
+	Vertex v2(Mat4::ConvertToScreen(p_v2.position, m_rtexture.GetWidth(), m_rtexture.GetHeight()));
+
+
+	Triangle triangle(v0, v1, v2);
+	const AABB box = triangle.GetAABB();
+	const int minX = std::max(static_cast<int>(box.minPoint.x), 0);
+	const int minY = std::max(static_cast<int>(box.minPoint.y), 0);
+	const int maxX = std::min(static_cast<int>(box.maxPoint.x), m_rtexture.GetWidth() - 1);
+	const int maxY = std::min(static_cast<int>(box.maxPoint.y), m_rtexture.GetHeight() - 1);
+	Vec2 positions(0, 0);
+	Color pre(255, 0, 0);
+	float in = 0;
+	float out = 0;
+	float perX = 1.f / 8;
+	float perY = 1.f / 8;
+	for (positions.y = minY; positions.y <= maxY; ++positions.y)
+	{
+		for (positions.x = minX; positions.x <= maxX; ++positions.x)
+		{
+			const Vec3 bary(triangle.Barycentric2(v0.position.x, v0.position.y, positions.x, positions.y));
+			if (bary.x >= 0 && bary.y >= 0 && bary.x + bary.y <= 1)
+			{
+
+				if (bary.x >= 0.f && bary.x < 0.01f && bary.x + bary.y <= 1)
+				{
+					for (uint8_t y = 0; y < 3; ++y)
+					{
+						for (uint8_t x = 0; x < 3; x++)
+						{
+							float samplePosX = positions.x + perX * (x + 1);
+							float samplePosY = positions.y + perY * (y + 1);
+							const Vec3 barytest(triangle.Barycentric2(v0.position.x, v0.position.y, samplePosX, samplePosY));
+							if (barytest.x >= 0 && barytest.y >= 0 && bary.x + barytest.y <= 1)
+							{
+								in++;
+							}
+							else
+							{
+								out++;
+							}
+						}
+					}
+					float average = in / (in + out);
+					Color final;
+					final.r = pre.r * average;
+					final.g = pre.g * average;
+					final.b = pre.g * average;
+					final.a = 255.0;
+					m_rtexture.SetPixelColor(int(positions.x), int(positions.y), final);
+					in = 0;
+					out = 0;
+				}
+				else if (bary.y >= 0.f && bary.y < 0.01f && bary.x + bary.y <= 1)
+				{
+					for (uint8_t y = 0; y < 3; ++y)
+					{
+						for (uint8_t x = 0; x < 3; x++)
+						{
+							float samplePosX = positions.x + perX * (x + 1);
+							float samplePosY = positions.y + perY * (y + 1);
+							const Vec3 barytest(triangle.Barycentric2(v0.position.x, v0.position.y, samplePosX, samplePosY));
+							if (barytest.x >= 0 && barytest.y >= 0 && bary.x + barytest.y <= 1)
+							{
+								in++;
+							}
+							else
+							{
+								out++;
+							}
+						}
+					}
+					float average = in / (in + out);
+					Color final;
+					final.r = pre.r * average;
+					final.g = pre.g * average;
+					final.b = pre.g * average;
+					final.a = 255.0;
+					m_rtexture.SetPixelColor(int(positions.x), int(positions.y), final);
+					in = 0;
+					out = 0;
+				}
+				else if (bary.x > 0.f && bary.y > 0.f && bary.x + bary.y <= 1.f && bary.x + bary.y > 0.999f)
+				{
+					for (uint8_t y = 0; y < 3; ++y)
+					{
+						for (uint8_t x = 0; x < 3; x++)
+						{
+							float samplePosX = positions.x + perX * (x + 1);
+							float samplePosY = positions.y + perY * (y + 1);
+							const Vec3 barytest(triangle.Barycentric2(v0.position.x, v0.position.y, samplePosX, samplePosY));
+							if (barytest.x >= 0 && barytest.y >= 0 && bary.x + barytest.y <= 1)
+							{
+								in++;
+							}
+							else
+							{
+								out++;
+							}
+						}
+					}
+					float average = in / (in + out);
+					Color final;
+					final.r = pre.r * average;
+					final.g = pre.g * average;
+					final.b = pre.g * average;
+					final.a = 255.0;
+					m_rtexture.SetPixelColor(int(positions.x), int(positions.y), final);
+					in = 0;
+					out = 0;
+				}
+				else
+				{
+					m_rtexture.SetPixelColor(int(positions.x), int(positions.y), pre);
+				}
+			}
+		}
+	}
 }
 
 void Rasterizer::DrawTriangle16XAntialiasing(Vertex& p_v0, Vertex& p_v1, Vertex& p_v2) const
 {
-	
+	Vertex v0(Mat4::ConvertToScreen(p_v0.position, m_rtexture.GetWidth(), m_rtexture.GetHeight()));
+	Vertex v1(Mat4::ConvertToScreen(p_v1.position, m_rtexture.GetWidth(), m_rtexture.GetHeight()));
+	Vertex v2(Mat4::ConvertToScreen(p_v2.position, m_rtexture.GetWidth(), m_rtexture.GetHeight()));
+
+
+	Triangle triangle(v0, v1, v2);
+	const AABB box = triangle.GetAABB();
+	const int minX = std::max(static_cast<int>(box.minPoint.x), 0);
+	const int minY = std::max(static_cast<int>(box.minPoint.y), 0);
+	const int maxX = std::min(static_cast<int>(box.maxPoint.x), m_rtexture.GetWidth() - 1);
+	const int maxY = std::min(static_cast<int>(box.maxPoint.y), m_rtexture.GetHeight() - 1);
+	Vec2 positions(0, 0);
+	Color pre(255, 0, 0);
+	float in = 0;
+	float out = 0;
+	float perX = 1.f / 8;
+	float perY = 1.f / 8;
+	for (positions.y = minY; positions.y <= maxY; ++positions.y)
+	{
+		for (positions.x = minX; positions.x <= maxX; ++positions.x)
+		{
+			const Vec3 bary(triangle.Barycentric2(v0.position.x, v0.position.y, positions.x, positions.y));
+			if (bary.x >= 0 && bary.y >= 0 && bary.x + bary.y <= 1)
+			{
+
+				if (bary.x >= 0.f && bary.x < 0.01f && bary.x + bary.y <= 1)
+				{
+					for (uint8_t y = 0; y < 4; ++y)
+					{
+						for (uint8_t x = 0; x < 4; x++)
+						{
+							float samplePosX = positions.x + perX * (x + 1);
+							float samplePosY = positions.y + perY * (y + 1);
+							const Vec3 barytest(triangle.Barycentric2(v0.position.x, v0.position.y, samplePosX, samplePosY));
+							if (barytest.x >= 0 && barytest.y >= 0 && bary.x + barytest.y <= 1)
+							{
+								in++;
+							}
+							else
+							{
+								out++;
+							}
+						}
+					}
+					float average = in / (in + out);
+					Color final;
+					final.r = pre.r * average;
+					final.g = pre.g * average;
+					final.b = pre.g * average;
+					final.a = 255.0;
+					m_rtexture.SetPixelColor(int(positions.x), int(positions.y), final);
+					in = 0;
+					out = 0;
+				}
+				else if (bary.y >= 0.f && bary.y < 0.01f && bary.x + bary.y <= 1)
+				{
+					for (uint8_t y = 0; y < 4; ++y)
+					{
+						for (uint8_t x = 0; x < 4; x++)
+						{
+							float samplePosX = positions.x + perX * (x + 1);
+							float samplePosY = positions.y + perY * (y + 1);
+							const Vec3 barytest(triangle.Barycentric2(v0.position.x, v0.position.y, samplePosX, samplePosY));
+							if (barytest.x >= 0 && barytest.y >= 0 && bary.x + barytest.y <= 1)
+							{
+								in++;
+							}
+							else
+							{
+								out++;
+							}
+						}
+					}
+					float average = in / (in + out);
+					Color final;
+					final.r = pre.r * average;
+					final.g = pre.g * average;
+					final.b = pre.g * average;
+					final.a = 255.0;
+					m_rtexture.SetPixelColor(int(positions.x), int(positions.y), final);
+					in = 0;
+					out = 0;
+				}
+				else if (bary.x > 0.f && bary.y > 0.f && bary.x + bary.y <= 1.f && bary.x + bary.y > 0.999f)
+				{
+					for (uint8_t y = 0; y < 4; ++y)
+					{
+						for (uint8_t x = 0; x < 4; x++)
+						{
+							float samplePosX = positions.x + perX * (x + 1);
+							float samplePosY = positions.y + perY * (y + 1);
+							const Vec3 barytest(triangle.Barycentric2(v0.position.x, v0.position.y, samplePosX, samplePosY));
+							if (barytest.x >= 0 && barytest.y >= 0 && bary.x + barytest.y <= 1)
+							{
+								in++;
+							}
+							else
+							{
+								out++;
+							}
+						}
+					}
+					float average = in / (in + out);
+					Color final;
+					final.r = pre.r * average;
+					final.g = pre.g * average;
+					final.b = pre.g * average;
+					final.a = 255.0;
+					m_rtexture.SetPixelColor(int(positions.x), int(positions.y), final);
+					in = 0;
+					out = 0;
+				}
+				else
+				{
+					m_rtexture.SetPixelColor(int(positions.x), int(positions.y), pre);
+				}
+			}
+		}
+	}
 }
 
 void Rasterizer::ClearBuffer() const
