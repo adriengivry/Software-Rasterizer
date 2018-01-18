@@ -34,8 +34,6 @@ struct Actions
 	bool moveDown;
 	bool zoomIn;
 	bool zoomOut;
-	bool antialiasingZoomIn;
-	bool antialiasingZoomOut;
 	bool xTurnClockwise;
 	bool xTurnCounterClockwise;
 	bool yTurnClockwise;
@@ -90,7 +88,6 @@ struct CameraParams
 	float xOffset;
 	float yOffset;
 	float zoomOffset;
-	float antialiasingOffset;
 	float xRotationOffset;
 	float yRotationOffset;
 
@@ -101,7 +98,6 @@ struct CameraParams
 		xOffset = 0;
 		yOffset = 0;
 		zoomOffset = -6;
-		antialiasingOffset = 0;
 		xRotationOffset = 45;
 		yRotationOffset = 45;
 	}
@@ -134,7 +130,6 @@ struct ApplicationInfos
 	{
 		selectedLight = AMBIANT;
 		selectedAA = NOAA;
-		meshMode = CUBE;
 		lightParams.Reset();
 		cubeParams.Reset();
 		cameraParams.Reset();

@@ -108,8 +108,8 @@ void Application::RenderScene()
 		Mat4::CreateScale(1.5f, 1.5f, 1.5f);
 
 	const Mat4 matrix3 =
-		Mat4::CreateTranslation(m_sharedContext.appInfos.cameraParams.xOffset, 0, 0).CreateInverse() *
-		Mat4::CreateTranslation(0, 0, 0 + m_sharedContext.appInfos.cameraParams.antialiasingOffset);
+		Mat4::CreateTranslation(m_sharedContext.appInfos.cameraParams.xOffset, m_sharedContext.appInfos.cameraParams.yOffset, 0).CreateInverse() *
+		Mat4::CreateTranslation(0, 0, m_sharedContext.appInfos.cameraParams.zoomOffset);
 
 	if (m_sharedContext.appInfos.selectedVersion < 5)
 	{
@@ -167,7 +167,6 @@ void Application::UpdateCamera()
 	float xOffset = 0;
 	float yOffset = 0;
 	float zoomOffset = 0;
-	float antialiasingOffset = 0;
 	float xRotationOffset = 0;
 	float yRotationOffset = 0;
 
@@ -184,12 +183,6 @@ void Application::UpdateCamera()
 		zoomOffset += 5;
 	if (m_sharedContext.actions.zoomOut)
 		zoomOffset -= 5;
-	
-	if (m_sharedContext.actions.antialiasingZoomIn)
-		antialiasingOffset += 5;
-
-	if (m_sharedContext.actions.antialiasingZoomOut)
-		antialiasingOffset -= 5;
 
 	if (m_sharedContext.actions.xTurnClockwise)
 		xRotationOffset += 90;
@@ -206,7 +199,6 @@ void Application::UpdateCamera()
 	m_sharedContext.appInfos.cameraParams.zoomOffset += zoomOffset * m_sharedContext.appInfos.deltaTime;
 	m_sharedContext.appInfos.cameraParams.xRotationOffset += xRotationOffset * m_sharedContext.appInfos.deltaTime;
 	m_sharedContext.appInfos.cameraParams.yRotationOffset += yRotationOffset * m_sharedContext.appInfos.deltaTime;
-	m_sharedContext.appInfos.cameraParams.antialiasingOffset += antialiasingOffset * m_sharedContext.appInfos.deltaTime;
 
 	// Keep rotation between 0 and 360
 	while (m_sharedContext.appInfos.cameraParams.xRotationOffset >= 360) m_sharedContext.appInfos.cameraParams.xRotationOffset -= 360;
@@ -215,10 +207,16 @@ void Application::UpdateCamera()
 	while (m_sharedContext.appInfos.cameraParams.yRotationOffset < 0) m_sharedContext.appInfos.cameraParams.yRotationOffset += 360;
 
 	// Prevent zooming or de-zooming too much
-	if (m_sharedContext.appInfos.cameraParams.zoomOffset >= -3) m_sharedContext.appInfos.cameraParams.zoomOffset = -3;
-	if (m_sharedContext.appInfos.cameraParams.zoomOffset <= -40) m_sharedContext.appInfos.cameraParams.zoomOffset = -40;
-	if (m_sharedContext.appInfos.cameraParams.antialiasingOffset >= 0) m_sharedContext.appInfos.cameraParams.antialiasingOffset = 0;
-	if (m_sharedContext.appInfos.cameraParams.antialiasingOffset <= -15) m_sharedContext.appInfos.cameraParams.zoomOffset = -15;
+	if (m_sharedContext.appInfos.selectedVersion != 7)
+	{
+		if (m_sharedContext.appInfos.cameraParams.zoomOffset >= -3) m_sharedContext.appInfos.cameraParams.zoomOffset = -3;
+		if (m_sharedContext.appInfos.cameraParams.zoomOffset <= -40) m_sharedContext.appInfos.cameraParams.zoomOffset = -40;
+	}
+	else
+	{
+		if (m_sharedContext.appInfos.cameraParams.zoomOffset >= -1) m_sharedContext.appInfos.cameraParams.zoomOffset = -1;
+		if (m_sharedContext.appInfos.cameraParams.zoomOffset <= -40) m_sharedContext.appInfos.cameraParams.zoomOffset = -40;
+	}
 }
 
 void Application::UpdateLights()
