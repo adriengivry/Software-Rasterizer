@@ -87,7 +87,14 @@ void UserInterface::DrawCameraParams()
 		"Y-Rotation: " + std::to_string(m_sharedContext.appInfos.cameraParams.yRotationOffset)
 	};
 
-	for (uint8_t i = 0; i < 6; ++i)
+	uint8_t thingsToShow = 6;
+
+	if (m_sharedContext.appInfos.selectedVersion == 7)
+	{
+		thingsToShow = 4;
+	}
+
+	for (uint8_t i = 0; i < thingsToShow; ++i)
 	{
 		if (i == 0)
 			SetTextTitleColor();
@@ -131,7 +138,7 @@ void UserInterface::DrawVersionSelection()
 
 void UserInterface::DrawMeshProperties()
 {
-	if (m_sharedContext.appInfos.selectedVersion < 5)
+	if (m_sharedContext.appInfos.selectedVersion < 5 || m_sharedContext.appInfos.selectedVersion == 7)
 	{
 		std::string items[] =
 		{
@@ -237,7 +244,7 @@ void UserInterface::DrawAntiAliasingProperties()
 			SetTextDefaultColor();
 			if (m_sharedContext.actions.changeAAValue) SetTextSelectedColor();
 			if (i == 0) SetTextTitleColor();
-			DrawAt(items[i], 0, 350 + i * 20);
+			DrawAt(items[i], 0, 465 + i * 20);
 		}
 	}
 }

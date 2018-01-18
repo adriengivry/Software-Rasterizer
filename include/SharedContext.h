@@ -79,7 +79,7 @@ struct MeshParams
 		red = 255;
 		green = 0;
 		blue = 0;
-		transparency = 40;
+		transparency = 75;
 	}
 };
 

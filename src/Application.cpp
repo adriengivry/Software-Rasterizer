@@ -197,8 +197,13 @@ void Application::UpdateCamera()
 	m_sharedContext.appInfos.cameraParams.xOffset += xOffset * m_sharedContext.appInfos.deltaTime;
 	m_sharedContext.appInfos.cameraParams.yOffset += yOffset * m_sharedContext.appInfos.deltaTime;
 	m_sharedContext.appInfos.cameraParams.zoomOffset += zoomOffset * m_sharedContext.appInfos.deltaTime;
-	m_sharedContext.appInfos.cameraParams.xRotationOffset += xRotationOffset * m_sharedContext.appInfos.deltaTime;
-	m_sharedContext.appInfos.cameraParams.yRotationOffset += yRotationOffset * m_sharedContext.appInfos.deltaTime;
+
+	// Rotation disabled in AA version
+	if (m_sharedContext.appInfos.selectedVersion != 7)
+	{
+		m_sharedContext.appInfos.cameraParams.xRotationOffset += xRotationOffset * m_sharedContext.appInfos.deltaTime;
+		m_sharedContext.appInfos.cameraParams.yRotationOffset += yRotationOffset * m_sharedContext.appInfos.deltaTime;
+	}
 
 	// Keep rotation between 0 and 360
 	while (m_sharedContext.appInfos.cameraParams.xRotationOffset >= 360) m_sharedContext.appInfos.cameraParams.xRotationOffset -= 360;
@@ -267,7 +272,7 @@ void Application::UpdateLights()
 
 void Application::UpdateMeshColor()
 {
-	if (m_sharedContext.appInfos.selectedVersion < 5)
+	if (m_sharedContext.appInfos.selectedVersion < 5 || m_sharedContext.appInfos.selectedVersion == 7)
 	{
 		float redOffset = 0;
 		float greenOffset = 0;
