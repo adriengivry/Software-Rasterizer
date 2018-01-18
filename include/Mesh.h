@@ -13,6 +13,7 @@ public:
 	static Mesh* CreateTextureCube();
     static Mesh* CreateSphere(int p_latitudeCount, int p_longitudeCount);
 	static Mesh* CreateTriangle();
+	static Mesh* CreateZelda();
 	std::vector<Vertex>& GetVertices();
 	std::vector<uint32_t>& GetIndices();
 

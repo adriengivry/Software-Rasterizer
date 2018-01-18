@@ -72,7 +72,7 @@ void Scene::InitMeshes(const uint8_t p_rasterizerVersion, uint8_t p_meshMode)
 	}
 	else if (p_rasterizerVersion == 8)
 	{
-		meshes.insert(std::pair<std::string, Mesh*>("TRIANGLE", Mesh::CreateTriangle()));
+		meshes.insert(std::pair<std::string, Mesh*>("TRIANGLE", Mesh::CreateZelda()));
 	}
 }
 

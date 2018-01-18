@@ -113,16 +113,16 @@ void Application::RenderScene()
 		Mat4::CreateRotation(0, 0, m_sharedContext.appInfos.cameraParams.zRotationOffset);
 
 	const Mat4 matrix4 =
-		Mat4::CreateTranslation(-3, -3, 0) *
-		Mat4::CreateRotation(0, 0, 0);
+		Mat4::CreateTranslation(-3, -3, -10) *
+		Mat4::CreateRotation(0, m_sharedContext.appInfos.secondCubeRotationOffset, 0);
 
 	const Mat4 matrix5 =
-		Mat4::CreateTranslation(3, -3, -6) *
-		Mat4::CreateRotation(0, 0, 0);
+		Mat4::CreateTranslation(3, -3, -10) *
+		Mat4::CreateRotation(0, m_sharedContext.appInfos.secondCubeRotationOffset, 0);
 
 	const Mat4 matrix6 =
-		Mat4::CreateTranslation(0, 3, -6) *
-		Mat4::CreateRotation(0, 0, 0);
+		Mat4::CreateTranslation(0, 3, -10) *
+		Mat4::CreateRotation(0, m_sharedContext.appInfos.secondCubeRotationOffset, 0);
 
 	if (m_sharedContext.appInfos.selectedVersion < 5)
 	{

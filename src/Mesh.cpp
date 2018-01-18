@@ -310,6 +310,25 @@ Mesh* Mesh::CreateTriangle()
 	return Triangle;
 }
 
+Mesh* Mesh::CreateZelda()
+{
+	Mesh* Triangle = new Mesh();
+	Triangle->m_vertices.push_back(Vertex(sqrt(3), -1, 1));
+	Triangle->m_vertices.push_back(Vertex(-sqrt(3), -1, 1));
+	Triangle->m_vertices.push_back(Vertex(0, 2, 1));
+	Triangle->m_indices.push_back(0);
+	Triangle->m_indices.push_back(1);
+	Triangle->m_indices.push_back(2);
+
+	Triangle->m_vertices.push_back(Vertex(sqrt(3), -1, -1));
+	Triangle->m_vertices.push_back(Vertex(-sqrt(3), -1, -1));
+	Triangle->m_vertices.push_back(Vertex(0, 2, -1));
+	Triangle->m_indices.push_back(3);
+	Triangle->m_indices.push_back(4);
+	Triangle->m_indices.push_back(5);
+	return Triangle;
+}
+
 std::vector<Vertex>& Mesh::GetVertices()
 {
 	return m_vertices;
