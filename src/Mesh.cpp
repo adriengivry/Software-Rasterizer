@@ -305,8 +305,8 @@ Mesh* Mesh::CreateTriangle()
 	Triangle->m_vertices.push_back(Vertex(3, 3, 0));
 	Triangle->m_vertices.push_back(Vertex(-2, 2, 0));
 	Triangle->m_indices.push_back(0);
-	Triangle->m_indices.push_back(1);
 	Triangle->m_indices.push_back(2);
+	Triangle->m_indices.push_back(1);
 	return Triangle;
 }
 

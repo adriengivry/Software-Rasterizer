@@ -109,7 +109,7 @@ void Application::RenderScene()
 
 	const Mat4 matrix3 =
 		Mat4::CreateTranslation(m_sharedContext.appInfos.cameraParams.xOffset, 0, 0).CreateInverse() *
-		Mat4::CreateTranslation(0, 0, -6 + m_sharedContext.appInfos.cameraParams.antialiasingOffset);
+		Mat4::CreateTranslation(0, 0, 0 + m_sharedContext.appInfos.cameraParams.antialiasingOffset);
 
 	if (m_sharedContext.appInfos.selectedVersion < 5)
 	{
@@ -217,7 +217,7 @@ void Application::UpdateCamera()
 	// Prevent zooming or de-zooming too much
 	if (m_sharedContext.appInfos.cameraParams.zoomOffset >= -3) m_sharedContext.appInfos.cameraParams.zoomOffset = -3;
 	if (m_sharedContext.appInfos.cameraParams.zoomOffset <= -40) m_sharedContext.appInfos.cameraParams.zoomOffset = -40;
-	if (m_sharedContext.appInfos.cameraParams.antialiasingOffset >= 1) m_sharedContext.appInfos.cameraParams.antialiasingOffset = 1;
+	if (m_sharedContext.appInfos.cameraParams.antialiasingOffset >= 0) m_sharedContext.appInfos.cameraParams.antialiasingOffset = 0;
 	if (m_sharedContext.appInfos.cameraParams.antialiasingOffset <= -15) m_sharedContext.appInfos.cameraParams.zoomOffset = -15;
 }
 
