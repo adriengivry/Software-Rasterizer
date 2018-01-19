@@ -1,22 +1,28 @@
 #include "../include/Scene.h"
 #include "SharedContext.h"
+#include <string>
+#include <experimental/filesystem>
+
+namespace fs = std::experimental::filesystem;
 
 Scene::Scene()
 {
-	textures.insert(std::pair<std::string, Image*>("BOX", new Image("../assets/box.png")));
-	textures.insert(std::pair<std::string, Image*>("BIRD", new Image("../assets/bird.png")));
-	textures.insert(std::pair<std::string, Image*>("ROCK", new Image("../assets/rock.png")));
-	textures.insert(std::pair<std::string, Image*>("WATER", new Image("../assets/water.png")));
-	textures.insert(std::pair<std::string, Image*>("EARTH", new Image("../assets/earth.png")));
-	textures.insert(std::pair<std::string, Image*>("BRICK", new Image("../assets/brick.png")));
-	textures.insert(std::pair<std::string, Image*>("REALISTIC_BRICK", new Image("../assets/realistic_brick.png")));
-	textures.insert(std::pair<std::string, Image*>("DIRT", new Image("../assets/dirt.png")));
+	std::string path = "../assets/textures/cube";
+	for (auto & p : fs::directory_iterator(path))
+		cubeTextures.push_back(new Image(p.path().string()));
+
+	path = "../assets/textures/sphere";
+	for (auto & p : fs::directory_iterator(path))
+		sphereTextures.push_back(new Image(p.path().string()));
 }
 
 Scene::~Scene()
 {
-	for (auto pair : textures)
-		delete pair.second;
+	for (auto texture : cubeTextures)
+		delete texture;
+
+	for (auto texture : sphereTextures)
+		delete texture;
 
 	ClearScene();
 }
@@ -97,12 +103,12 @@ void Scene::InitEntities(uint8_t p_rasterizerVersion, uint8_t p_meshMode)
 		if (p_meshMode == CUBE)
 		{
 			entity->SetMesh(*meshes["CUBE_WITH_TEXTURE"]);
-			entity->GetMesh()->SetImage(textures["ROCK"]);
+			entity->GetMesh()->SetImage(cubeTextures[0]);
 		}
 		else if (p_meshMode == SPHERE)
 		{
 			entity->SetMesh(*meshes["SPHERE"]);
-			entity->GetMesh()->SetImage(textures["ROCK"]);
+			entity->GetMesh()->SetImage(sphereTextures[0]);
 		}
 
 		
@@ -112,7 +118,7 @@ void Scene::InitEntities(uint8_t p_rasterizerVersion, uint8_t p_meshMode)
 	{
 		Entity* entity = new Entity();
 		entity->SetMesh(*meshes["CUBE_WITH_TEXTURE"]);
-		entity->GetMesh()->SetImage(textures["BOX"]);
+		entity->GetMesh()->SetImage(cubeTextures[0]);
 		entity->SetAlpha(1.f);
 		entities.push_back(entity);
 
@@ -121,12 +127,12 @@ void Scene::InitEntities(uint8_t p_rasterizerVersion, uint8_t p_meshMode)
 		if (p_meshMode == CUBE)
 		{
 			entity2->SetMesh(*meshes["CUBE_WITH_TEXTURE"]);
-			entity2->GetMesh()->SetImage(textures["ROCK"]);
+			entity2->GetMesh()->SetImage(cubeTextures[0]);
 		}
 		else if (p_meshMode == SPHERE)
 		{
 			entity2->SetMesh(*meshes["SPHERE"]);
-			entity2->GetMesh()->SetImage(textures["ROCK"]);
+			entity2->GetMesh()->SetImage(sphereTextures[0]);
 		}
 
 		

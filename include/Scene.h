@@ -15,5 +15,6 @@ struct Scene
 	std::map<std::string, Mesh*> meshes;
 	std::vector<Entity*> entities;
 	std::vector<Light*> lights;
-	std::map<std::string, Image*> textures;
+	std::vector<Image*> cubeTextures;
+	std::vector<Image*> sphereTextures;
 };

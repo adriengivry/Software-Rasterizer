@@ -17,8 +17,8 @@ UserInterface::~UserInterface()
 
 void UserInterface::Setup()
 {
-	m_font = TTF_OpenFont("../assets/arial.ttf", 16);
-	m_smallFont = TTF_OpenFont("../assets/arial.ttf", 12);
+	m_font = TTF_OpenFont("../assets/fonts/arial.ttf", 16);
+	m_smallFont = TTF_OpenFont("../assets/fonts/arial.ttf", 12);
 
 	m_labelsVersions[0] = "RASTERIZER FEATURES";
 	m_labelsVersions[1] = "[1] Z-Buffer";

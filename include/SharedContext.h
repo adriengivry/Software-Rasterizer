@@ -72,7 +72,8 @@ struct MeshParams
 	float green;
 	float blue;
 	float transparency;
-	std::string imageID = "ROCK";
+	uint8_t cubeImageID = 0;
+	uint8_t sphereImageID = 0;
 
 	MeshParams() { Reset(); }
 

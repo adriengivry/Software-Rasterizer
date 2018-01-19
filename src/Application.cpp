@@ -355,10 +355,14 @@ void Application::UpdateMeshColor()
 
 void Application::UpdateMeshTexture() const
 {
-	if (m_sharedContext.appInfos.selectedVersion == 5)
-		m_sharedContext.scene->entities[0]->GetMesh()->SetImage(m_sharedContext.scene->textures[m_sharedContext.appInfos.meshParams.imageID]);
-	else if (m_sharedContext.appInfos.selectedVersion == 6)
-		m_sharedContext.scene->entities[1]->GetMesh()->SetImage(m_sharedContext.scene->textures[m_sharedContext.appInfos.meshParams.imageID]);
+	uint8_t entityIDToBindTheTextureOn = 0;
+	if (m_sharedContext.appInfos.selectedVersion == 6)
+		entityIDToBindTheTextureOn = 1;
+
+	const uint8_t& imageID = m_sharedContext.appInfos.meshMode == CUBE ? m_sharedContext.appInfos.meshParams.cubeImageID : m_sharedContext.appInfos.meshParams.sphereImageID;
+	std::vector<Image*>& textureContainer = m_sharedContext.appInfos.meshMode == CUBE ? m_sharedContext.scene->cubeTextures : m_sharedContext.scene->sphereTextures;
+
+	m_sharedContext.scene->entities[entityIDToBindTheTextureOn]->GetMesh()->SetImage(textureContainer[imageID]);
 }
 
 SharedContext& Application::GetContext()

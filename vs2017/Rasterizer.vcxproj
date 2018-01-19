@@ -157,6 +157,7 @@ copy /Y "$(ProjectDir)..\dependencies\SDL2_image\lib\32bits\*.dll" "$(ProjectDir
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>$(ProjectDir)..\dependencies\SDL2\include;$(ProjectDir)..\dependencies\SDL2_ttf\include;$(ProjectDir)..\dependencies\SDL2_image\include</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>$(ProjectDir)..\dependencies\SDL2\lib\64bits;$(ProjectDir)..\dependencies\SDL2_ttf\lib\64bits;$(ProjectDir)..\dependencies\SDL2_image\lib\64bits</AdditionalLibraryDirectories>
@@ -205,6 +206,7 @@ copy /Y "$(ProjectDir)..\dependencies\SDL2_image\lib\32bits\*.dll" "$(ProjectDir
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>$(ProjectDir)..\dependencies\SDL2\include;$(ProjectDir)..\dependencies\SDL2_ttf\include;$(ProjectDir)..\dependencies\SDL2_image\include</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
