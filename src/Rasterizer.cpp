@@ -61,7 +61,7 @@ void Rasterizer::RenderSceneBlinnPhong(Scene * p_pScene)
 		const Mat4 projection = Mat4::CreatePerspective(60, float(m_rtexture.GetWidth()) / float(m_rtexture.GetHeight()), 0.1f, 100.0f) * normalMatrix;
 		Mat4 normalMatrixTrans = normalMatrix.CreateInverse();
 		normalMatrixTrans = normalMatrixTrans.CreateTranspose();
-		for (uint8_t i = 0; i < p_pScene->entities[entityID]->GetMesh()->GetIndices().size() - 2; i += 3)
+		for (int i = 0; i < p_pScene->entities[entityID]->GetMesh()->GetIndices().size() - 2; i += 3)
 		{
 			Vertex v0 = (p_pScene->entities[entityID]->GetMesh()->GetVertices()[p_pScene->entities[entityID]->GetMesh()->GetIndices()[i]]);
 			Vertex v1 = (p_pScene->entities[entityID]->GetMesh()->GetVertices()[p_pScene->entities[entityID]->GetMesh()->GetIndices()[i + 1]]);
@@ -151,7 +151,7 @@ void Rasterizer::RenderAlphaBlending(Scene* p_pScene)
 	{
 		const Mat4 ModelProjection = Mat4::CreatePerspective(60, float(m_rtexture.GetWidth()) / float(m_rtexture.GetHeight()), 0.1f, 100.0f) * p_pScene->entities[entityID]->GetMatrix();
 
-		for (uint16_t j = 0; j < p_pScene->entities[entityID]->GetMesh()->GetIndices().size() - 2; j += 3)
+		for (int j = 0; j < p_pScene->entities[entityID]->GetMesh()->GetIndices().size() - 2; j += 3)
 		{
 			Vertex v0 = (p_pScene->entities[entityID]->GetMesh()->GetVertices()[p_pScene->entities[entityID]->GetMesh()->GetIndices()[j]]);
 			Vertex v1 = (p_pScene->entities[entityID]->GetMesh()->GetVertices()[p_pScene->entities[entityID]->GetMesh()->GetIndices()[j + 1]]);
@@ -857,7 +857,7 @@ Color Rasterizer::BlinnPhongColor(Vec3& p_position, Vec3& p_normal, Vertex& p_li
 		halfDir.Normalize();
 
 		const float specAngle = std::max(halfDir.dot(p_normal), 0.0f);
-		specular = pow(specAngle, 20.0);
+		specular = powf(specAngle, 40.0);
 	}
 
 	// TODO: Put ambiant, diff and spec values in the appInfos and add the possibility to change it "in-game"

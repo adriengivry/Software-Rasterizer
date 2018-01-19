@@ -40,21 +40,21 @@ void Scene::InitMeshes(const uint8_t p_rasterizerVersion, uint8_t p_meshMode)
 		if (p_meshMode == CUBE)
 			meshes.insert(std::pair<std::string, Mesh*>("CUBE", Mesh::CreateCube()));
 		else if (p_meshMode == SPHERE)
-			meshes.insert(std::pair<std::string, Mesh*>("SPHERE", Mesh::CreateSphere(20, 20)));
+			meshes.insert(std::pair<std::string, Mesh*>("SPHERE", Mesh::CreateSphere(40, 40)));
 	}
 	else if (p_rasterizerVersion == 3)
 	{
 		if (p_meshMode == CUBE)
 			meshes.insert(std::pair<std::string, Mesh*>("CUBE", Mesh::CreateCube()));
 		else if (p_meshMode == SPHERE)
-			meshes.insert(std::pair<std::string, Mesh*>("SPHERE", Mesh::CreateSphere(6, 6)));
+			meshes.insert(std::pair<std::string, Mesh*>("SPHERE", Mesh::CreateSphere(40, 40)));
 	}
 	else if (p_rasterizerVersion == 5)
 	{
 		if (p_meshMode == CUBE)
 			meshes.insert(std::pair<std::string, Mesh*>("CUBE_WITH_TEXTURE", Mesh::CreateTextureCube()));
 		else if (p_meshMode == SPHERE)
-			meshes.insert(std::pair<std::string, Mesh*>("SPHERE", Mesh::CreateSphere(20, 20)));
+			meshes.insert(std::pair<std::string, Mesh*>("SPHERE", Mesh::CreateSphere(40, 40)));
 	}
 	else if (p_rasterizerVersion == 6)
 	{
