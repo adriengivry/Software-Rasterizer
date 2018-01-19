@@ -14,17 +14,21 @@ Scene::Scene()
 	path = "../assets/textures/sphere";
 	for (auto & p : fs::directory_iterator(path))
 		sphereTextures.push_back(new Image(p.path().string()));
+
+	zeldaImage = new Image("../assets/textures/zelda/logo.png");
 }
 
 Scene::~Scene()
 {
+	ClearScene();
+
 	for (auto texture : cubeTextures)
 		delete texture;
 
 	for (auto texture : sphereTextures)
 		delete texture;
 
-	ClearScene();
+	delete zeldaImage;	
 }
 
 void Scene::ClearScene()
@@ -79,6 +83,7 @@ void Scene::InitMeshes(const uint8_t p_rasterizerVersion, uint8_t p_meshMode)
 	else if (p_rasterizerVersion == 8)
 	{
 		meshes.insert(std::pair<std::string, Mesh*>("TRIANGLE", Mesh::CreateZelda()));
+		meshes.insert(std::pair<std::string, Mesh*>("CUBE_WITH_TEXTURE", Mesh::CreateTextureCube()));
 	}
 }
 
@@ -155,6 +160,12 @@ void Scene::InitEntities(uint8_t p_rasterizerVersion, uint8_t p_meshMode)
 			triangle->SetColor(204, 153, 0);
 			entities.push_back(triangle);
 		}
+
+		Entity* rectangle = new Entity();
+		rectangle->SetMesh(*meshes["CUBE_WITH_TEXTURE"]);
+		rectangle->SetColor(0, 255, 0);
+		rectangle->GetMesh()->SetImage(zeldaImage);
+		entities.push_back(rectangle);
 	}
 }
 

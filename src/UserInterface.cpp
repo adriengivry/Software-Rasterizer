@@ -19,6 +19,7 @@ void UserInterface::Setup()
 {
 	m_font = TTF_OpenFont("../assets/fonts/arial.ttf", 16);
 	m_smallFont = TTF_OpenFont("../assets/fonts/arial.ttf", 12);
+	m_pixelFont = TTF_OpenFont("../assets/fonts/pixelart.ttf", 30);
 
 	m_labelsVersions[0] = "RASTERIZER FEATURES";
 	m_labelsVersions[1] = "[1] Z-Buffer";
@@ -51,6 +52,10 @@ void UserInterface::Draw()
 			DrawAntiAliasingProperties();
 			DrawCredits();
 		}
+	}
+	else
+	{
+		DrawZelda();
 	}
 }
 
@@ -370,10 +375,16 @@ void UserInterface::DrawKonamiCode()
 	DrawAt(currentCode, 500, 700, m_smallFont);
 }
 
+void UserInterface::DrawZelda()
+{
+	DrawAt("© 2017-2018 Hansdrien Inc.", 380, 700, m_pixelFont);
+}
+
 void UserInterface::Close()
 {
 	TTF_CloseFont(m_font);
 	TTF_CloseFont(m_smallFont);
+	TTF_CloseFont(m_pixelFont);
 }
 
 void UserInterface::SetTextSelectedColor()

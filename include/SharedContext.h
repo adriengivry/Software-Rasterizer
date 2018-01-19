@@ -168,9 +168,10 @@ struct KeyHistory
 
 struct Zelda
 {
-	inline const static float xMaxRotations = 4;
-	inline const static float yMaxRotations = 4;
-	inline const static uint8_t translationSpeed = 3;
+	inline const static float xMaxRotations = 3;
+	inline const static float yMaxRotations = 3;
+	inline const static uint8_t translationSpeed = 4;
+	inline const static uint8_t titleTranslationSpeed = 13;
 	inline const static uint8_t rotationSpeed = 180;
 	inline const static float mat4dest_x = -1.73f;
 	inline const static float mat4dest_y = -1.5f;
@@ -182,14 +183,21 @@ struct Zelda
 	inline const static float mat6dest_y = 1.5f;
 	inline const static float mat6dest_z = -10.f;
 
+	inline const static float mat7dest_x = 0.f;
+	inline const static float mat7dest_y = 0;
+	inline const static float mat7dest_z = -8;
+
 	Zelda() { Reset(); }
 
 	float mat4_x_rotation, mat4_y_rotation, mat4_x, mat4_y, mat4_z;
 	float mat5_x_rotation, mat5_y_rotation, mat5_x, mat5_y, mat5_z;
 	float mat6_x_rotation, mat6_y_rotation, mat6_x, mat6_y, mat6_z;
+	float mat7_x, mat7_y, mat7_z;
+	float timer;
 
 	void Reset()
 	{
+		timer = 0.f;
 		const uint8_t translationOffset = 15;
 		mat4_x_rotation = 0;
 		mat4_y_rotation = 0;
@@ -208,6 +216,10 @@ struct Zelda
 		mat6_x = 0.f;
 		mat6_y = 1.5f + translationOffset;
 		mat6_z = -10.f - translationOffset;
+
+		mat7_x = 0;
+		mat7_y = 0;
+		mat7_z = -100;
 	}
 };
 

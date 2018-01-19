@@ -322,20 +322,33 @@ Mesh* Mesh::CreateZelda()
 	Triangle->m_indices.push_back(0);
 	Triangle->m_indices.push_back(1);
 	Triangle->m_indices.push_back(2);
+
 	Triangle->m_indices.push_back(5);
 	Triangle->m_indices.push_back(4);
 	Triangle->m_indices.push_back(3);
+
 	Triangle->m_indices.push_back(2);
 	Triangle->m_indices.push_back(5);
 	Triangle->m_indices.push_back(0);
+
 	Triangle->m_indices.push_back(5);
 	Triangle->m_indices.push_back(3);
 	Triangle->m_indices.push_back(0);
+
 	Triangle->m_indices.push_back(2);
 	Triangle->m_indices.push_back(1);
 	Triangle->m_indices.push_back(5);
+
 	Triangle->m_indices.push_back(5);
 	Triangle->m_indices.push_back(1);
+	Triangle->m_indices.push_back(4);
+
+	Triangle->m_indices.push_back(0);
+	Triangle->m_indices.push_back(4);
+	Triangle->m_indices.push_back(1);
+
+	Triangle->m_indices.push_back(0);
+	Triangle->m_indices.push_back(5);
 	Triangle->m_indices.push_back(4);
 
 	return Triangle;

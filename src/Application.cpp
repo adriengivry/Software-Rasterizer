@@ -328,15 +328,19 @@ void Application::UpdateAlphaBlendingAnimation()
 void Application::UpdateZeldaAnimation()
 {
 	Zelda& zelda = m_sharedContext.appInfos.zelda;
+	zelda.timer += m_sharedContext.appInfos.deltaTime;
+
+	const int8_t coeff = zelda.timer >= 8.f ? -50 : 1;
 
 	zelda.mat4_x += Zelda::translationSpeed * m_sharedContext.appInfos.deltaTime;
 	zelda.mat4_y += Zelda::translationSpeed * m_sharedContext.appInfos.deltaTime;
-	zelda.mat4_z += Zelda::translationSpeed * m_sharedContext.appInfos.deltaTime;
+	zelda.mat4_z += Zelda::translationSpeed * m_sharedContext.appInfos.deltaTime * coeff;
 	zelda.mat5_x -= Zelda::translationSpeed * m_sharedContext.appInfos.deltaTime;
 	zelda.mat5_y += Zelda::translationSpeed * m_sharedContext.appInfos.deltaTime;
-	zelda.mat5_z += Zelda::translationSpeed * m_sharedContext.appInfos.deltaTime;
+	zelda.mat5_z += Zelda::translationSpeed * m_sharedContext.appInfos.deltaTime * coeff;
 	zelda.mat6_y -= Zelda::translationSpeed * m_sharedContext.appInfos.deltaTime;
-	zelda.mat6_z += Zelda::translationSpeed * m_sharedContext.appInfos.deltaTime;
+	zelda.mat6_z += Zelda::translationSpeed * m_sharedContext.appInfos.deltaTime * coeff;
+	zelda.mat7_z += Zelda::titleTranslationSpeed * m_sharedContext.appInfos.deltaTime;
 
 	zelda.mat4_x_rotation += Zelda::rotationSpeed * m_sharedContext.appInfos.deltaTime;
 	zelda.mat4_y_rotation += Zelda::rotationSpeed * m_sharedContext.appInfos.deltaTime;
@@ -353,6 +357,13 @@ void Application::UpdateZeldaAnimation()
 	if (zelda.mat5_z > Zelda::mat5dest_z) zelda.mat5_z = Zelda::mat5dest_z;
 	if (zelda.mat6_y < Zelda::mat6dest_y) zelda.mat6_y = Zelda::mat6dest_y;
 	if (zelda.mat6_z > Zelda::mat6dest_z) zelda.mat6_z = Zelda::mat6dest_z;
+	if (zelda.mat7_z > Zelda::mat7dest_z) zelda.mat7_z = Zelda::mat7dest_z;
+
+	if (zelda.timer >= 10.f)
+	{
+		m_sharedContext.appInfos.selectedVersion = 6;
+		m_sharedContext.RefreshScene();
+	}
 
 	if (zelda.mat4_x_rotation > Zelda::xMaxRotations * 360) zelda.mat4_x_rotation = Zelda::xMaxRotations * 360;
 	if (zelda.mat4_y_rotation > Zelda::yMaxRotations * 360) zelda.mat4_y_rotation = Zelda::yMaxRotations * 360;
@@ -373,9 +384,15 @@ void Application::UpdateZeldaAnimation()
 		Mat4::CreateTranslation(zelda.mat6_x, zelda.mat6_y, zelda.mat6_z) *
 		Mat4::CreateRotation(zelda.mat6_x_rotation, zelda.mat6_y_rotation, 0);
 
+	const Mat4 matrix7 =
+		Mat4::CreateTranslation(0, 0, zelda.mat7_z) *
+		Mat4::CreateRotation(0, 0, 180) *
+		Mat4::CreateScale(11, 7, 0.2);
+
 	m_scene.entities[0]->SetMatrix(matrix4);
 	m_scene.entities[1]->SetMatrix(matrix5);
 	m_scene.entities[2]->SetMatrix(matrix6);
+	m_scene.entities[3]->SetMatrix(matrix7);
 }
 
 void Application::UpdatePolygonCount()

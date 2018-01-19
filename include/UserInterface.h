@@ -22,6 +22,7 @@ public:
 	void DrawHelp();
 	void DrawCredits();
 	void DrawKonamiCode();
+	void DrawZelda();
 	void Close() override;
 
 	void SetTextSelectedColor();
@@ -33,6 +34,7 @@ public:
 private:
 	TTF_Font* m_font;
 	TTF_Font* m_smallFont;
+	TTF_Font* m_pixelFont;
 	Color m_textColor;
 	SharedContext& m_sharedContext;
 

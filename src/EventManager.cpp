@@ -41,6 +41,8 @@ void EventManager::KeyInput(const SDL_Keysym& p_key, const bool p_state) const
 		if (m_sharedContext.appInfos.keyHistory.IsKonamiCode())
 		{
 			m_sharedContext.appInfos.selectedVersion = 8;
+			m_sharedContext.appInfos.zelda.Reset();
+			m_sharedContext.appInfos.keyHistory.Reset();
 			m_sharedContext.RefreshScene();
 		}
 	}

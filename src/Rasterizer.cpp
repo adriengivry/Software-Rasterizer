@@ -197,7 +197,7 @@ void Rasterizer::RenderAntialiasing(Scene* p_pScene)
 void Rasterizer::RenderZelda(Scene* p_pScene)
 {
 	m_zBufferOn = true;
-	for (uint8_t entityID = 0; entityID < m_sharedContext.scene->entities.size(); ++entityID)
+	for (int8_t entityID = 3; entityID > -1; --entityID)
 	{
 		const Mat4 normalMatrix = p_pScene->entities[entityID]->GetMatrix();
 		const Mat4 modelProjection = Mat4::CreatePerspective(60, float(m_rtexture.GetWidth()) / float(m_rtexture.GetHeight()), 0.1f, 100.0f) * normalMatrix;
@@ -209,7 +209,11 @@ void Rasterizer::RenderZelda(Scene* p_pScene)
 			v0.VertexTransform(modelProjection);
 			v1.VertexTransform(modelProjection);
 			v2.VertexTransform(modelProjection);
-			DrawTriangleWire(v0, v1, v2);
+
+			if (entityID == 3) 
+				DrawTriangleTexture(v0, v1, v2, p_pScene->entities[entityID]->GetMesh()->GetImage());
+			else
+				DrawTriangle(v0, v1, v2);
 		}
 	}
 }
