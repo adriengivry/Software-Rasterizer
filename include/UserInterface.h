@@ -21,6 +21,7 @@ public:
 	void DrawAntiAliasingProperties();
 	void DrawHelp();
 	void DrawCredits();
+	void DrawKonamiCode();
 	void Close() override;
 
 	void SetTextSelectedColor();

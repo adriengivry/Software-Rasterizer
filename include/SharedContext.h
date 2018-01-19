@@ -108,6 +108,88 @@ struct CameraParams
 	}
 };
 
+struct KeyHistory
+{
+	SDL_Keycode keys[10];
+	uint8_t buffer = 0;
+	SDL_Keycode code[10] = {
+		SDLK_z,
+		SDLK_e,
+		SDLK_l,
+		SDLK_d,
+		SDLK_a,
+		SDLK_s,
+		SDLK_u,
+		SDLK_c,
+		SDLK_k,
+		SDLK_s
+	};
+
+	KeyHistory() { Reset(); }
+
+	void AddKey(const SDL_Keycode key)
+	{
+		keys[buffer++] = key;
+		if (buffer == 10)
+			buffer = 0;
+	}
+
+	void Reset()
+	{
+		for (uint8_t i = 0; i < 10; ++i)
+			keys[i] = 63;
+
+		buffer = 0;
+	}
+
+	bool IsKonamiCode()
+	{
+		bool gg = false;
+		uint8_t goodKeys = 0;
+		uint8_t indice = 0;
+
+		for (uint8_t j = 0; j < 10; ++j)
+		{
+			goodKeys = 0;
+			for (uint8_t i = 0; i < 10; ++i)
+			{
+				indice = i + j;
+				while (indice > 9) indice -= 10;
+
+				if (keys[indice] == code[i])
+					++goodKeys;
+			}
+			if (goodKeys == 10) gg = true;
+		}
+
+		return gg;
+	}
+};
+
+struct Zelda
+{
+	float mat4_x = -1.73 - 20;
+	float mat4_y = -1.5f - 20;
+	float mat4_z = -10.f - 20;
+	inline const static float mat4dest_x = -1.73f;
+	inline const static float mat4dest_y = -1.5f;
+	inline const static float mat4dest_z = -10.f;
+
+	float mat5_x = 1.73f + 20;
+	float mat5_y = -1.5f - 20;
+	float mat5_z = -10.f - 20;
+	inline const static float mat5dest_x = 1.73f;
+	inline const static float mat5dest_y = -1.5f;
+	inline const static float mat5dest_z = -10.f;
+
+	float mat6_x = 0.f;
+	float mat6_y = 1.5f + 20;
+	float mat6_z = -10.f - 20;
+	inline const static float mat6dest_x = 0.f;
+	inline const static float mat6dest_y = 1.5f;
+	inline const static float mat6dest_z = -10.f;
+};
+
 struct ApplicationInfos
 {
 	bool isRunning = true;
@@ -130,11 +212,14 @@ struct ApplicationInfos
 	uint8_t selectedAA = NOAA;
 	uint16_t polygons = 0;
 	uint8_t meshMode = CUBE;
+	KeyHistory keyHistory;
+	Zelda zelda;
 
 	void Reset()
 	{
 		selectedLight = AMBIANT;
 		selectedAA = NOAA;
+		keyHistory.Reset();
 		lightParams.Reset();
 		meshParams.Reset();
 		cameraParams.Reset();

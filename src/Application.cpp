@@ -113,17 +113,45 @@ void Application::RenderScene()
 		Mat4::CreateTranslation(0, 0, m_sharedContext.appInfos.cameraParams.zoomOffset) *
 		Mat4::CreateRotation(0, 0, m_sharedContext.appInfos.cameraParams.zRotationOffset);
 
+	Zelda& zelda = m_sharedContext.appInfos.zelda;
+
+	if (m_sharedContext.appInfos.selectedVersion == 8)
+	{
+		zelda.mat4_x += 1 * m_sharedContext.appInfos.deltaTime;
+		zelda.mat4_y += 1 * m_sharedContext.appInfos.deltaTime;
+		zelda.mat4_z += 1 * m_sharedContext.appInfos.deltaTime;
+
+		zelda.mat5_x += -1 * m_sharedContext.appInfos.deltaTime;
+		zelda.mat5_y += 1 * m_sharedContext.appInfos.deltaTime;
+		zelda.mat5_z += 1 * m_sharedContext.appInfos.deltaTime;
+
+		zelda.mat6_x += 0 * m_sharedContext.appInfos.deltaTime;
+		zelda.mat6_y += -1 * m_sharedContext.appInfos.deltaTime;
+		zelda.mat6_z += 1 * m_sharedContext.appInfos.deltaTime;
+
+		if (zelda.mat4_x > Zelda::mat4dest_x) zelda.mat4_x = Zelda::mat4dest_x;
+		if (zelda.mat4_y > Zelda::mat4dest_y) zelda.mat4_y = Zelda::mat4dest_y;
+		if (zelda.mat4_z > Zelda::mat4dest_z) zelda.mat4_z = Zelda::mat4dest_z;
+
+		if (zelda.mat5_x < Zelda::mat5dest_x) zelda.mat5_x = Zelda::mat5dest_x;
+		if (zelda.mat5_y > Zelda::mat5dest_y) zelda.mat5_y = Zelda::mat5dest_y;
+		if (zelda.mat5_z > Zelda::mat5dest_z) zelda.mat5_z = Zelda::mat5dest_z;
+
+		if (zelda.mat6_y < Zelda::mat6dest_y) zelda.mat6_y = Zelda::mat6dest_y;
+		if (zelda.mat6_z > Zelda::mat6dest_z) zelda.mat6_z = Zelda::mat6dest_z;
+	}
+
 	const Mat4 matrix4 =
-		Mat4::CreateTranslation(-sqrt(3), -1.5, -10) *
-		Mat4::CreateRotation(0, m_sharedContext.appInfos.secondCubeRotationOffset, 0);
+		Mat4::CreateTranslation(zelda.mat4_x, zelda.mat4_y, zelda.mat4_z) *
+		Mat4::CreateRotation(0, 0, 0);
 
 	const Mat4 matrix5 =
-		Mat4::CreateTranslation(sqrt(3), -1.5, -10) *
-		Mat4::CreateRotation(0, m_sharedContext.appInfos.secondCubeRotationOffset, 0);
+		Mat4::CreateTranslation(zelda.mat5_x, zelda.mat5_y, zelda.mat5_z) *
+		Mat4::CreateRotation(0, 0, 0);
 
 	const Mat4 matrix6 =
-		Mat4::CreateTranslation(0, 1.5, -10) *
-		Mat4::CreateRotation(0, m_sharedContext.appInfos.secondCubeRotationOffset, 0);
+		Mat4::CreateTranslation(zelda.mat6_x, zelda.mat6_y, zelda.mat6_z) *
+		Mat4::CreateRotation(0, 0, 0);
 
 	if (m_sharedContext.appInfos.selectedVersion < 5)
 	{

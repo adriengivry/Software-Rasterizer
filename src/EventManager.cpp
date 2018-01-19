@@ -35,6 +35,16 @@ void EventManager::Update()
 
 void EventManager::KeyInput(const SDL_Keysym& p_key, const bool p_state) const
 {
+	if (!p_state)
+	{
+		m_sharedContext.appInfos.keyHistory.AddKey(p_key.sym);
+		if (m_sharedContext.appInfos.keyHistory.IsKonamiCode())
+		{
+			m_sharedContext.appInfos.selectedVersion = 8;
+			m_sharedContext.RefreshScene();
+		}
+	}
+
 	switch (p_key.sym)
 	{
 	case SDLK_w:
@@ -106,10 +116,6 @@ void EventManager::KeyInput(const SDL_Keysym& p_key, const bool p_state) const
 	case SDLK_KP_7:
 	case SDLK_7:
 		m_sharedContext.appInfos.selectedVersion = 7;
-		m_sharedContext.RefreshScene();
-		break;
-	case SDLK_z:
-		m_sharedContext.appInfos.selectedVersion = 8;
 		m_sharedContext.RefreshScene();
 		break;
 	case SDLK_KP_8:

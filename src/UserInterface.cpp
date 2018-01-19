@@ -36,20 +36,22 @@ void UserInterface::Update()
 
 void UserInterface::Draw()
 {
-	DrawFPS();
-	DrawHelp();
-
-	if (m_sharedContext.appInfos.showInterface)
+	if (m_sharedContext.appInfos.selectedVersion != 8)
 	{
-		DrawCameraParams();
-		DrawSceneInfo();
-		DrawVersionSelection();
-		DrawMeshProperties();
-		DrawLightProperties();
-		DrawAntiAliasingProperties();
-		DrawCredits();
+		DrawFPS();
+		DrawHelp();
+
+		if (m_sharedContext.appInfos.showInterface)
+		{
+			DrawCameraParams();
+			DrawSceneInfo();
+			DrawVersionSelection();
+			DrawMeshProperties();
+			DrawLightProperties();
+			DrawAntiAliasingProperties();
+			DrawCredits();
+		}
 	}
-		
 }
 
 void UserInterface::DrawFPS()
@@ -356,6 +358,16 @@ void UserInterface::DrawCredits()
 {
 	SetTextSelectedColor();
 	DrawAt("CPU Rasterizer student project by Hanseul SHIN & Adrien GIVRY", 350, 754, m_smallFont);
+}
+
+void UserInterface::DrawKonamiCode()
+{
+	std::string currentCode;
+	for (SDL_Keycode key : m_sharedContext.appInfos.keyHistory.keys)
+		currentCode.push_back(key);
+
+	SetTextSelectedColor();
+	DrawAt(currentCode, 500, 700, m_smallFont);
 }
 
 void UserInterface::Close()
