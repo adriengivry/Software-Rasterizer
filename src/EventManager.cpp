@@ -149,11 +149,21 @@ void EventManager::KeyInput(const SDL_Keysym& p_key, const bool p_state) const
 		break;
 	case SDLK_m:
 		m_sharedContext.actions.changeAAValue = p_state;
-		if (p_state && m_sharedContext.appInfos.selectedVersion == 7)
+		if (p_state)
 		{
-			++m_sharedContext.appInfos.selectedAA;
-			if (m_sharedContext.appInfos.selectedAA > 4)
-				m_sharedContext.appInfos.selectedAA = 0;
+			if (m_sharedContext.appInfos.selectedVersion == 7)
+			{
+				++m_sharedContext.appInfos.selectedAA;
+				if (m_sharedContext.appInfos.selectedAA > 4)
+					m_sharedContext.appInfos.selectedAA = 0;
+			}
+			else if (m_sharedContext.appInfos.selectedVersion >= 1 && m_sharedContext.appInfos.selectedVersion <= 3)
+			{
+				if (m_sharedContext.appInfos.selectedAA == 3)
+					m_sharedContext.appInfos.selectedAA = 0;
+				else
+					m_sharedContext.appInfos.selectedAA = 3;
+			}
 		}
 		break;
 	case SDLK_ESCAPE:

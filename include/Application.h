@@ -19,6 +19,7 @@ public:
 	void UpdateLights();
 	void UpdateMeshColor();
 	void UpdateMeshTexture() const;
+	void UpdateAASelection();
 
 	SharedContext& GetContext();
 private:

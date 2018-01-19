@@ -39,6 +39,7 @@ void Application::Update()
 {
 	m_sharedContext.appInfos.lastTime = m_sharedContext.appInfos.currentTime;
 
+	UpdateAASelection();
 	UpdateMeshTexture();
 	UpdateMeshColor();
 	UpdateCamera();
@@ -363,6 +364,13 @@ void Application::UpdateMeshTexture() const
 	std::vector<Image*>& textureContainer = m_sharedContext.appInfos.meshMode == CUBE ? m_sharedContext.scene->cubeTextures : m_sharedContext.scene->sphereTextures;
 
 	m_sharedContext.scene->entities[entityIDToBindTheTextureOn]->GetMesh()->SetImage(textureContainer[imageID]);
+}
+
+void Application::UpdateAASelection()
+{
+	if (m_sharedContext.appInfos.selectedVersion >= 1 && m_sharedContext.appInfos.selectedVersion <= 3)
+		if (m_sharedContext.appInfos.selectedAA != 0 && m_sharedContext.appInfos.selectedAA != 3)
+			m_sharedContext.appInfos.selectedAA = 3;
 }
 
 SharedContext& Application::GetContext()
