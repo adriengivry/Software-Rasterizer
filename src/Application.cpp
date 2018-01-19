@@ -19,6 +19,8 @@ Application::~Application()
 
 void Application::Setup()
 {
+	m_soundEngine = irrklang::createIrrKlangDevice();
+	m_sharedContext.soundEngine = m_soundEngine;
 	m_sharedContext.window = &m_window;
 	m_sharedContext.scene = &m_scene;
 	Init();
@@ -28,6 +30,8 @@ void Application::Close()
 {
 	delete m_eventManager;
 	delete m_renderTexture;
+
+	m_soundEngine->drop();
 
 	/*
 	* TODO: WEIRD MEMORY ERROR NEED TO BE CORRECTED (Memory leak if this part is commented)
@@ -359,7 +363,7 @@ void Application::UpdateZeldaAnimation()
 	if (zelda.mat6_z > Zelda::mat6dest_z) zelda.mat6_z = Zelda::mat6dest_z;
 	if (zelda.mat7_z > Zelda::mat7dest_z) zelda.mat7_z = Zelda::mat7dest_z;
 
-	if (zelda.timer >= 10.f)
+	if (zelda.timer >= 18.f)
 	{
 		m_sharedContext.appInfos.selectedVersion = 6;
 		m_sharedContext.RefreshScene();

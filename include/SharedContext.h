@@ -2,6 +2,7 @@
 #include <cstdint>
 #include "Scene.h"
 #include "Window.h"
+#include "irrKlang.h"
 #include <atomic>
 
 enum LIGHTS
@@ -48,6 +49,30 @@ struct Actions
 	bool addTransparency;
 	bool changeAAValue;
 	bool showHelp;
+
+	void Reset()
+	{
+		moveLeft = false;
+		moveRight = false;
+		moveUp = false;
+		moveDown = false;
+		zoomIn = false;
+		zoomOut = false;
+		xTurnClockwise = false;
+		xTurnCounterClockwise = false;
+		yTurnClockwise = false;
+		yTurnCounterClockwise = false;
+		zTurnClockwise = false;
+		zTurnCounterClockwise = false;
+		increaseLight = false;
+		decreaseLight = false;
+		addRed = false;
+		addGreen = false;
+		addBlue = false;
+		addTransparency = false;
+		changeAAValue = false;
+		showHelp = false;
+	}
 };
 
 struct LightParams
@@ -129,6 +154,9 @@ struct KeyHistory
 
 	void AddKey(const SDL_Keycode key)
 	{
+		if (key == code[0])
+			Reset();
+
 		keys[buffer++] = key;
 		if (buffer == 10)
 			buffer = 0;
@@ -146,19 +174,12 @@ struct KeyHistory
 	{
 		bool gg = false;
 		uint8_t goodKeys = 0;
-		uint8_t indice = 0;
 
-		for (uint8_t j = 0; j < 10; ++j)
+		for (uint8_t i = 0; i < 10; ++i)
 		{
-			goodKeys = 0;
-			for (uint8_t i = 0; i < 10; ++i)
-			{
-				indice = i + j;
-				while (indice > 9) indice -= 10;
-
-				if (keys[indice] == code[i])
+			if (keys[i] == code[i])
 					++goodKeys;
-			}
+
 			if (goodKeys == 10) gg = true;
 		}
 
@@ -168,11 +189,11 @@ struct KeyHistory
 
 struct Zelda
 {
-	inline const static float xMaxRotations = 3;
-	inline const static float yMaxRotations = 3;
+	inline const static float xMaxRotations = 2;
+	inline const static float yMaxRotations = 2;
 	inline const static uint8_t translationSpeed = 4;
 	inline const static uint8_t titleTranslationSpeed = 13;
-	inline const static uint8_t rotationSpeed = 180;
+	inline const static uint8_t rotationSpeed = 120;
 	inline const static float mat4dest_x = -1.73f;
 	inline const static float mat4dest_y = -1.5f;
 	inline const static float mat4dest_z = -10.f;
@@ -263,6 +284,7 @@ struct SharedContext
 {
 	Scene* scene = nullptr;
 	Window* window = nullptr;
+	irrklang::ISoundEngine* soundEngine;
 
 	ApplicationInfos appInfos;
 	Actions actions;

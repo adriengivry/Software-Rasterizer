@@ -3,6 +3,7 @@
 #include "UserInterface.h"
 #include <numeric>
 #include "EventManager.h"
+#include "irrKlang.h"
 
 class Application : public IManager
 {
@@ -41,4 +42,5 @@ private:
 	Toolbox::Mat4 m_defaultCameraMatrix;
 	Toolbox::Mat4 m_antialiasingCameraMatrix;
 	Toolbox::Mat4 m_alphablendingAnimationMatrix;
+	irrklang::ISoundEngine* m_soundEngine;
 };
