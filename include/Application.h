@@ -15,11 +15,19 @@ public:
 	void Draw() const;
 	void Init();
 	void RenderScene();
+	void UpdateMatrices();
 	void UpdateCamera();
 	void UpdateLights();
 	void UpdateMeshColor();
 	void UpdateMeshTexture() const;
 	void UpdateAASelection();
+	void UpdateFPSCount();
+
+	void UpdateAntialiasingMatrix();
+	void UpdateAlphaBlendingAnimation();
+	void UpdateZeldaAnimation();
+
+	void UpdatePolygonCount();
 
 	SharedContext& GetContext();
 private:
@@ -30,4 +38,7 @@ private:
 	UserInterface* m_userInterface;
 	EventManager* m_eventManager;
 	Window m_window;
+	Toolbox::Mat4 m_defaultCameraMatrix;
+	Toolbox::Mat4 m_antialiasingCameraMatrix;
+	Toolbox::Mat4 m_alphablendingAnimationMatrix;
 };

@@ -168,26 +168,47 @@ struct KeyHistory
 
 struct Zelda
 {
-	float mat4_x = -1.73 - 20;
-	float mat4_y = -1.5f - 20;
-	float mat4_z = -10.f - 20;
+	inline const static float xMaxRotations = 4;
+	inline const static float yMaxRotations = 4;
+	inline const static uint8_t translationSpeed = 3;
+	inline const static uint8_t rotationSpeed = 180;
 	inline const static float mat4dest_x = -1.73f;
 	inline const static float mat4dest_y = -1.5f;
 	inline const static float mat4dest_z = -10.f;
-
-	float mat5_x = 1.73f + 20;
-	float mat5_y = -1.5f - 20;
-	float mat5_z = -10.f - 20;
 	inline const static float mat5dest_x = 1.73f;
 	inline const static float mat5dest_y = -1.5f;
 	inline const static float mat5dest_z = -10.f;
-
-	float mat6_x = 0.f;
-	float mat6_y = 1.5f + 20;
-	float mat6_z = -10.f - 20;
 	inline const static float mat6dest_x = 0.f;
 	inline const static float mat6dest_y = 1.5f;
 	inline const static float mat6dest_z = -10.f;
+
+	Zelda() { Reset(); }
+
+	float mat4_x_rotation, mat4_y_rotation, mat4_x, mat4_y, mat4_z;
+	float mat5_x_rotation, mat5_y_rotation, mat5_x, mat5_y, mat5_z;
+	float mat6_x_rotation, mat6_y_rotation, mat6_x, mat6_y, mat6_z;
+
+	void Reset()
+	{
+		const uint8_t translationOffset = 15;
+		mat4_x_rotation = 0;
+		mat4_y_rotation = 0;
+		mat4_x = -1.73 - translationOffset;
+		mat4_y = -1.5f - translationOffset;
+		mat4_z = -10.f - translationOffset;
+
+		mat5_x_rotation = 0;
+		mat5_y_rotation = 0;
+		mat5_x = 1.73f + translationOffset;
+		mat5_y = -1.5f - translationOffset;
+		mat5_z = -10.f - translationOffset;
+
+		mat6_x_rotation = 0;
+		mat6_y_rotation = 0;
+		mat6_x = 0.f;
+		mat6_y = 1.5f + translationOffset;
+		mat6_z = -10.f - translationOffset;
+	}
 };
 
 struct ApplicationInfos
