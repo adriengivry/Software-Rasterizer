@@ -313,43 +313,64 @@ Mesh* Mesh::CreateTriangle()
 Mesh* Mesh::CreateZelda()
 {
 	Mesh* Triangle = new Mesh();
-	Triangle->m_vertices.push_back(Vertex(sqrt(3), -1, 0.5));
-	Triangle->m_vertices.push_back(Vertex(-sqrt(3), -1, 0.5));
-	Triangle->m_vertices.push_back(Vertex(0, 2, 0.5));
-	Triangle->m_vertices.push_back(Vertex(sqrt(3), -1, -0.5));
-	Triangle->m_vertices.push_back(Vertex(-sqrt(3), -1, -0.5));
-	Triangle->m_vertices.push_back(Vertex(0, 2, -0.5));
+	Triangle->m_vertices.push_back(Vertex(sqrt(3), -1, 0.5)); // 0
+	Triangle->m_vertices.push_back(Vertex(-sqrt(3), -1, 0.5)); // 1
+	Triangle->m_vertices.push_back(Vertex(0, 2, 0.5)); // 2
+	Triangle->m_vertices.push_back(Vertex(sqrt(3), -1, -0.5)); // 3
+	Triangle->m_vertices.push_back(Vertex(-sqrt(3), -1, -0.5)); // 4
+	Triangle->m_vertices.push_back(Vertex(0, 2, -0.5)); // 5
+
+	Triangle->m_vertices.push_back(Vertex(sqrt(3), -1, 0.5)); // 6
+	Triangle->m_vertices.push_back(Vertex(-sqrt(3), -1, -0.5)); // 7
+	Triangle->m_vertices.push_back(Vertex(-sqrt(3), -1, 0.5)); // 8
+
+	Triangle->m_vertices.push_back(Vertex(sqrt(3), -1, -0.5)); // 9
+	Triangle->m_vertices.push_back(Vertex(-sqrt(3), -1, -0.5)); // 10
+	Triangle->m_vertices.push_back(Vertex(sqrt(3), -1, 0.5)); // 11
+
 	Triangle->m_indices.push_back(0);
 	Triangle->m_indices.push_back(1);
 	Triangle->m_indices.push_back(2);
 
-	Triangle->m_indices.push_back(5);
-	Triangle->m_indices.push_back(4);
 	Triangle->m_indices.push_back(3);
+	Triangle->m_indices.push_back(5);
+	Triangle->m_indices.push_back(4);
+
+	Triangle->m_indices.push_back(5);
+	Triangle->m_indices.push_back(1);
+	Triangle->m_indices.push_back(4);
 
 	Triangle->m_indices.push_back(2);
+	Triangle->m_indices.push_back(1);
 	Triangle->m_indices.push_back(5);
-	Triangle->m_indices.push_back(0);
 
 	Triangle->m_indices.push_back(5);
 	Triangle->m_indices.push_back(3);
 	Triangle->m_indices.push_back(0);
 
 	Triangle->m_indices.push_back(2);
-	Triangle->m_indices.push_back(1);
 	Triangle->m_indices.push_back(5);
+	Triangle->m_indices.push_back(0);
 
-	Triangle->m_indices.push_back(5);
-	Triangle->m_indices.push_back(1);
-	Triangle->m_indices.push_back(4);
+	Triangle->m_indices.push_back(6);
+	Triangle->m_indices.push_back(7);
+	Triangle->m_indices.push_back(8);
+
+	Triangle->m_indices.push_back(9);
+	Triangle->m_indices.push_back(10);
+	Triangle->m_indices.push_back(11);
+
+	Triangle->m_vertices[0].texCoordinate = Vec2(1, 1);
+	Triangle->m_vertices[1].texCoordinate = Vec2(0, 1);
+	Triangle->m_vertices[2].texCoordinate = Vec2(0.5, 0);
+
+	Triangle->m_vertices[3].texCoordinate = Vec2(1, 1);
+	Triangle->m_vertices[4].texCoordinate = Vec2(0, 1);
+	Triangle->m_vertices[5].texCoordinate = Vec2(0.5, 0);
 
 	Triangle->m_indices.push_back(0);
-	Triangle->m_indices.push_back(4);
 	Triangle->m_indices.push_back(1);
-
-	Triangle->m_indices.push_back(0);
-	Triangle->m_indices.push_back(5);
-	Triangle->m_indices.push_back(4);
+	Triangle->m_indices.push_back(2);
 
 	return Triangle;
 }

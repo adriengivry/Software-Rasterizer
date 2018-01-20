@@ -209,11 +209,7 @@ void Rasterizer::RenderZelda(Scene* p_pScene)
 			v0.VertexTransform(modelProjection);
 			v1.VertexTransform(modelProjection);
 			v2.VertexTransform(modelProjection);
-
-			if (entityID == 3) 
-				DrawTriangleTexture(v0, v1, v2, p_pScene->entities[entityID]->GetMesh()->GetImage());
-			else
-				DrawTriangle(v0, v1, v2);
+			DrawTriangleTexture(v0, v1, v2, p_pScene->entities[entityID]->GetMesh()->GetImage());
 		}
 	}
 }

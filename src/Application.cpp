@@ -334,16 +334,16 @@ void Application::UpdateZeldaAnimation()
 	Zelda& zelda = m_sharedContext.appInfos.zelda;
 	zelda.timer += m_sharedContext.appInfos.deltaTime;
 
-	const int8_t coeff = zelda.timer >= 8.f ? -50 : 1;
+	const int8_t coeff = zelda.timer >= 7.3f ? -50 : 1;
 
-	zelda.mat4_x += Zelda::translationSpeed * m_sharedContext.appInfos.deltaTime;
-	zelda.mat4_y += Zelda::translationSpeed * m_sharedContext.appInfos.deltaTime;
-	zelda.mat4_z += Zelda::translationSpeed * m_sharedContext.appInfos.deltaTime * coeff;
-	zelda.mat5_x -= Zelda::translationSpeed * m_sharedContext.appInfos.deltaTime;
-	zelda.mat5_y += Zelda::translationSpeed * m_sharedContext.appInfos.deltaTime;
-	zelda.mat5_z += Zelda::translationSpeed * m_sharedContext.appInfos.deltaTime * coeff;
-	zelda.mat6_y -= Zelda::translationSpeed * m_sharedContext.appInfos.deltaTime;
-	zelda.mat6_z += Zelda::translationSpeed * m_sharedContext.appInfos.deltaTime * coeff;
+	zelda.mat4_x += Zelda::xTranslationSpeed * m_sharedContext.appInfos.deltaTime;
+	zelda.mat4_y += Zelda::yTranslationSpeed * m_sharedContext.appInfos.deltaTime;
+	zelda.mat4_z += Zelda::zTranslationSpeed * m_sharedContext.appInfos.deltaTime * coeff;
+	zelda.mat5_x -= Zelda::xTranslationSpeed * m_sharedContext.appInfos.deltaTime;
+	zelda.mat5_y += Zelda::yTranslationSpeed * m_sharedContext.appInfos.deltaTime;
+	zelda.mat5_z += Zelda::zTranslationSpeed * m_sharedContext.appInfos.deltaTime * coeff;
+	zelda.mat6_y -= Zelda::yTranslationSpeed * m_sharedContext.appInfos.deltaTime;
+	zelda.mat6_z += Zelda::zTranslationSpeed * m_sharedContext.appInfos.deltaTime * coeff;
 	zelda.mat7_z += Zelda::titleTranslationSpeed * m_sharedContext.appInfos.deltaTime;
 
 	zelda.mat4_x_rotation += Zelda::rotationSpeed * m_sharedContext.appInfos.deltaTime;

@@ -18,4 +18,5 @@ struct Scene
 	std::vector<Image*> cubeTextures;
 	std::vector<Image*> sphereTextures;
 	Image* zeldaImage;
+	Image* triforce;
 };

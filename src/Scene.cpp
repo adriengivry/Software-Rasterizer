@@ -16,6 +16,7 @@ Scene::Scene()
 		sphereTextures.push_back(new Image(p.path().string()));
 
 	zeldaImage = new Image("../assets/textures/zelda/logo.png");
+	triforce = new Image("../assets/textures/zelda/triforce.png");
 }
 
 Scene::~Scene()
@@ -158,6 +159,7 @@ void Scene::InitEntities(uint8_t p_rasterizerVersion, uint8_t p_meshMode)
 			Entity* triangle = new Entity();
 			triangle->SetMesh(*meshes["TRIANGLE"]);
 			triangle->SetColor(204, 153, 0);
+			triangle->GetMesh()->SetImage(triforce);
 			entities.push_back(triangle);
 		}
 

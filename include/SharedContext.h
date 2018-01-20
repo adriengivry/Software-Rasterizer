@@ -189,20 +189,22 @@ struct KeyHistory
 
 struct Zelda
 {
-	inline const static float xMaxRotations = 2;
-	inline const static float yMaxRotations = 2;
-	inline const static uint8_t translationSpeed = 4;
+	inline const static float xMaxRotations = 3;
+	inline const static float yMaxRotations = 3;
+	inline const static uint8_t xTranslationSpeed = 5;
+	inline const static uint8_t yTranslationSpeed = 5;
+	inline const static uint8_t zTranslationSpeed = 6;
 	inline const static uint8_t titleTranslationSpeed = 13;
-	inline const static uint8_t rotationSpeed = 120;
+	inline const static uint8_t rotationSpeed = 160;
 	inline const static float mat4dest_x = -1.73f;
 	inline const static float mat4dest_y = -1.5f;
-	inline const static float mat4dest_z = -10.f;
+	inline const static float mat4dest_z = -15.f;
 	inline const static float mat5dest_x = 1.73f;
 	inline const static float mat5dest_y = -1.5f;
-	inline const static float mat5dest_z = -10.f;
+	inline const static float mat5dest_z = -15.f;
 	inline const static float mat6dest_x = 0.f;
 	inline const static float mat6dest_y = 1.5f;
-	inline const static float mat6dest_z = -10.f;
+	inline const static float mat6dest_z = -15.f;
 
 	inline const static float mat7dest_x = 0.f;
 	inline const static float mat7dest_y = 0;
@@ -219,24 +221,26 @@ struct Zelda
 	void Reset()
 	{
 		timer = 0.f;
-		const uint8_t translationOffset = 15;
+		const uint8_t xTranslationOffset = 25;
+		const uint8_t yTranslationOffset = 25;
+		const uint8_t zTranslationOffset = 30;
 		mat4_x_rotation = 0;
 		mat4_y_rotation = 0;
-		mat4_x = -1.73 - translationOffset;
-		mat4_y = -1.5f - translationOffset;
-		mat4_z = -10.f - translationOffset;
+		mat4_x = -1.73 - xTranslationOffset;
+		mat4_y = -1.5f - yTranslationOffset;
+		mat4_z = -15.f - zTranslationOffset;
 
 		mat5_x_rotation = 0;
 		mat5_y_rotation = 0;
-		mat5_x = 1.73f + translationOffset;
-		mat5_y = -1.5f - translationOffset;
-		mat5_z = -10.f - translationOffset;
+		mat5_x = 1.73f + xTranslationOffset;
+		mat5_y = -1.5f - yTranslationOffset;
+		mat5_z = -15.f - zTranslationOffset;
 
 		mat6_x_rotation = 0;
 		mat6_y_rotation = 0;
 		mat6_x = 0.f;
-		mat6_y = 1.5f + translationOffset;
-		mat6_z = -10.f - translationOffset;
+		mat6_y = 1.5f + yTranslationOffset;
+		mat6_z = -15.f - zTranslationOffset;
 
 		mat7_x = 0;
 		mat7_y = 0;
