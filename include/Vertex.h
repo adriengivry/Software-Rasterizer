@@ -31,6 +31,20 @@ struct Vertex
 		normal.z = 0;
 		normal.w = 0;
 	}
+
+	Vertex(const Toolbox::Vec3& p_position, const Toolbox::Vec2& p_textureCoordinates)
+	{
+		position.x = p_position.x;
+		position.y = p_position.y;
+		position.z = p_position.z;
+		normal.x = 0;
+		normal.y = 0;
+		normal.z = 0;
+		normal.w = 0;
+		texCoordinate.x = p_textureCoordinates.x;
+		texCoordinate.y = p_textureCoordinates.y;
+	}
+
 	void SetColor(Color& p_color)
 	{
 		color.r = p_color.r;

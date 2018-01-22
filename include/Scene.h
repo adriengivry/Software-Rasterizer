@@ -19,4 +19,6 @@ struct Scene
 	std::vector<Image*> sphereTextures;
 	Image* zeldaImage;
 	Image* triforce;
+	Image* transparent;
+	Image* background;
 };

@@ -194,7 +194,8 @@ struct Zelda
 	inline const static uint8_t xTranslationSpeed = 5;
 	inline const static uint8_t yTranslationSpeed = 5;
 	inline const static uint8_t zTranslationSpeed = 6;
-	inline const static uint8_t titleTranslationSpeed = 13;
+	inline const static uint8_t titleTranslationSpeed = 100;
+	inline const static uint8_t backgroundTranslationSpeed = 20;
 	inline const static uint8_t rotationSpeed = 160;
 	inline const static float mat4dest_x = -1.73f;
 	inline const static float mat4dest_y = -1.5f;
@@ -208,7 +209,9 @@ struct Zelda
 
 	inline const static float mat7dest_x = 0.f;
 	inline const static float mat7dest_y = 0;
-	inline const static float mat7dest_z = -8;
+	inline const static float mat7dest_z = -12;
+
+	inline const static float mat8dest_y = 0;
 
 	Zelda() { Reset(); }
 
@@ -216,6 +219,7 @@ struct Zelda
 	float mat5_x_rotation, mat5_y_rotation, mat5_x, mat5_y, mat5_z;
 	float mat6_x_rotation, mat6_y_rotation, mat6_x, mat6_y, mat6_z;
 	float mat7_x, mat7_y, mat7_z;
+	float mat8_y;
 	float timer;
 
 	void Reset()
@@ -244,7 +248,9 @@ struct Zelda
 
 		mat7_x = 0;
 		mat7_y = 0;
-		mat7_z = -100;
+		mat7_z = -104;
+
+		mat8_y = -10;
 	}
 };
 

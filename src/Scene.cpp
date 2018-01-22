@@ -16,7 +16,8 @@ Scene::Scene()
 		sphereTextures.push_back(new Image(p.path().string()));
 
 	zeldaImage = new Image("../assets/textures/zelda/logo.png");
-	triforce = new Image("../assets/textures/zelda/triforce.png");
+	transparent = new Image("../assets/textures/zelda/transparent.png");
+	background = new Image("../assets/textures/zelda/background.png");
 }
 
 Scene::~Scene()
@@ -159,15 +160,20 @@ void Scene::InitEntities(uint8_t p_rasterizerVersion, uint8_t p_meshMode)
 			Entity* triangle = new Entity();
 			triangle->SetMesh(*meshes["TRIANGLE"]);
 			triangle->SetColor(204, 153, 0);
-			triangle->GetMesh()->SetImage(triforce);
 			entities.push_back(triangle);
 		}
 
 		Entity* rectangle = new Entity();
 		rectangle->SetMesh(*meshes["CUBE_WITH_TEXTURE"]);
 		rectangle->SetColor(0, 255, 0);
-		rectangle->GetMesh()->SetImage(zeldaImage);
+		rectangle->GetMesh()->SetImage(transparent);
 		entities.push_back(rectangle);
+
+		Entity* rectangle2 = new Entity();
+		rectangle2->SetMesh(*meshes["CUBE_WITH_TEXTURE"]);
+		rectangle2->SetColor(0, 255, 0);
+		rectangle2->GetMesh()->SetImage(transparent);
+		entities.push_back(rectangle2);
 	}
 }
 

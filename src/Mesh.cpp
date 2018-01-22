@@ -90,6 +90,7 @@ Mesh * Mesh::CreateCube()
 	{
 		Cube->m_vertices[i].normal.Normalize();
 	}
+
 	return Cube;
 }
 
@@ -272,6 +273,7 @@ Mesh* Mesh::CreateSphere(int p_latitudeCount, int p_longitudeCount)
 			index++;
 		}
 	}
+
 	for(int latNumber = 0; latNumber < p_latitudeCount; latNumber++)
 	{
 		for(int longNumber = 0; longNumber < p_longitudeCount; longNumber++)
@@ -313,64 +315,70 @@ Mesh* Mesh::CreateTriangle()
 Mesh* Mesh::CreateZelda()
 {
 	Mesh* Triangle = new Mesh();
-	Triangle->m_vertices.push_back(Vertex(sqrt(3), -1, 0.5)); // 0
-	Triangle->m_vertices.push_back(Vertex(-sqrt(3), -1, 0.5)); // 1
-	Triangle->m_vertices.push_back(Vertex(0, 2, 0.5)); // 2
-	Triangle->m_vertices.push_back(Vertex(sqrt(3), -1, -0.5)); // 3
-	Triangle->m_vertices.push_back(Vertex(-sqrt(3), -1, -0.5)); // 4
-	Triangle->m_vertices.push_back(Vertex(0, 2, -0.5)); // 5
 
-	Triangle->m_vertices.push_back(Vertex(sqrt(3), -1, 0.5)); // 6
-	Triangle->m_vertices.push_back(Vertex(-sqrt(3), -1, -0.5)); // 7
-	Triangle->m_vertices.push_back(Vertex(-sqrt(3), -1, 0.5)); // 8
+	const Vec3 v0(0, 2, 0.5);
+	const Vec3 v1(sqrt(3), -1, 0.5);
+	const Vec3 v2(-sqrt(3), -1, 0.5);
+	const Vec3 v3(0, 2, -0.5);
+	const Vec3 v4(-sqrt(3), -1, -0.5);
+	const Vec3 v5(sqrt(3), -1, -0.5);
 
-	Triangle->m_vertices.push_back(Vertex(sqrt(3), -1, -0.5)); // 9
-	Triangle->m_vertices.push_back(Vertex(-sqrt(3), -1, -0.5)); // 10
-	Triangle->m_vertices.push_back(Vertex(sqrt(3), -1, 0.5)); // 11
+	const Vec2 c0(0.5, 0);
+	const Vec2 c1(0, 1);
+	const Vec2 c2(1, 1);
+	const Vec2 textureCenter(0.5, 0.8);
 
-	Triangle->m_indices.push_back(0);
-	Triangle->m_indices.push_back(1);
-	Triangle->m_indices.push_back(2);
+	Triangle->m_vertices.emplace_back(v0, c0); // 0
+	Triangle->m_vertices.emplace_back(v1, c1); // 1
+	Triangle->m_vertices.emplace_back(v2, c2); // 2
 
-	Triangle->m_indices.push_back(3);
-	Triangle->m_indices.push_back(5);
-	Triangle->m_indices.push_back(4);
+	Triangle->m_vertices.emplace_back(v3, c0); // 3
+	Triangle->m_vertices.emplace_back(v4, c2); // 4
+	Triangle->m_vertices.emplace_back(v5, c1); // 5
 
-	Triangle->m_indices.push_back(5);
-	Triangle->m_indices.push_back(1);
-	Triangle->m_indices.push_back(4);
+	Triangle->m_vertices.emplace_back(v3, textureCenter); // 6
+	Triangle->m_vertices.emplace_back(v1, textureCenter); // 7
+	Triangle->m_vertices.emplace_back(v0, textureCenter); // 8
 
-	Triangle->m_indices.push_back(2);
-	Triangle->m_indices.push_back(1);
-	Triangle->m_indices.push_back(5);
+	Triangle->m_vertices.emplace_back(v3, textureCenter); // 9
+	Triangle->m_vertices.emplace_back(v5, textureCenter); // 10
+	Triangle->m_vertices.emplace_back(v1, textureCenter); // 11
 
-	Triangle->m_indices.push_back(5);
-	Triangle->m_indices.push_back(3);
-	Triangle->m_indices.push_back(0);
+	Triangle->m_vertices.emplace_back(v0, textureCenter); // 12
+	Triangle->m_vertices.emplace_back(v2, textureCenter); // 13
+	Triangle->m_vertices.emplace_back(v4, textureCenter); // 14
 
-	Triangle->m_indices.push_back(2);
-	Triangle->m_indices.push_back(5);
-	Triangle->m_indices.push_back(0);
+	Triangle->m_vertices.emplace_back(v0, textureCenter); // 15
+	Triangle->m_vertices.emplace_back(v4, textureCenter); // 16
+	Triangle->m_vertices.emplace_back(v3, textureCenter); // 17
 
-	Triangle->m_indices.push_back(6);
-	Triangle->m_indices.push_back(7);
-	Triangle->m_indices.push_back(8);
+	Triangle->m_vertices.emplace_back(v1, textureCenter); // 18
+	Triangle->m_vertices.emplace_back(v5, textureCenter); // 19
+	Triangle->m_vertices.emplace_back(v4, textureCenter); // 20
 
-	Triangle->m_indices.push_back(9);
-	Triangle->m_indices.push_back(10);
-	Triangle->m_indices.push_back(11);
+	Triangle->m_vertices.emplace_back(v1, textureCenter); // 21
+	Triangle->m_vertices.emplace_back(v4, textureCenter); // 22
+	Triangle->m_vertices.emplace_back(v2, textureCenter); // 23
 
-	Triangle->m_vertices[0].texCoordinate = Vec2(1, 1);
-	Triangle->m_vertices[1].texCoordinate = Vec2(0, 1);
-	Triangle->m_vertices[2].texCoordinate = Vec2(0.5, 0);
+	for (uint8_t i = 0; i < Triangle->m_vertices.size(); ++i)
+		Triangle->m_indices.push_back(i);
 
-	Triangle->m_vertices[3].texCoordinate = Vec2(1, 1);
-	Triangle->m_vertices[4].texCoordinate = Vec2(0, 1);
-	Triangle->m_vertices[5].texCoordinate = Vec2(0.5, 0);
+	for (uint16_t i = 0; i < Triangle->m_indices.size() - 2; i += 3)
+	{
+		Vec3 Normal;
+		Vec3 p1(Triangle->m_vertices[Triangle->m_indices[i + 1]].position - Triangle->m_vertices[Triangle->m_indices[i]].position);
+		Vec3 p2(Triangle->m_vertices[Triangle->m_indices[i + 2]].position - Triangle->m_vertices[Triangle->m_indices[i]].position);
+		Normal = p1.Cross(p2);
+		Normal.Normalize();
+		Triangle->m_vertices[Triangle->m_indices[i]].normal = Triangle->m_vertices[Triangle->m_indices[i]].normal + Vec4(Normal, 0);
+		Triangle->m_vertices[Triangle->m_indices[i + 1]].normal = Triangle->m_vertices[Triangle->m_indices[i + 1]].normal + Vec4(Normal, 0);
+		Triangle->m_vertices[Triangle->m_indices[i + 2]].normal = Triangle->m_vertices[Triangle->m_indices[i + 2]].normal + Vec4(Normal, 0);
+	}
 
-	Triangle->m_indices.push_back(0);
-	Triangle->m_indices.push_back(1);
-	Triangle->m_indices.push_back(2);
+	for (uint16_t i = 0; i < Triangle->m_vertices.size(); ++i)
+	{
+		Triangle->m_vertices[i].normal.Normalize();
+	}
 
 	return Triangle;
 }
