@@ -35,6 +35,9 @@ void EventManager::Update()
 
 void EventManager::KeyInput(const SDL_Keysym& p_key, const bool p_state) const
 {
+	if (m_sharedContext.appInfos.selectedVersion == 8)
+		return;
+
 	if (!p_state)
 	{
 		m_sharedContext.appInfos.keyHistory.AddKey(p_key.sym);
@@ -48,9 +51,6 @@ void EventManager::KeyInput(const SDL_Keysym& p_key, const bool p_state) const
 			m_sharedContext.RefreshScene();
 		}
 	}
-
-	if (m_sharedContext.appInfos.selectedVersion == 8)
-		return;
 
 	switch (p_key.sym)
 	{
