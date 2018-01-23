@@ -11,6 +11,7 @@ enum LIGHTS
 	DIFFUSE = 2,
 	SPECULAR = 3
 };
+
 enum AASELECTION
 {
 	NOAA,
@@ -19,7 +20,6 @@ enum AASELECTION
 	AA8X,
 	AA16X
 };
-
 
 enum MESHMODE
 {

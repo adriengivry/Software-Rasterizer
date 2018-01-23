@@ -59,12 +59,14 @@ struct Vertex
 		color.g = p_g;
 		color.b = p_b;
 	}
+
 	Vertex& NormalTransform(const Toolbox::Mat4& p_transform)
 	{
 		this->normal = (p_transform * this->normal);
 		normal.Normalize();
 		return *this;
 	}
+
 	Vertex& VertexTransform(const Toolbox::Mat4& p_transform)
 	{
 		Toolbox::Vec4 vector4 = p_transform * Toolbox::Vec4(position);
@@ -74,6 +76,7 @@ struct Vertex
 		this->position.z = vector4.z;
 		return *this;
 	}
+
 	Vertex FirstTransform(const Toolbox::Mat4& p_transform, const Toolbox::Mat4& p_normaltransform)
 	{
 		const Toolbox::Vec4 vector4 = p_transform * Toolbox::Vec4(position);

@@ -24,8 +24,6 @@ struct Span
 	Span(const float p_x1, const float p_x2, const Color& p_color1, const Color& p_color2);
 };
 
-
-
 class Triangle
 {
 public:
