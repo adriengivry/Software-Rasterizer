@@ -221,6 +221,7 @@ struct Zelda
 	float mat7_x, mat7_y, mat7_z;
 	float mat8_y;
 	float timer;
+	bool soundPlayed;
 
 	void Reset()
 	{
@@ -251,6 +252,8 @@ struct Zelda
 		mat7_z = -104;
 
 		mat8_y = -10;
+
+		soundPlayed = false;
 	}
 };
 

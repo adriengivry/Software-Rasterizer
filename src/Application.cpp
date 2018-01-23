@@ -334,6 +334,12 @@ void Application::UpdateZeldaAnimation()
 	Zelda& zelda = m_sharedContext.appInfos.zelda;
 	zelda.timer += m_sharedContext.appInfos.deltaTime;
 
+	if (zelda.timer >= 1.5f && !zelda.soundPlayed)
+	{
+		m_sharedContext.soundEngine->play2D("../assets/sounds/zelda.wav");
+		zelda.soundPlayed = true;
+	}
+
 	if (zelda.timer >= 18.f)
 	{
 		m_sharedContext.appInfos.selectedVersion = 6;
@@ -349,13 +355,13 @@ void Application::UpdateZeldaAnimation()
 	zelda.mat6_y -= Zelda::yTranslationSpeed * m_sharedContext.appInfos.deltaTime;
 	zelda.mat6_z += Zelda::zTranslationSpeed * m_sharedContext.appInfos.deltaTime;
 
-	if (zelda.timer >= 6.f)
+	if (zelda.timer >= 8.f)
 	{
 		m_scene.entities[3]->GetMesh()->SetImage(m_scene.zeldaImage);
 		zelda.mat7_z += Zelda::titleTranslationSpeed * m_sharedContext.appInfos.deltaTime;
 	}
 
-	if (zelda.timer >= 9.f)
+	if (zelda.timer >= 10.f)
 	{
 		m_scene.entities[4]->GetMesh()->SetImage(m_scene.background);
 		zelda.mat8_y += Zelda::backgroundTranslationSpeed * m_sharedContext.appInfos.deltaTime;
