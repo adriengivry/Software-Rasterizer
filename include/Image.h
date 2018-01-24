@@ -9,12 +9,12 @@ class Image
 public:
 	explicit Image(std::string p_path);
     ~Image();
-    uint32_t GetPixel(SDL_Surface* p_src, int p_x, int p_y);
+    uint32_t GetPixel(SDL_Surface* p_src, const int p_x, const int p_y);
 
-    Color* GetColorTable();
-    int GetImagePitch();
-    int GetImageWidth();
-    int GetImageHeight();
+    Color* GetColorTable() const;
+    int GetImagePitch() const;
+    int GetImageWidth() const;
+    int GetImageHeight() const;
 
 private:
     Color* m_pColortable;

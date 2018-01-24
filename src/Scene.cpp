@@ -45,7 +45,7 @@ void Scene::ClearScene()
 	meshes.clear();
 }
 
-void Scene::InitMeshes(const uint8_t p_rasterizerVersion, uint8_t p_meshMode)
+void Scene::InitMeshes(const uint8_t p_rasterizerVersion, const uint8_t p_meshMode)
 {
 	if ((p_rasterizerVersion >= 1 && p_rasterizerVersion <= 2) || p_rasterizerVersion == 4 || p_rasterizerVersion == 8)
 	{
@@ -89,7 +89,7 @@ void Scene::InitMeshes(const uint8_t p_rasterizerVersion, uint8_t p_meshMode)
 	}
 }
 
-void Scene::InitEntities(uint8_t p_rasterizerVersion, uint8_t p_meshMode)
+void Scene::InitEntities(const uint8_t p_rasterizerVersion,const uint8_t p_meshMode)
 {
 	if (p_rasterizerVersion >= 1 && p_rasterizerVersion <= 4)
 	{

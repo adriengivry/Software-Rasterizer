@@ -11,14 +11,14 @@ public:
     ~Mesh();
 	static Mesh* CreateCube();
 	static Mesh* CreateTextureCube();
-    static Mesh* CreateSphere(int p_latitudeCount, int p_longitudeCount);
+    static Mesh* CreateSphere(const int p_latitudeCount,const int p_longitudeCount);
 	static Mesh* CreateTriangle();
 	static Mesh* CreateZelda();
 	std::vector<Vertex>& GetVertices();
 	std::vector<uint32_t>& GetIndices();
 
 	void SetImage(Image* p_image);
-	Image * GetImage();
+	Image * GetImage() const;
 	void SetVertex(const Vertex p_vertex);
 	void SetIndex(const uint32_t p_index);
 	void SetColor(const float p_r, const float p_g, const float p_b, const float p_a = 255);

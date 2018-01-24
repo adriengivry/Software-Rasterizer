@@ -20,7 +20,7 @@ void Entity::SetAlpha(const float p_alpha)
 	m_alpha = p_alpha;
 }
 
-float Entity::GetAlpha()
+float Entity::GetAlpha() const
 {
 	return m_alpha;
 }

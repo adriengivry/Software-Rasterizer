@@ -245,25 +245,25 @@ Mesh* Mesh::CreateTextureCube()
 	return Cube;
 }
 
-Mesh* Mesh::CreateSphere(int p_latitudeCount, int p_longitudeCount)
+Mesh* Mesh::CreateSphere(const int p_latitudeCount, const int p_longitudeCount)
 {
 	Mesh* Sphere = new Mesh();
 	int index = 0;
 	for(float latNumber = 0; latNumber <= p_latitudeCount; latNumber++)
 	{
-		float theta = static_cast<float>(latNumber * M_PI / p_latitudeCount);
-		float sinTheta = sin(theta);
-		float cosTheta = cos(theta);
+		const float theta = static_cast<float>(latNumber * M_PI / p_latitudeCount);
+		const float sinTheta = sin(theta);
+		const float cosTheta = cos(theta);
 
 		for(float longNumber = 0; longNumber <= p_longitudeCount; longNumber++)
 		{
-			float phi = static_cast<float>(longNumber * 2 * M_PI / p_longitudeCount);
-			float sinPhi = sin(phi);
-			float cosPhi = cos(phi);
+			const float phi = static_cast<float>(longNumber * 2 * M_PI / p_longitudeCount);
+			const float sinPhi = sin(phi);
+			const float cosPhi = cos(phi);
 
-			float x = cosPhi * sinTheta;
-			float y = cosTheta;
-			float z = sinPhi * sinTheta;
+			const float x = cosPhi * sinTheta;
+			const float y = cosTheta;
+			const float z = sinPhi * sinTheta;
 			Sphere->GetVertices().push_back(Vertex(x, y, z));
 			Sphere->GetVertices()[index].texCoordinate.x = 1 - (longNumber / p_longitudeCount);
 			Sphere->GetVertices()[index].texCoordinate.y = 1 - (latNumber / p_latitudeCount);
@@ -279,8 +279,8 @@ Mesh* Mesh::CreateSphere(int p_latitudeCount, int p_longitudeCount)
 		for(int longNumber = 0; longNumber < p_longitudeCount; longNumber++)
 		{
 			{
-				int first = (latNumber * (p_longitudeCount + 1)) + longNumber;
-				int second = first + p_longitudeCount + 1;
+				const int first = (latNumber * (p_longitudeCount + 1)) + longNumber;
+				const int second = first + p_longitudeCount + 1;
 
 				Sphere->GetIndices().push_back(first);
 				Sphere->GetIndices().push_back(second);
@@ -398,7 +398,7 @@ void Mesh::SetImage(Image* p_image)
 	m_pImage = p_image;
 }
 
-Image* Mesh::GetImage()
+Image* Mesh::GetImage() const
 {
 	return m_pImage;
 }

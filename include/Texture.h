@@ -2,7 +2,6 @@
 #include "Color.h"
 #include <SDL.h>
 #include <string>
-#include <SDL_image.h>
 
 
 class Texture

@@ -15,7 +15,7 @@ Image::Image(std::string p_path)
     {
         for(int x = 0; x < m_imagePitch; ++x)
         {
-            uint32_t pixel = GetPixel(rgbaImage, x, y);
+            const uint32_t pixel = GetPixel(rgbaImage, x, y);
             uint32_t index = 0;
             uint8_t red, green, blue;
 
@@ -49,27 +49,27 @@ Image::~Image()
 	delete m_pColortable;
 }
 
-uint32_t Image::GetPixel(SDL_Surface* p_src, int p_x, int p_y)
+uint32_t Image::GetPixel(SDL_Surface* p_src, const int p_x, const int p_y)
 {
     return static_cast<uint32_t *>(p_src->pixels)[p_x + p_y * p_src->pitch/ sizeof(unsigned int)];
 }
 
-Color* Image::GetColorTable()
+Color* Image::GetColorTable() const
 {
     return m_pColortable;
 }
 
-int Image::GetImagePitch()
+int Image::GetImagePitch() const 
 {
     return m_imagePitch;
 }
 
-int Image::GetImageWidth()
+int Image::GetImageWidth() const
 {
     return m_imageWidth;
 }
 
-int Image::GetImageHeight()
+int Image::GetImageHeight() const
 {
     return m_imageHeight;
 }

@@ -195,7 +195,7 @@ void Application::UpdateCamera()
 void Application::UpdateRealCamera()
 {
 	float pitch = 0;
-	float yaw = 0;
+	//float yaw = 0;
 	float angleAroundPlayer = 0;
 	float distance = 0;
 	float theta = 0;

@@ -12,7 +12,7 @@ public:
 	Toolbox::Mat4& GetMatrix();
 
 	void SetAlpha(const float p_alpha);
-	float GetAlpha();
+	float GetAlpha() const;
 	void SetMesh(const Mesh& p_mesh);
 	void SetMatrix(const Toolbox::Mat4& p_matrix);
 	void SetColor(const float p_r, const float p_g, const float p_b, const float p_a = 255) const;
