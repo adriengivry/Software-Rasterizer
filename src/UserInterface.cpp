@@ -199,15 +199,25 @@ void UserInterface::DrawLightProperties()
 		std::string items[] =
 		{
 			"LIGHT PROPERTIES",
-			"[8] Ambiant: " + std::to_string(static_cast<uint8_t>(m_sharedContext.appInfos.lightParams.ambiant)),
-			"[9] Diffuse: " + std::to_string(static_cast<uint8_t>(m_sharedContext.appInfos.lightParams.diffuse)),
-			"[0] Specular: " + std::to_string(static_cast<uint8_t>(m_sharedContext.appInfos.lightParams.specular))
+			"[Z] Ambiant: " + std::to_string(static_cast<uint8_t>(m_sharedContext.appInfos.lightParams.ambiant)),
+			"[X] Diffuse: " + std::to_string(static_cast<uint8_t>(m_sharedContext.appInfos.lightParams.diffuse)),
+			"[C] Specular: " + std::to_string(static_cast<uint8_t>(m_sharedContext.appInfos.lightParams.specular))
 		};
 
 		for (uint8_t i = 0; i < 4; ++i)
 		{
 			SetTextDefaultColor();
-			if (i == m_sharedContext.appInfos.selectedLight) SetTextSelectedColor();
+			bool lightIsChanging = false;
+
+			switch (i)
+			{
+			default: break;
+			case 1: lightIsChanging = m_sharedContext.actions.addAmbiant;	break;
+			case 2: lightIsChanging = m_sharedContext.actions.addDiffuse;	break;
+			case 3: lightIsChanging = m_sharedContext.actions.addSpecular;	break;
+			}
+
+			if (lightIsChanging) SetTextSelectedColor();
 			if (i == 0) SetTextTitleColor();
 			DrawAt(items[i], 0, 535 + i * 20);
 		}
@@ -317,36 +327,6 @@ void UserInterface::DrawHelp()
 				else
 				{
 					DrawAt(bracketHelp[i], xPos, yBuffer, m_smallFont);
-					yBuffer += 15;
-				}
-			}
-		}
-
-		if (m_sharedContext.appInfos.selectedVersion == 2 || m_sharedContext.appInfos.selectedVersion == 3)
-		{
-			yBuffer += 15;
-			std::string lightHelp[] =
-			{
-				"Modifying lights",
-				"Use [+] and [-] or [PAGEUP]",
-				"and [PAGEDOWN] to adjust",
-				"light values after selecting",
-				"a light with [8] [9] or [0]"
-			};
-
-			for (uint8_t i = 0; i < 5; ++i)
-			{
-				SetTextDefaultColor();
-				SetTextSelectedColor();
-				if (i == 0)
-				{
-					SetTextTitleColor();
-					DrawAt(lightHelp[i], 850, yBuffer);
-					yBuffer += 20;
-				}
-				else
-				{
-					DrawAt(lightHelp[i], xPos, yBuffer, m_smallFont);
 					yBuffer += 15;
 				}
 			}

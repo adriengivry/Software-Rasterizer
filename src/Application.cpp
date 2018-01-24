@@ -190,38 +190,31 @@ void Application::UpdateCamera()
 
 void Application::UpdateLights()
 {
-	float lightOffset = 0;
-
-	const float lightIncrementPerSecond = 20;
-
-	if (m_sharedContext.actions.increaseLight)
-		lightOffset += lightIncrementPerSecond * m_sharedContext.appInfos.deltaTime;
-
-	if (m_sharedContext.actions.decreaseLight)
-		lightOffset -= lightIncrementPerSecond * m_sharedContext.appInfos.deltaTime;
-
-	switch (m_sharedContext.appInfos.selectedLight)
+	if (m_sharedContext.appInfos.selectedVersion >= 2 || m_sharedContext.appInfos.selectedVersion <= 3)
 	{
-		default:																		break;
-		case AMBIANT:	m_sharedContext.appInfos.lightParams.ambiant += lightOffset;	break;
-		case DIFFUSE:	m_sharedContext.appInfos.lightParams.diffuse += lightOffset;	break;
-		case SPECULAR:	m_sharedContext.appInfos.lightParams.specular += lightOffset;	break;
+		float ambiantOffset = 0;
+		float diffuseOffset = 0;
+		float specularOffset = 0;
+		const float lightIncrementPerSecond = 15;
+
+		if (m_sharedContext.actions.addAmbiant)
+			ambiantOffset += lightIncrementPerSecond * m_sharedContext.appInfos.deltaTime;
+
+		if (m_sharedContext.actions.addDiffuse)
+			diffuseOffset += lightIncrementPerSecond * m_sharedContext.appInfos.deltaTime;
+
+		if (m_sharedContext.actions.addSpecular)
+			specularOffset += lightIncrementPerSecond * m_sharedContext.appInfos.deltaTime;
+
+		m_sharedContext.appInfos.lightParams.ambiant += ambiantOffset;
+		while (m_sharedContext.appInfos.lightParams.ambiant > 100.f) m_sharedContext.appInfos.lightParams.ambiant /= 100;
+
+		m_sharedContext.appInfos.lightParams.diffuse += diffuseOffset;
+		while (m_sharedContext.appInfos.lightParams.diffuse > 100.f) m_sharedContext.appInfos.lightParams.diffuse /= 100;
+
+		m_sharedContext.appInfos.lightParams.specular += specularOffset;
+		while (m_sharedContext.appInfos.lightParams.specular > 100.f) m_sharedContext.appInfos.lightParams.specular /= 100;
 	}
-
-	if (m_sharedContext.appInfos.lightParams.ambiant < 0)
-		m_sharedContext.appInfos.lightParams.ambiant = 0;
-	else if (m_sharedContext.appInfos.lightParams.ambiant > 100)
-		m_sharedContext.appInfos.lightParams.ambiant = 100;
-
-	if (m_sharedContext.appInfos.lightParams.diffuse < 0)
-		m_sharedContext.appInfos.lightParams.diffuse = 0;
-	else if (m_sharedContext.appInfos.lightParams.diffuse > 100)
-		m_sharedContext.appInfos.lightParams.diffuse = 100;
-
-	if (m_sharedContext.appInfos.lightParams.specular < 0)
-		m_sharedContext.appInfos.lightParams.specular = 0;
-	else if (m_sharedContext.appInfos.lightParams.specular > 100)
-		m_sharedContext.appInfos.lightParams.specular = 100;
 }
 
 void Application::UpdateMeshColor()

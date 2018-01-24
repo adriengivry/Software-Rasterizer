@@ -5,13 +5,6 @@
 #include "irrKlang.h"
 #include <atomic>
 
-enum LIGHTS
-{
-	AMBIANT = 1,
-	DIFFUSE = 2,
-	SPECULAR = 3
-};
-
 enum AASELECTION
 {
 	NOAA,
@@ -41,8 +34,9 @@ struct Actions
 	bool yTurnCounterClockwise;
 	bool zTurnClockwise;
 	bool zTurnCounterClockwise;
-	bool increaseLight;
-	bool decreaseLight;
+	bool addAmbiant;
+	bool addDiffuse;
+	bool addSpecular;
 	bool addRed;
 	bool addGreen;
 	bool addBlue;
@@ -64,8 +58,9 @@ struct Actions
 		yTurnCounterClockwise = false;
 		zTurnClockwise = false;
 		zTurnCounterClockwise = false;
-		increaseLight = false;
-		decreaseLight = false;
+		addAmbiant = false;
+		addDiffuse = false;
+		addSpecular = false;
 		addRed = false;
 		addGreen = false;
 		addBlue = false;
@@ -273,7 +268,6 @@ struct ApplicationInfos
 	uint8_t fpsValuesBuffer = 0;
 	uint8_t selectedVersion = 1;
 	uint8_t previousSelectedVersion = 1;
-	uint8_t selectedLight = AMBIANT;
 	LightParams lightParams;
 	MeshParams meshParams;
 	CameraParams cameraParams;
@@ -285,7 +279,6 @@ struct ApplicationInfos
 
 	void Reset()
 	{
-		selectedLight = AMBIANT;
 		selectedAA = NOAA;
 		keyHistory.Reset();
 		lightParams.Reset();

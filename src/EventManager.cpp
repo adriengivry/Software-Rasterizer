@@ -124,25 +124,14 @@ void EventManager::KeyInput(const SDL_Keysym& p_key, const bool p_state) const
 		m_sharedContext.appInfos.selectedVersion = 7;
 		m_sharedContext.RefreshScene();
 		break;
-	case SDLK_KP_8:
-	case SDLK_8:
-		m_sharedContext.appInfos.selectedLight = AMBIANT;
+	case SDLK_z:
+		m_sharedContext.actions.addAmbiant = p_state;
 		break;
-	case SDLK_KP_9:
-	case SDLK_9:
-		m_sharedContext.appInfos.selectedLight = DIFFUSE;
+	case SDLK_x:
+		m_sharedContext.actions.addDiffuse = p_state;
 		break;
-	case SDLK_KP_0:
-	case SDLK_0:
-		m_sharedContext.appInfos.selectedLight = SPECULAR;
-		break;
-	case SDLK_KP_PLUS:
-	case SDLK_PAGEUP:
-		m_sharedContext.actions.increaseLight = p_state;
-		break;
-	case SDLK_KP_MINUS:
-	case SDLK_PAGEDOWN:
-		m_sharedContext.actions.decreaseLight = p_state;
+	case SDLK_c:
+		m_sharedContext.actions.addSpecular = p_state;
 		break;
 	case SDLK_r:
 		m_sharedContext.actions.addRed = p_state;
