@@ -20,6 +20,7 @@ public:
 	void RenderTexture(Scene* p_pScene);
 	void RenderAlphaBlending(Scene* p_pScene);
 	void RenderAntialiasing(Scene* p_pScene);
+	void RenderRealCameraScene(Scene* p_pScene, Toolbox::Mat4& p_camera);
 	void RenderZelda(Scene* p_pScene);
 	void Update() override;
 	void Draw() const;

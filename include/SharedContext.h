@@ -128,6 +128,32 @@ struct CameraParams
 	}
 };
 
+struct RealCameraParams
+{
+	float distanceFromObject;
+	float horizontalDistance;
+	float verticalDistance;
+	float yaw;
+	float pitch;
+	float angleAroundPlayer;
+	float cameraX;
+	float cameraY;
+	float cameraZ;
+
+	RealCameraParams() { Reset(); }
+	void Reset()
+	{
+		distanceFromObject = 15.f;
+		horizontalDistance = 15.f;
+		verticalDistance = 0.f;
+		yaw = 0;
+		pitch = 0;
+		angleAroundPlayer = 0;
+		cameraX = 10;
+		cameraY = 10;
+		cameraZ = 10;
+	}
+};
 struct KeyHistory
 {
 	SDL_Keycode keys[10];
@@ -271,6 +297,7 @@ struct ApplicationInfos
 	LightParams lightParams;
 	MeshParams meshParams;
 	CameraParams cameraParams;
+	RealCameraParams realCameraParams;
 	uint8_t selectedAA = NOAA;
 	uint16_t polygons = 0;
 	uint8_t meshMode = CUBE;

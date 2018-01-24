@@ -91,7 +91,7 @@ void Scene::InitMeshes(const uint8_t p_rasterizerVersion, uint8_t p_meshMode)
 
 void Scene::InitEntities(uint8_t p_rasterizerVersion, uint8_t p_meshMode)
 {
-	if ((p_rasterizerVersion >= 1 && p_rasterizerVersion <= 4) || p_rasterizerVersion == 8)
+	if (p_rasterizerVersion >= 1 && p_rasterizerVersion <= 4)
 	{
 		Entity* entity = new Entity();
 
@@ -174,6 +174,18 @@ void Scene::InitEntities(uint8_t p_rasterizerVersion, uint8_t p_meshMode)
 		rectangle2->SetColor(0, 255, 0);
 		rectangle2->GetMesh()->SetImage(transparent);
 		entities.push_back(rectangle2);
+	}
+	else if (p_rasterizerVersion == 8)
+	{
+		Entity* entity = new Entity();
+
+		if (p_meshMode == CUBE)
+			entity->SetMesh(*meshes["CUBE"]);
+		else if (p_meshMode == SPHERE)
+			entity->SetMesh(*meshes["SPHERE"]);
+
+		entity->SetColor(255, 0, 0);
+		entities.push_back(entity);
 	}
 }
 

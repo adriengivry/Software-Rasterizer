@@ -229,6 +229,27 @@ void Rasterizer::RenderAntialiasing(Scene* p_pScene)
 	}
 }
 
+void Rasterizer::RenderRealCameraScene(Scene* p_pScene, Toolbox::Mat4& p_camera)
+{
+	m_zBufferOn = true;
+	for (uint8_t entityID = 0; entityID < m_sharedContext.scene->entities.size(); ++entityID)
+	{
+		const Mat4 normalMatrix = p_pScene->entities[entityID]->GetMatrix();
+		const Mat4 positionMatrix = Mat4::CreatePerspective(60, float(m_rtexture.GetWidth()) / float(m_rtexture.GetHeight()), 0.1f, 100.0f) *  p_camera * normalMatrix;
+		for (int i = 0; i < p_pScene->entities[0]->GetMesh()->GetIndices().size(); i += 3)
+		{
+			Vertex v0 = (p_pScene->entities[entityID]->GetMesh()->GetVertices()[p_pScene->entities[entityID]->GetMesh()->GetIndices()[i]]);
+			Vertex v1 = (p_pScene->entities[entityID]->GetMesh()->GetVertices()[p_pScene->entities[entityID]->GetMesh()->GetIndices()[i + 1]]);
+			Vertex v2 = (p_pScene->entities[entityID]->GetMesh()->GetVertices()[p_pScene->entities[entityID]->GetMesh()->GetIndices()[i + 2]]);
+			v0.VertexTransform(positionMatrix);
+			v1.VertexTransform(positionMatrix);
+			v2.VertexTransform(positionMatrix);
+			DrawTriangle(v0, v1, v2);
+		}
+	}
+}
+
+
 void Rasterizer::RenderZelda(Scene* p_pScene)
 {
 	m_zBufferOn = true;
@@ -910,7 +931,7 @@ void Rasterizer::DrawTriangleForAntialiasing(Vertex& p_v0, Vertex& p_v1, Vertex&
 		for (positions.x = minX; positions.x <= maxX ; ++positions.x)
 		{
 			const Vec3 bary(triangle.Barycentric2(v0.position.x, v0.position.y, positions.x, positions.y));
-			if (bary.x > -0.02 && bary.y > -0.02 && bary.x + bary.y < 1.02)
+			if (bary.x >= -0.02 && bary.y >= -0.02 && bary.x <= 1.02 && bary.y <= 1.02 && bary.x + bary.y <= 1.04)
 			{
 				positions.z = v0.position.z * bary.z + v1.position.z * bary.x + bary.y * v2.position.z;
 				if (m_zBuffer[int(positions.x + positions.y * Window::WIDTH)] > positions.z)
@@ -923,10 +944,10 @@ void Rasterizer::DrawTriangleForAntialiasing(Vertex& p_v0, Vertex& p_v1, Vertex&
 						{
 							for (uint8_t x = 0; x < 4; ++x)
 							{
-								float samplePosX = positions.x + perX * (x + 1);
-								float samplePosY = positions.y + perY * (y + 1);
+								float samplePosX = positions.x + perX * (x);
+								float samplePosY = positions.y + perY * (y);
 								const Vec3 barytest(triangle.Barycentric2(v0.position.x, v0.position.y, samplePosX, samplePosY));
-								if (barytest.x >= -0.01f && barytest.y >= -0.01f && barytest.x + barytest.y < 1.013f)
+								if (barytest.x >= -0.001 && barytest.y >= -0.001 && barytest.x <= 1.005 && barytest.y <= 1.005 && barytest.x + barytest.y <= 1.011)
 								{
 									in++;
 								}

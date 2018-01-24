@@ -95,7 +95,7 @@ void Application::RenderScene()
 		case 5: m_rasterizer.RenderTexture(&m_scene);			break;
 		case 6: m_rasterizer.RenderAlphaBlending(&m_scene);		break;
 		case 7: m_rasterizer.RenderAntialiasing(&m_scene);		break;
-		case 8: /* TODO: ADD REAL CAMERA METHOD HERE */			break;
+		case 8: m_rasterizer.RenderRealCameraScene(&m_scene, m_realCameraMatrix); break;
 		case 0: m_rasterizer.RenderZelda(&m_scene);				break;
 	}
 }
@@ -109,8 +109,9 @@ void Application::UpdateMatrices()
 		case 5:		m_scene.entities[0]->SetMatrix(m_defaultCameraMatrix);			break;
 		case 7:		m_scene.entities[0]->SetMatrix(m_antialiasingCameraMatrix);		break;
 		case 6:		m_scene.entities[0]->SetMatrix(m_alphablendingAnimationMatrix);
-					m_scene.entities[1]->SetMatrix(m_defaultCameraMatrix);
-		case 8:																		break;
+					m_scene.entities[1]->SetMatrix(m_defaultCameraMatrix);			break;
+		case 8:		m_scene.entities[0]->SetMatrix(Mat4::CreateTranslation(0, 0, 0) * Mat4::CreateRotation(0, 0, 0));															
+																					break;
 	}
 }
 
@@ -193,7 +194,40 @@ void Application::UpdateCamera()
 
 void Application::UpdateRealCamera()
 {
-	// TODO: Update real camera
+	float pitch = 0;
+	float yaw = 0;
+	float angleAroundPlayer = 0;
+	float distance = 0;
+	float theta = 0;
+	float offsetX = 0;
+	float offsetZ = 0;
+	if (m_sharedContext.actions.zoomIn) distance -= 1.0f;
+	if (m_sharedContext.actions.zoomOut) distance += 1.0f;
+
+	m_sharedContext.appInfos.realCameraParams.distanceFromObject += distance;
+
+	if (m_sharedContext.actions.xTurnClockwise) pitch -= 1.0f;
+	if (m_sharedContext.actions.xTurnCounterClockwise) pitch += 1.0f;
+
+	m_sharedContext.appInfos.realCameraParams.pitch += pitch;
+
+	if (m_sharedContext.actions.yTurnClockwise) angleAroundPlayer -= 1.0f;
+	if (m_sharedContext.actions.yTurnCounterClockwise) angleAroundPlayer += 1.0f;
+
+	m_sharedContext.appInfos.realCameraParams.angleAroundPlayer += angleAroundPlayer;
+
+	m_sharedContext.appInfos.realCameraParams.horizontalDistance = m_sharedContext.appInfos.realCameraParams.distanceFromObject * cos(m_sharedContext.appInfos.realCameraParams.pitch * DEG_TO_RAD);
+	m_sharedContext.appInfos.realCameraParams.verticalDistance = m_sharedContext.appInfos.realCameraParams.distanceFromObject * sin(m_sharedContext.appInfos.realCameraParams.pitch * DEG_TO_RAD);
+
+	m_sharedContext.appInfos.realCameraParams.cameraY = m_sharedContext.appInfos.realCameraParams.verticalDistance;
+	theta = m_sharedContext.appInfos.realCameraParams.angleAroundPlayer;
+	offsetX = m_sharedContext.appInfos.realCameraParams.horizontalDistance * sin(theta * DEG_TO_RAD);
+	offsetZ = m_sharedContext.appInfos.realCameraParams.horizontalDistance * cos(theta * DEG_TO_RAD);
+
+	m_sharedContext.appInfos.realCameraParams.cameraX = -offsetX;
+	m_sharedContext.appInfos.realCameraParams.cameraZ = -offsetZ;
+	m_sharedContext.appInfos.realCameraParams.yaw = 180 - m_sharedContext.appInfos.realCameraParams.angleAroundPlayer;
+	m_realCameraMatrix = Mat4::CreateView(m_sharedContext.appInfos.realCameraParams.cameraX, m_sharedContext.appInfos.realCameraParams.cameraY, m_sharedContext.appInfos.realCameraParams.cameraZ, 0, 0, 0, 0, 1, 0);
 }
 
 void Application::UpdateLights()
