@@ -942,10 +942,10 @@ void Rasterizer::DrawTriangleForAntialiasing(Vertex& p_v0, Vertex& p_v1, Vertex&
 						{
 							for (uint8_t x = 0; x < 4; ++x)
 							{
-								const float samplePosX = positions.x + perX * (x);
-								const float samplePosY = positions.y + perY * (y);
+								const float samplePosX = positions.x + perX * x;
+								const float samplePosY = positions.y + perY * y;
 								const Vec3 barytest(triangle.Barycentric2(v0.position.x, v0.position.y, samplePosX, samplePosY));
-								if (barytest.x >= -0.001 && barytest.y >= -0.001 && barytest.x <= 1.005 && barytest.y <= 1.005 && barytest.x + barytest.y <= 1.011)
+								if (barytest.x >= -0.001 && barytest.y >= -0.001 && barytest.x < 1.008 && barytest.y < 1.008 && barytest.x + barytest.y < 1.011)
 								{
 									in++;
 								}
