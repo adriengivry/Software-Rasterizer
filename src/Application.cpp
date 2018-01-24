@@ -52,6 +52,9 @@ void Application::Update()
 	if (selectedVersion == 5 || selectedVersion == 6)							UpdateMeshTexture();
 	if (selectedVersion == 2 || selectedVersion == 3)							UpdateLights();
 	if (selectedVersion < 5 || selectedVersion == 6 || selectedVersion == 7)	UpdateMeshColor();
+	
+	if (m_sharedContext.appInfos.selectedVersion != 8)
+		m_sharedContext.appInfos.previousSelectedVersion = m_sharedContext.appInfos.selectedVersion;
 
 	UpdateMatrices();
 	UpdatePolygonCount();
@@ -342,7 +345,7 @@ void Application::UpdateZeldaAnimation()
 
 	if (zelda.timer >= 18.f)
 	{
-		m_sharedContext.appInfos.selectedVersion = 6;
+		m_sharedContext.appInfos.selectedVersion = m_sharedContext.appInfos.previousSelectedVersion;
 		m_sharedContext.RefreshScene();
 	}
 

@@ -249,29 +249,31 @@ void Rasterizer::RenderZelda(Scene* p_pScene)
 		}
 	}
 
+	Vertex lightposition = p_pScene->lights[0]->GetPosition();
+	Vec3 Lightcomp(1, 1, 1);
+	lightposition.VertexTransform(Mat4::CreatePerspective(60, float(m_rtexture.GetWidth()) / float(m_rtexture.GetHeight()), 0.1f, 100.0f));
 
 	for (int8_t entityID = 0; entityID < 4; ++entityID)
 	{
 		Mat4 normalMatrix = p_pScene->entities[entityID]->GetMatrix();
-		const Mat4 projection1 = Mat4::CreatePerspective(60, float(m_rtexture.GetWidth()) / float(m_rtexture.GetHeight()), 0.1f, 100.0f) * normalMatrix;
-		Mat4 normalMatrixTrans = normalMatrix.CreateTranspose();
-		normalMatrixTrans = normalMatrixTrans.CreateInverse();
-		Vec3 Lightcomp(1, p_pScene->lights[0]->GetDiffuse(), p_pScene->lights[0]->GetSpecular());
+		const Mat4 projection = Mat4::CreatePerspective(60, float(m_rtexture.GetWidth()) / float(m_rtexture.GetHeight()), 0.1f, 100.0f) * normalMatrix;
+		Mat4 normalMatrixTrans = normalMatrix.CreateInverse();
+		normalMatrixTrans = normalMatrixTrans.CreateTranspose();
 		for (int i = 0; i < p_pScene->entities[entityID]->GetMesh()->GetIndices().size() - 2; i += 3)
 		{
 			Vertex v0 = (p_pScene->entities[entityID]->GetMesh()->GetVertices()[p_pScene->entities[entityID]->GetMesh()->GetIndices()[i]]);
 			Vertex v1 = (p_pScene->entities[entityID]->GetMesh()->GetVertices()[p_pScene->entities[entityID]->GetMesh()->GetIndices()[i + 1]]);
 			Vertex v2 = (p_pScene->entities[entityID]->GetMesh()->GetVertices()[p_pScene->entities[entityID]->GetMesh()->GetIndices()[i + 2]]);
-			Vertex light1 = v0.FirstTransform(normalMatrix, normalMatrixTrans);
-			Vertex light2 = v1.FirstTransform(normalMatrix, normalMatrixTrans);
-			Vertex light3 = v2.FirstTransform(normalMatrix, normalMatrixTrans);
-			v0.VertexTransform(projection1);
-			v1.VertexTransform(projection1);
-			v2.VertexTransform(projection1);
+			v0.VertexTransform(projection);
+			v1.VertexTransform(projection);
+			v2.VertexTransform(projection);
+			v0.NormalTransform(normalMatrixTrans);
+			v1.NormalTransform(normalMatrixTrans);
+			v2.NormalTransform(normalMatrixTrans);
 			if (entityID > 2)
 				DrawTriangleTexture(v0, v1, v2, p_pScene->entities[entityID]->GetMesh()->GetImage());
 			else
-				DrawTrianglePhong(v0, v1, v2, light1, light2, light3, Lightcomp);
+				DrawTriangleBlinnPhong(v0, v1, v2, lightposition, Lightcomp);
 		}
 	}
 }

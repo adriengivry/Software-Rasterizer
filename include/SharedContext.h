@@ -272,6 +272,7 @@ struct ApplicationInfos
 	uint16_t fpsValues[10];
 	uint8_t fpsValuesBuffer = 0;
 	uint8_t selectedVersion = 1;
+	uint8_t previousSelectedVersion = 1;
 	uint8_t selectedLight = AMBIANT;
 	LightParams lightParams;
 	MeshParams meshParams;
