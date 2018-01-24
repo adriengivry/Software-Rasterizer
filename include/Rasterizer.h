@@ -40,8 +40,6 @@ public:
 	void ClearBuffer() const;
 	Color PhongColor(Vertex& p_position, Toolbox::Vec3& p_normal, Toolbox::Vec3& p_lightcomp, Color& p_color) const;
 	Color BlinnPhongColor(Toolbox::Vec3& p_position, Toolbox::Vec3& p_normal, Vertex& p_lightPosition, Toolbox::Vec3& p_lightcomp, Color& p_color) const;
-	void DrawSpan(const Span& p_span, float p_y) const;
-	void FillTriangle(const Edge& p_edge1, const Edge& p_edge2) const;
 
 private:
 	Texture& m_rtexture;

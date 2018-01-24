@@ -59,16 +59,6 @@ AABB& Triangle::GetAABB()
 	return m_aabb;
 }
 
-float Triangle::GetArea() const
-{
-	return	  m_v0.x * m_v1.y
-			- m_v1.x * m_v0.y
-			+ m_v1.x * m_v2.y
-			- m_v2.x * m_v1.y
-			+ m_v2.x * m_v0.y
-			- m_v0.x * m_v2.y;
-}
-
 float Triangle::CrossProduct(Vertex& p_v0, Vertex& p_v1, Vertex& p_v2)
 {
 	return	  (p_v1.position.x - p_v0.position.x)
@@ -90,44 +80,4 @@ Vec2& Triangle::getV1()
 Vec2& Triangle::getV2()
 {
 	return m_v2;
-}
-
-Edge::Edge(const float p_x1, const float p_y1, const float p_x2, const float p_y2, const Color & p_color1, const Color & p_color2)
-{
-	if (p_y1 < p_y2)
-	{
-		color1 = p_color1;
-		x1 = p_x1;
-		y1 = p_y1;
-		color2 = p_color2;
-		x2 = p_x2;
-		y2 = p_y2;
-	}
-	else
-	{
-		color1 = p_color2;
-		x1 = p_x2;
-		y1 = p_y2;
-		color2 = p_color1;
-		x2 = p_x1;
-		y2 = p_y1;
-	}
-}
-
-Span::Span(const float p_x1, const float p_x2, const Color & p_color1, const Color & p_color2)
-{
-	if (p_x1 < p_x2)
-	{
-		color1 = p_color1;
-		x1 = p_x1;
-		color2 = p_color2;
-		x2 = p_x2;
-	}
-	else
-	{
-		color1 = p_color2;
-		x1 = p_x2;
-		color2 = p_color1;
-		x2 = p_x1;
-	}
 }
