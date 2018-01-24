@@ -45,15 +45,15 @@ void Application::Update()
 
 	const uint8_t& selectedVersion = m_sharedContext.appInfos.selectedVersion;
 
-	if (selectedVersion == 8)													UpdateZeldaAnimation();
+	if (selectedVersion == 0)													UpdateZeldaAnimation();
 	if (selectedVersion == 6)													UpdateAlphaBlendingAnimation();
 	if (selectedVersion != 8)													UpdateCamera();
 	if (selectedVersion >= 1 && selectedVersion <= 3)							UpdateAASelection();
 	if (selectedVersion == 5 || selectedVersion == 6)							UpdateMeshTexture();
 	if (selectedVersion == 2 || selectedVersion == 3)							UpdateLights();
-	if (selectedVersion < 5 || selectedVersion == 6 || selectedVersion == 7)	UpdateMeshColor();
+	if (selectedVersion != 0 && (selectedVersion < 5 || selectedVersion >= 6))	UpdateMeshColor();
 	
-	if (m_sharedContext.appInfos.selectedVersion != 8)
+	if (m_sharedContext.appInfos.selectedVersion != 0)
 		m_sharedContext.appInfos.previousSelectedVersion = m_sharedContext.appInfos.selectedVersion;
 
 	UpdateMatrices();
@@ -94,7 +94,7 @@ void Application::RenderScene()
 		case 5: m_rasterizer.RenderTexture(&m_scene);			break;
 		case 6: m_rasterizer.RenderAlphaBlending(&m_scene);		break;
 		case 7: m_rasterizer.RenderAntialiasing(&m_scene);		break;
-		case 8: m_rasterizer.RenderZelda(&m_scene);				break;
+		case 0: m_rasterizer.RenderZelda(&m_scene);				break;
 	}
 }
 
@@ -102,8 +102,8 @@ void Application::UpdateMatrices()
 {
 	switch (m_sharedContext.appInfos.selectedVersion)
 	{
-		case 8:																		break;
 		default:	m_scene.entities[0]->SetMatrix(m_defaultCameraMatrix);			break;
+		case 0:																		break;
 		case 5:		m_scene.entities[0]->SetMatrix(m_defaultCameraMatrix);			break;
 		case 7:		m_scene.entities[0]->SetMatrix(m_antialiasingCameraMatrix);		break;
 		case 6:		m_scene.entities[0]->SetMatrix(m_alphablendingAnimationMatrix);

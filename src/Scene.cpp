@@ -82,7 +82,7 @@ void Scene::InitMeshes(const uint8_t p_rasterizerVersion, uint8_t p_meshMode)
 	{
 		meshes.insert(std::pair<std::string, Mesh*>("TRIANGLE", Mesh::CreateTriangle()));
 	}
-	else if (p_rasterizerVersion == 8)
+	else if (p_rasterizerVersion == 0)
 	{
 		meshes.insert(std::pair<std::string, Mesh*>("TRIANGLE", Mesh::CreateZelda()));
 		meshes.insert(std::pair<std::string, Mesh*>("CUBE_WITH_TEXTURE", Mesh::CreateTextureCube()));
@@ -153,7 +153,7 @@ void Scene::InitEntities(uint8_t p_rasterizerVersion, uint8_t p_meshMode)
 		triangle->SetColor(255, 0, 0);
 		entities.push_back(triangle);
 	}
-	else if (p_rasterizerVersion == 8)
+	else if (p_rasterizerVersion == 0)
 	{
 		for (uint8_t i = 0; i < 3; ++i)
 		{

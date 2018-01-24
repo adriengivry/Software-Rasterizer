@@ -37,7 +37,7 @@ void UserInterface::Update()
 
 void UserInterface::Draw()
 {
-	if (m_sharedContext.appInfos.selectedVersion != 8)
+	if (m_sharedContext.appInfos.selectedVersion != 0)
 	{
 		DrawFPS();
 		DrawHelp();
