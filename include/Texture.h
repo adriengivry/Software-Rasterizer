@@ -13,7 +13,7 @@ public:
 
 	void SetPixelColor(const uint16_t p_x, const uint16_t p_y, Color& p_color) const;
 	Color GetPixelColor(const uint16_t p_x, const uint16_t p_y) const;
-	static Color CalculatePixelColor(const uint32_t p_pixel);
+	Color CalculatePixelColor(const uint32_t& p_pixel) const;
 	uint16_t GetWidth() const;
 	uint16_t GetHeight() const;
 	Color* GetColor() const;

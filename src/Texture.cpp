@@ -28,13 +28,16 @@ Color Texture::GetPixelColor(const uint16_t p_x, const uint16_t p_y) const
 	return CalculatePixelColor(pixel);
 }
 
-Color Texture::CalculatePixelColor(const uint32_t p_pixel)
+Color Texture::CalculatePixelColor(const uint32_t& p_pixel) const
 {
 	Color result;
-	result.r = static_cast<uint8_t>(p_pixel >> 8);
-	result.g = static_cast<uint8_t>(p_pixel >> 16);
-	result.b = static_cast<uint8_t>(p_pixel >> 24);
-	result.a = 255.0f;
+	const uint8_t r = static_cast<uint8_t>(p_pixel >> 8);
+	const uint8_t g = static_cast<uint8_t>(p_pixel >> 16);
+	const uint8_t b = static_cast<uint8_t>(p_pixel >> 24);
+	
+	result.r = static_cast<float>(r);
+	result.g = static_cast<float>(g);
+	result.b = static_cast<float>(b);
 	return result;
 }
 

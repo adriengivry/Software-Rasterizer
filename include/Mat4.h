@@ -256,9 +256,9 @@ namespace Toolbox
 	inline Mat4 Mat4::CreateRotation(const float p_xAngle, const float p_yAngle, const float p_zAngle)
 	{
 		Mat4 xRot, yRot, zRot;
-		const float xRad = p_xAngle * M_PI / 180.0f;
-		const float yRad = p_yAngle * M_PI / 180.0f;
-		const float zRad = p_zAngle * M_PI / 180.0f;
+		const float xRad = static_cast<float>(p_xAngle * M_PI / 180.0f);
+		const float yRad = static_cast<float>(p_yAngle * M_PI / 180.0f);
+		const float zRad = static_cast<float>(p_zAngle * M_PI / 180.0f);
 
 		xRot.m_matrix[1][1] = cos(xRad);
 		xRot.m_matrix[1][2] = -sin(xRad);

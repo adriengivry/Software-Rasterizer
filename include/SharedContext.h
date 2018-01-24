@@ -252,7 +252,7 @@ struct Zelda
 		const uint8_t zTranslationOffset = 30;
 		mat4_x_rotation = 0;
 		mat4_y_rotation = 0;
-		mat4_x = -1.73 - xTranslationOffset;
+		mat4_x = -1.73f - xTranslationOffset;
 		mat4_y = -1.5f - yTranslationOffset;
 		mat4_z = -15.f - zTranslationOffset;
 

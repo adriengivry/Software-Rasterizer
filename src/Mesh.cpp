@@ -251,13 +251,13 @@ Mesh* Mesh::CreateSphere(int p_latitudeCount, int p_longitudeCount)
 	int index = 0;
 	for(float latNumber = 0; latNumber <= p_latitudeCount; latNumber++)
 	{
-		float theta = latNumber * M_PI / p_latitudeCount;
+		float theta = static_cast<float>(latNumber * M_PI / p_latitudeCount);
 		float sinTheta = sin(theta);
 		float cosTheta = cos(theta);
 
 		for(float longNumber = 0; longNumber <= p_longitudeCount; longNumber++)
 		{
-			float phi = longNumber * 2 * M_PI / p_longitudeCount;
+			float phi = static_cast<float>(longNumber * 2 * M_PI / p_longitudeCount);
 			float sinPhi = sin(phi);
 			float cosPhi = cos(phi);
 
@@ -303,9 +303,9 @@ Mesh* Mesh::CreateSphere(int p_latitudeCount, int p_longitudeCount)
 Mesh* Mesh::CreateTriangle()
 {
 	Mesh* Triangle = new Mesh();
-	Triangle->m_vertices.push_back(Vertex(sqrt(3), -1, 0));
+	Triangle->m_vertices.push_back(Vertex(sqrtf(3), -1, 0));
 	Triangle->m_vertices.push_back(Vertex(0, 2, 0));
-	Triangle->m_vertices.push_back(Vertex(-sqrt(3), -1, 0));
+	Triangle->m_vertices.push_back(Vertex(-sqrtf(3), -1, 0));
 	Triangle->m_indices.push_back(0);
 	Triangle->m_indices.push_back(2);
 	Triangle->m_indices.push_back(1);
@@ -316,17 +316,17 @@ Mesh* Mesh::CreateZelda()
 {
 	Mesh* Triangle = new Mesh();
 
-	const Vec3 v0(0, 2, 0.5);
-	const Vec3 v1(sqrt(3), -1, 0.5);
-	const Vec3 v2(-sqrt(3), -1, 0.5);
-	const Vec3 v3(0, 2, -0.5);
-	const Vec3 v4(-sqrt(3), -1, -0.5);
-	const Vec3 v5(sqrt(3), -1, -0.5);
+	const Vec3 v0(0, 2, 0.5f);
+	const Vec3 v1(sqrtf(3), -1, 0.5f);
+	const Vec3 v2(-sqrtf(3), -1, 0.5f);
+	const Vec3 v3(0, 2, -0.5f);
+	const Vec3 v4(-sqrtf(3), -1, -0.5f);
+	const Vec3 v5(sqrtf(3), -1, -0.5f);
 
-	const Vec2 c0(0.5, 0);
+	const Vec2 c0(0.5f, 0);
 	const Vec2 c1(0, 1);
 	const Vec2 c2(1, 1);
-	const Vec2 textureCenter(0.5, 0.8);
+	const Vec2 textureCenter(0.5f, 0.8f);
 
 	Triangle->m_vertices.emplace_back(v0, c0); // 0
 	Triangle->m_vertices.emplace_back(v1, c1); // 1

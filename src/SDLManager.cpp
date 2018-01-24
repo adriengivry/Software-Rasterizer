@@ -22,7 +22,7 @@ void SDLManager::Setup()
 
 	const int flag = IMG_INIT_PNG;
 	const int initted = IMG_Init(flag);
-	if (initted&flag != flag)
+	if ((initted&flag) != flag)
 	{
 		SDL_LOG("Failed to Init Image");
 		return;

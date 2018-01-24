@@ -324,9 +324,9 @@ void Application::UpdateAASelection()
 
 void Application::UpdateFPSCount()
 {
-	m_sharedContext.appInfos.currentTime = SDL_GetTicks();
+	m_sharedContext.appInfos.currentTime = static_cast<float>(SDL_GetTicks());
 	m_sharedContext.appInfos.deltaTime = (m_sharedContext.appInfos.currentTime - m_sharedContext.appInfos.lastTime) / 1000;
-	m_sharedContext.appInfos.fpsCounter = 1.f / m_sharedContext.appInfos.deltaTime;
+	m_sharedContext.appInfos.fpsCounter = static_cast<uint16_t>(1.f / m_sharedContext.appInfos.deltaTime);
 
 	m_sharedContext.appInfos.fpsValues[m_sharedContext.appInfos.fpsValuesBuffer] = m_sharedContext.appInfos.fpsCounter;
 
@@ -445,12 +445,12 @@ void Application::UpdateZeldaAnimation()
 	const Mat4 matrix7 =
 		Mat4::CreateTranslation(0, 0, zelda.mat7_z) *
 		Mat4::CreateRotation(0, 0, 180) *
-		Mat4::CreateScale(11, 7, 0.2);
+		Mat4::CreateScale(11, 7, 0.2f);
 
 	const Mat4 matrix8 =
 		Mat4::CreateTranslation(0, zelda.mat8_y, -10) *
 		Mat4::CreateRotation(0, 0, 180) *
-		Mat4::CreateScale(11, 7, 0.2);
+		Mat4::CreateScale(11, 7, 0.2f);
 
 	m_scene.entities[0]->SetMatrix(matrix4);
 	m_scene.entities[1]->SetMatrix(matrix5);
@@ -463,7 +463,7 @@ void Application::UpdatePolygonCount()
 {
 	m_sharedContext.appInfos.polygons = 0;
 	for (auto & entitie : m_sharedContext.scene->entities)
-		m_sharedContext.appInfos.polygons += entitie->GetMesh()->GetIndices().size();
+		m_sharedContext.appInfos.polygons += static_cast<uint16_t>(entitie->GetMesh()->GetIndices().size());
 	m_sharedContext.appInfos.polygons /= 3;
 }
 
