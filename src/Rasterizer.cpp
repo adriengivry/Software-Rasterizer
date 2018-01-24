@@ -30,21 +30,56 @@ void Rasterizer::Close()
 void Rasterizer::RenderScene(Scene * p_pScene)
 {
 	m_zBufferOn = true;
-
-	for (uint8_t entityID = 0; entityID < m_sharedContext.scene->entities.size(); ++entityID)
-	{	
-		const Mat4 normalMatrix = p_pScene->entities[entityID]->GetMatrix();
-		const Mat4 positionMatrix = Mat4::CreatePerspective(60, float(m_rtexture.GetWidth()) / float(m_rtexture.GetHeight()), 0.1f, 100.0f) * normalMatrix;
-		for (int i = 0; i < p_pScene->entities[0]->GetMesh()->GetIndices().size() - 2; i += 3)
+	switch (m_sharedContext.appInfos.selectedAA)
+	{
+	case NOAA:
+		for (uint8_t entityID = 0; entityID < m_sharedContext.scene->entities.size(); ++entityID)
 		{
-			Vertex v0 = (p_pScene->entities[entityID]->GetMesh()->GetVertices()[p_pScene->entities[entityID]->GetMesh()->GetIndices()[i]]);
-			Vertex v1 = (p_pScene->entities[entityID]->GetMesh()->GetVertices()[p_pScene->entities[entityID]->GetMesh()->GetIndices()[i + 1]]);
-			Vertex v2 = (p_pScene->entities[entityID]->GetMesh()->GetVertices()[p_pScene->entities[entityID]->GetMesh()->GetIndices()[i + 2]]);
-			v0.VertexTransform(positionMatrix);
-			v1.VertexTransform(positionMatrix);
-			v2.VertexTransform(positionMatrix);
-			DrawTriangle(v0, v1, v2);
+			const Mat4 normalMatrix = p_pScene->entities[entityID]->GetMatrix();
+			const Mat4 positionMatrix = Mat4::CreatePerspective(60, float(m_rtexture.GetWidth()) / float(m_rtexture.GetHeight()), 0.1f, 100.0f) * normalMatrix;
+			for (int i = 0; i < p_pScene->entities[0]->GetMesh()->GetIndices().size(); i += 3)
+			{
+				Vertex v0 = (p_pScene->entities[entityID]->GetMesh()->GetVertices()[p_pScene->entities[entityID]->GetMesh()->GetIndices()[i]]);
+				Vertex v1 = (p_pScene->entities[entityID]->GetMesh()->GetVertices()[p_pScene->entities[entityID]->GetMesh()->GetIndices()[i + 1]]);
+				Vertex v2 = (p_pScene->entities[entityID]->GetMesh()->GetVertices()[p_pScene->entities[entityID]->GetMesh()->GetIndices()[i + 2]]);
+				v0.VertexTransform(positionMatrix);
+				v1.VertexTransform(positionMatrix);
+				v2.VertexTransform(positionMatrix);
+				DrawTriangle(v0, v1, v2);
+			}
 		}
+	break;
+	
+	case AA8X:
+		for (uint8_t entityID = 0; entityID < m_sharedContext.scene->entities.size(); ++entityID)
+		{
+			const Mat4 normalMatrix = p_pScene->entities[entityID]->GetMatrix();
+			const Mat4 positionMatrix = Mat4::CreatePerspective(60, float(m_rtexture.GetWidth()) / float(m_rtexture.GetHeight()), 0.1f, 100.0f) * normalMatrix;
+			for (int i = 0; i < p_pScene->entities[0]->GetMesh()->GetIndices().size(); i += 3)
+			{
+				Vertex v0 = (p_pScene->entities[entityID]->GetMesh()->GetVertices()[p_pScene->entities[entityID]->GetMesh()->GetIndices()[i]]);
+				Vertex v1 = (p_pScene->entities[entityID]->GetMesh()->GetVertices()[p_pScene->entities[entityID]->GetMesh()->GetIndices()[i + 1]]);
+				Vertex v2 = (p_pScene->entities[entityID]->GetMesh()->GetVertices()[p_pScene->entities[entityID]->GetMesh()->GetIndices()[i + 2]]);
+				v0.VertexTransform(positionMatrix);
+				v1.VertexTransform(positionMatrix);
+				v2.VertexTransform(positionMatrix);
+				DrawTriangle(v0, v1, v2);
+			}
+
+			for (int i = 0; i < p_pScene->entities[0]->GetMesh()->GetIndices().size(); i += 3)
+			{
+				Vertex v0 = (p_pScene->entities[entityID]->GetMesh()->GetVertices()[p_pScene->entities[entityID]->GetMesh()->GetIndices()[i]]);
+				Vertex v1 = (p_pScene->entities[entityID]->GetMesh()->GetVertices()[p_pScene->entities[entityID]->GetMesh()->GetIndices()[i + 1]]);
+				Vertex v2 = (p_pScene->entities[entityID]->GetMesh()->GetVertices()[p_pScene->entities[entityID]->GetMesh()->GetIndices()[i + 2]]);
+				v0.VertexTransform(positionMatrix);
+				v1.VertexTransform(positionMatrix);
+				v2.VertexTransform(positionMatrix);
+				DrawTriangleForAntialiasing(v0, v1, v2);
+			}
+		}
+		break;
+
+	default: break;
 	}
 }
 
@@ -350,7 +385,13 @@ void Rasterizer::DrawTriangle(Vertex& p_v0, Vertex& p_v1, Vertex& p_v2) const
 	Vertex v0(Mat4::ConvertToScreen(p_v0.position, m_rtexture.GetWidth(), m_rtexture.GetHeight()));
 	Vertex v1(Mat4::ConvertToScreen(p_v1.position, m_rtexture.GetWidth(), m_rtexture.GetHeight()));
 	Vertex v2(Mat4::ConvertToScreen(p_v2.position, m_rtexture.GetWidth(), m_rtexture.GetHeight()));
-
+	
+	Vec2 v(v1.position.x - v0.position.x, v1.position.y - v0.position.y);
+	const Vec2 w(v2.position.x - v0.position.x, v2.position.y - v0.position.y);
+	const float area = v.Cross(w);
+	if (area < 0)
+		return;
+	
 	Triangle triangle(v0, v1, v2);
 	const AABB box = triangle.GetAABB();
 	const int minX = std::max(static_cast<int>(box.minPoint.x), 0);
@@ -364,7 +405,7 @@ void Rasterizer::DrawTriangle(Vertex& p_v0, Vertex& p_v1, Vertex& p_v2) const
 		for (positions.x = minX; positions.x <= maxX; ++positions.x)
 		{
 			const Vec3 bary(triangle.Barycentric2(v0.position.x, v0.position.y, positions.x, positions.y));
-			if (bary.x >= 0 && bary.y >= 0 && bary.x + bary.y < 1)
+			if (bary.x >= 0.0 && bary.y >= 0.0 && bary.x + bary.y <= 1.0)
 			{
 				positions.z = v0.position.z * bary.z + v1.position.z * bary.x + bary.y * v2.position.z;
 				if (m_zBuffer[int(positions.x + positions.y * Window::WIDTH)] > positions.z)
@@ -835,6 +876,75 @@ void Rasterizer::DrawTriangle16XAntialiasing(Vertex& p_v0, Vertex& p_v1, Vertex&
 				m_rtexture.SetPixelColor(int(positions.x), int(positions.y), final);
 				in = 0;
 				out = 0;
+			}
+		}
+	}
+}
+
+void Rasterizer::DrawTriangleForAntialiasing(Vertex& p_v0, Vertex& p_v1, Vertex& p_v2) const
+{
+	Vertex v0(Mat4::ConvertToScreen(p_v0.position, m_rtexture.GetWidth(), m_rtexture.GetHeight()));
+	Vertex v1(Mat4::ConvertToScreen(p_v1.position, m_rtexture.GetWidth(), m_rtexture.GetHeight()));
+	Vertex v2(Mat4::ConvertToScreen(p_v2.position, m_rtexture.GetWidth(), m_rtexture.GetHeight()));
+	Vec2 v(v1.position.x - v0.position.x, v1.position.y - v0.position.y);
+	const Vec2 w(v2.position.x - v0.position.x, v2.position.y - v0.position.y);
+	const float area = v.Cross(w);
+	if (area < 0)
+		return;
+
+	Triangle triangle(v0, v1, v2);
+	const AABB box = triangle.GetAABB();
+	const int minX = std::max(static_cast<int>(box.minPoint.x), 0);
+	const int minY = std::max(static_cast<int>(box.minPoint.y), 0);
+	const int maxX = std::min(static_cast<int>(box.maxPoint.x), m_rtexture.GetWidth() - 1);
+	const int maxY = std::min(static_cast<int>(box.maxPoint.y), m_rtexture.GetHeight() - 1);
+	float in = 0;
+	float out = 0;
+	float perX = 1.f / 4;
+	float perY = 1.f / 4;
+	Vec3 positions(0, 0, 0);
+	for (positions.y = minY; positions.y <= maxY ; ++positions.y)
+	{
+		for (positions.x = minX; positions.x <= maxX ; ++positions.x)
+		{
+			const Vec3 bary(triangle.Barycentric2(v0.position.x, v0.position.y, positions.x, positions.y));
+			if (bary.x > -0.02 && bary.y > -0.02 && bary.x + bary.y < 1.02)
+			{
+				positions.z = v0.position.z * bary.z + v1.position.z * bary.x + bary.y * v2.position.z;
+				if (m_zBuffer[int(positions.x + positions.y * Window::WIDTH)] > positions.z)
+				{
+					m_zBuffer[int(positions.x + positions.y * Window::WIDTH)] = positions.z;
+					Color current = m_rtexture.GetPixelColor(positions.x, positions.y);
+					if(current.r == 0.f && current.g == 0.f && current.b == 0.f)
+					{
+						for (uint8_t y = 0; y < 4; ++y)
+						{
+							for (uint8_t x = 0; x < 4; ++x)
+							{
+								float samplePosX = positions.x + perX * (x + 1);
+								float samplePosY = positions.y + perY * (y + 1);
+								const Vec3 barytest(triangle.Barycentric2(v0.position.x, v0.position.y, samplePosX, samplePosY));
+								if (barytest.x >= -0.01f && barytest.y >= -0.01f && barytest.x + barytest.y < 1.013f)
+								{
+									in++;
+								}
+								else
+								{
+									out++;
+								}
+							}
+						}
+						float average = in / (in + out);
+						Color final;
+						final.r = p_v0.color.r * average;
+						final.g = p_v0.color.g * average;
+						final.b = p_v0.color.b * average;
+						final.a = 255.0;
+						m_rtexture.SetPixelColor(int(positions.x), int(positions.y), final);
+						in = 0;
+						out = 0;
+					}
+				}
 			}
 		}
 	}

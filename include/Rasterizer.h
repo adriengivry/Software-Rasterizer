@@ -35,6 +35,7 @@ public:
 	void DrawTriangle4XAntialiasing(Vertex& p_v0, Vertex& p_v1, Vertex& p_v2) const;
 	void DrawTriangle8XAntialiasing(Vertex& p_v0, Vertex& p_v1, Vertex& p_v2) const;
 	void DrawTriangle16XAntialiasing(Vertex& p_v0, Vertex& p_v1, Vertex& p_v2) const;
+	void DrawTriangleForAntialiasing(Vertex& p_v0, Vertex& p_v1, Vertex& p_v2) const;
 	void ClearBuffer() const;
 	Color PhongColor(Vertex& p_position, Toolbox::Vec3& p_normal, Toolbox::Vec3& p_lightcomp, Color& p_color) const;
 	Color BlinnPhongColor(Toolbox::Vec3& p_position, Toolbox::Vec3& p_normal, Vertex& p_lightPosition, Toolbox::Vec3& p_lightcomp, Color& p_color) const;
