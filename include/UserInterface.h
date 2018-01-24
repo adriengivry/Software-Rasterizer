@@ -38,5 +38,5 @@ private:
 	Color m_textColor;
 	SharedContext& m_sharedContext;
 
-	std::string m_labelsVersions[8];
+	std::string m_labelsVersions[9];
 };

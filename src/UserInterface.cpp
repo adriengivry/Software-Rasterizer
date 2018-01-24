@@ -29,6 +29,7 @@ void UserInterface::Setup()
 	m_labelsVersions[5] = "[5] Bilinear filtering";
 	m_labelsVersions[6] = "[6] Alpha-Blending";
 	m_labelsVersions[7] = "[7] Anti-aliasing";
+	m_labelsVersions[8] = "[8] Real Camera";
 }
 
 void UserInterface::Update()
@@ -134,18 +135,18 @@ void UserInterface::DrawSceneInfo()
 
 void UserInterface::DrawVersionSelection()
 {
-	for (uint8_t i = 0; i < 8; ++i)
+	for (uint8_t i = 0; i < 9; ++i)
 	{
 		SetTextDefaultColor();
 		if (i == m_sharedContext.appInfos.selectedVersion) SetTextSelectedColor();
 		if (i == 0) SetTextTitleColor();
-		DrawAt(m_labelsVersions[i], 0, 147 + i * 20);
+		DrawAt(m_labelsVersions[i], 0, 127 + i * 20);
 	}
 }
 
 void UserInterface::DrawMeshProperties()
 {
-	if (m_sharedContext.appInfos.selectedVersion < 5 || m_sharedContext.appInfos.selectedVersion == 7)
+	if (m_sharedContext.appInfos.selectedVersion < 5 || m_sharedContext.appInfos.selectedVersion >= 7)
 	{
 		std::string items[] =
 		{

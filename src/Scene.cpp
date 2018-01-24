@@ -47,7 +47,7 @@ void Scene::ClearScene()
 
 void Scene::InitMeshes(const uint8_t p_rasterizerVersion, uint8_t p_meshMode)
 {
-	if (p_rasterizerVersion >= 1 && p_rasterizerVersion <= 2 || p_rasterizerVersion == 4)
+	if ((p_rasterizerVersion >= 1 && p_rasterizerVersion <= 2) || p_rasterizerVersion == 4 || p_rasterizerVersion == 8)
 	{
 		if (p_meshMode == CUBE)
 			meshes.insert(std::pair<std::string, Mesh*>("CUBE", Mesh::CreateCube()));
@@ -91,7 +91,7 @@ void Scene::InitMeshes(const uint8_t p_rasterizerVersion, uint8_t p_meshMode)
 
 void Scene::InitEntities(uint8_t p_rasterizerVersion, uint8_t p_meshMode)
 {
-	if (p_rasterizerVersion >= 1 && p_rasterizerVersion <= 4)
+	if ((p_rasterizerVersion >= 1 && p_rasterizerVersion <= 4) || p_rasterizerVersion == 8)
 	{
 		Entity* entity = new Entity();
 

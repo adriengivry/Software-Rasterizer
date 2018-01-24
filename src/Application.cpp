@@ -48,6 +48,7 @@ void Application::Update()
 	if (selectedVersion == 0)													UpdateZeldaAnimation();
 	if (selectedVersion == 6)													UpdateAlphaBlendingAnimation();
 	if (selectedVersion != 8)													UpdateCamera();
+	if (selectedVersion == 8)													UpdateRealCamera();
 	if (selectedVersion >= 1 && selectedVersion <= 3)							UpdateAASelection();
 	if (selectedVersion == 5 || selectedVersion == 6)							UpdateMeshTexture();
 	if (selectedVersion == 2 || selectedVersion == 3)							UpdateLights();
@@ -94,6 +95,7 @@ void Application::RenderScene()
 		case 5: m_rasterizer.RenderTexture(&m_scene);			break;
 		case 6: m_rasterizer.RenderAlphaBlending(&m_scene);		break;
 		case 7: m_rasterizer.RenderAntialiasing(&m_scene);		break;
+		case 8: /* TODO: ADD REAL CAMERA METHOD HERE */			break;
 		case 0: m_rasterizer.RenderZelda(&m_scene);				break;
 	}
 }
@@ -108,6 +110,7 @@ void Application::UpdateMatrices()
 		case 7:		m_scene.entities[0]->SetMatrix(m_antialiasingCameraMatrix);		break;
 		case 6:		m_scene.entities[0]->SetMatrix(m_alphablendingAnimationMatrix);
 					m_scene.entities[1]->SetMatrix(m_defaultCameraMatrix);
+		case 8:																		break;
 	}
 }
 
@@ -188,6 +191,11 @@ void Application::UpdateCamera()
 	}
 }
 
+void Application::UpdateRealCamera()
+{
+	// TODO: Update real camera
+}
+
 void Application::UpdateLights()
 {
 	if (m_sharedContext.appInfos.selectedVersion >= 2 || m_sharedContext.appInfos.selectedVersion <= 3)
@@ -219,7 +227,7 @@ void Application::UpdateLights()
 
 void Application::UpdateMeshColor()
 {
-	if (m_sharedContext.appInfos.selectedVersion < 5 || m_sharedContext.appInfos.selectedVersion == 7)
+	if (m_sharedContext.appInfos.selectedVersion < 5 || m_sharedContext.appInfos.selectedVersion >= 7)
 	{
 		float redOffset = 0;
 		float greenOffset = 0;
