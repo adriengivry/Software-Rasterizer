@@ -1022,7 +1022,6 @@ Color Rasterizer::BlinnPhongColor(Vec3& p_position, Vec3& p_normal, Vertex& p_li
 		specular = powf(specAngle, 40.0);
 	}
 
-	// TODO: Put ambiant, diff and spec values in the appInfos and add the possibility to change it "in-game"
 	Color amb, diff, spec;
 	amb.r = p_color.r * m_sharedContext.appInfos.lightParams.ambiant / 100.f * p_lightcomp.x;
 	amb.g = p_color.g * m_sharedContext.appInfos.lightParams.ambiant / 100.f * p_lightcomp.x;
