@@ -76,6 +76,7 @@ inline Color Color::operator+(const Color& p_color) const
 	temp.a = 254.99f;
 	return temp;
 }
+
 inline Color Color::operator-(const Color& p_color) const
 {
 	Color temp;
@@ -89,6 +90,7 @@ inline Color Color::operator-(const Color& p_color) const
 	temp.a = 254.99f;
 	return temp;
 }
+
 inline Color Color::operator*(const float p_scale) const
 {
 	Color temp;

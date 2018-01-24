@@ -21,4 +21,3 @@ private:
 	Toolbox::Mat4 m_transformation;
 	float m_alpha;
 };
-

@@ -21,5 +21,4 @@ private:
     int m_imagePitch;
     int m_imageWidth;
     int m_imageHeight;
-
 };

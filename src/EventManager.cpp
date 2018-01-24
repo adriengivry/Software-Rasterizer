@@ -205,7 +205,6 @@ void EventManager::KeyInput(const SDL_Keysym& p_key, const bool p_state) const
 	}
 }
 
-
 void EventManager::Close()
 {
 }

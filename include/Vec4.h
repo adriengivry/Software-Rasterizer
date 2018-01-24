@@ -22,7 +22,6 @@ namespace Toolbox
 		Vec4& operator/=(const float p_scale);
 	};
 
-
 	inline Vec4::Vec4(const Vec3& p_vec3, const float p_w)
 	{
 		this->x = p_vec3.x;

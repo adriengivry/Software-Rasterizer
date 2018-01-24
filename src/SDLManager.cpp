@@ -27,7 +27,6 @@ void SDLManager::Setup()
 		SDL_LOG("Failed to Init Image");
 		return;
 	}
-
 	m_initSuccess = true;
 }
 

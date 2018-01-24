@@ -154,6 +154,7 @@ struct RealCameraParams
 		cameraZ = 10;
 	}
 };
+
 struct KeyHistory
 {
 	SDL_Keycode keys[10];
