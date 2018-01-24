@@ -311,6 +311,7 @@ struct ApplicationInfos
 		lightParams.Reset();
 		meshParams.Reset();
 		cameraParams.Reset();
+		realCameraParams.Reset();
 	}
 };
 
