@@ -14,6 +14,7 @@ public:
     static Mesh* CreateSphere(const int p_latitudeCount,const int p_longitudeCount);
 	static Mesh* CreateTriangle();
 	static Mesh* CreateZelda();
+	static Mesh* CreateWave();
 	std::vector<Vertex>& GetVertices();
 	std::vector<uint32_t>& GetIndices();
 

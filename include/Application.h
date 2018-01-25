@@ -18,7 +18,6 @@ public:
 	void RenderScene();
 	void UpdateMatrices();
 	void UpdateCamera();
-	void UpdateRealCamera();
 	void UpdateLights();
 	void UpdateMeshColor();
 	void UpdateMeshTexture() const;
@@ -41,7 +40,6 @@ private:
 	EventManager* m_eventManager;
 	Window m_window;
 	Toolbox::Mat4 m_defaultCameraMatrix;
-	Toolbox::Mat4 m_realCameraMatrix;
 	Toolbox::Mat4 m_antialiasingCameraMatrix;
 	Toolbox::Mat4 m_alphablendingAnimationMatrix;
 	irrklang::ISoundEngine* m_soundEngine;

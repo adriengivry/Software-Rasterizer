@@ -29,7 +29,7 @@ void UserInterface::Setup()
 	m_labelsVersions[5] = "[5] Bilinear filtering";
 	m_labelsVersions[6] = "[6] Alpha-Blending";
 	m_labelsVersions[7] = "[7] Anti-aliasing";
-	m_labelsVersions[8] = "[8] Real Camera";
+	m_labelsVersions[8] = "[8] Wave Movement";
 }
 
 void UserInterface::Update()
@@ -87,34 +87,7 @@ void UserInterface::DrawCameraParams()
 {
 	uint8_t thingsToShow;
 
-	if (m_sharedContext.appInfos.selectedVersion == 8)
-	{
-		thingsToShow = 10;
-		std::string realCameraParams[] =
-		{
-			"Camera Parameters",
-			"Dist.from object: " + std::to_string(m_sharedContext.appInfos.realCameraParams.distanceFromObject),
-			"Horiz. distance: " + std::to_string(m_sharedContext.appInfos.realCameraParams.horizontalDistance),
-			"Vert. distance: " + std::to_string(m_sharedContext.appInfos.realCameraParams.verticalDistance),
-			"Yaw: " + std::to_string(m_sharedContext.appInfos.realCameraParams.yaw),
-			"Pitch: " + std::to_string(m_sharedContext.appInfos.realCameraParams.pitch),
-			"Angle around player: " + std::to_string(m_sharedContext.appInfos.realCameraParams.angleAroundPlayer),
-			"Camera-X: " + std::to_string(m_sharedContext.appInfos.realCameraParams.cameraX),
-			"Camera-Y: " + std::to_string(m_sharedContext.appInfos.realCameraParams.cameraY),
-			"Camera-Z: " + std::to_string(m_sharedContext.appInfos.realCameraParams.cameraZ)
-		};
-
-		for (uint8_t i = 0; i < thingsToShow; ++i)
-		{
-			if (i == 0)
-				SetTextTitleColor();
-			else
-				SetTextSelectedColor();
-			DrawAt(realCameraParams[i], 350, i * 15, m_smallFont);
-		}
-	}
-	else
-	{
+	
 		std::string cameraParams[] =
 		{
 			"Camera Parameters",
@@ -135,7 +108,6 @@ void UserInterface::DrawCameraParams()
 				SetTextSelectedColor();
 			DrawAt(cameraParams[i], 350, i * 15, m_smallFont);
 		}
-	}
 }
 
 void UserInterface::DrawSceneInfo()

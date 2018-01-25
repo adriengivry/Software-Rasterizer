@@ -18,6 +18,7 @@ Scene::Scene()
 	zeldaImage = new Image("../assets/textures/zelda/logo.png");
 	transparent = new Image("../assets/textures/zelda/transparent.png");
 	background = new Image("../assets/textures/zelda/background.png");
+	waterWave = new Image("../assets/textures/wave/water.png");
 }
 
 Scene::~Scene()
@@ -31,6 +32,9 @@ Scene::~Scene()
 		delete texture;
 
 	delete zeldaImage;	
+	delete transparent;
+	delete background;
+	delete waterWave;
 }
 
 void Scene::ClearScene()
@@ -47,7 +51,7 @@ void Scene::ClearScene()
 
 void Scene::InitMeshes(const uint8_t p_rasterizerVersion, const uint8_t p_meshMode)
 {
-	if ((p_rasterizerVersion >= 1 && p_rasterizerVersion <= 2) || p_rasterizerVersion == 4 || p_rasterizerVersion == 8)
+	if ((p_rasterizerVersion >= 1 && p_rasterizerVersion <= 2) || p_rasterizerVersion == 4)
 	{
 		if (p_meshMode == CUBE)
 			meshes.insert(std::pair<std::string, Mesh*>("CUBE", Mesh::CreateCube()));
@@ -86,6 +90,10 @@ void Scene::InitMeshes(const uint8_t p_rasterizerVersion, const uint8_t p_meshMo
 	{
 		meshes.insert(std::pair<std::string, Mesh*>("TRIANGLE", Mesh::CreateZelda()));
 		meshes.insert(std::pair<std::string, Mesh*>("CUBE_WITH_TEXTURE", Mesh::CreateTextureCube()));
+	}
+	else if (p_rasterizerVersion == 8)
+	{
+		meshes.insert(std::pair<std::string, Mesh*>("WAVE", Mesh::CreateWave()));
 	}
 }
 
@@ -178,13 +186,9 @@ void Scene::InitEntities(const uint8_t p_rasterizerVersion,const uint8_t p_meshM
 	else if (p_rasterizerVersion == 8)
 	{
 		Entity* entity = new Entity();
-
-		if (p_meshMode == CUBE)
-			entity->SetMesh(*meshes["CUBE"]);
-		else if (p_meshMode == SPHERE)
-			entity->SetMesh(*meshes["SPHERE"]);
-
+		entity->SetMesh(*meshes["WAVE"]);
 		entity->SetColor(255, 0, 0);
+		entity->GetMesh()->SetImage(waterWave);
 		entities.push_back(entity);
 	}
 }

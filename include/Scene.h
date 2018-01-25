@@ -20,4 +20,5 @@ struct Scene
 	Image* zeldaImage;
 	Image* transparent;
 	Image* background;
+	Image* waterWave;
 };

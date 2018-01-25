@@ -128,30 +128,15 @@ struct CameraParams
 	}
 };
 
-struct RealCameraParams
+struct WaveParams
 {
-	float distanceFromObject;
-	float horizontalDistance;
-	float verticalDistance;
-	float yaw;
-	float pitch;
-	float angleAroundPlayer;
-	float cameraX;
-	float cameraY;
-	float cameraZ;
-
-	RealCameraParams() { Reset(); }
+	float yMovement;
+	float sinAngle;
+	WaveParams() { Reset(); }
 	void Reset()
 	{
-		distanceFromObject = 15.f;
-		horizontalDistance = 15.f;
-		verticalDistance = 0.f;
-		yaw = 0;
-		pitch = 0;
-		angleAroundPlayer = 0;
-		cameraX = 10;
-		cameraY = 10;
-		cameraZ = 10;
+		yMovement = 0;
+		sinAngle = 0;
 	}
 };
 
@@ -298,7 +283,7 @@ struct ApplicationInfos
 	LightParams lightParams;
 	MeshParams meshParams;
 	CameraParams cameraParams;
-	RealCameraParams realCameraParams;
+	WaveParams waveParams;
 	uint8_t selectedAA = NOAA;
 	uint16_t polygons = 0;
 	uint8_t meshMode = CUBE;
@@ -312,7 +297,6 @@ struct ApplicationInfos
 		lightParams.Reset();
 		meshParams.Reset();
 		cameraParams.Reset();
-		realCameraParams.Reset();
 	}
 };
 
