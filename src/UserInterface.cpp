@@ -356,7 +356,68 @@ void UserInterface::DrawKonamiCode()
 
 void UserInterface::DrawZelda()
 {
-	DrawAt("© 2017-2018 Hansdrien Inc.", 380, 700, m_pixelFont);
+	if (m_sharedContext.appInfos.zelda.timer < 18.f)
+	{
+		DrawAt("© 2017-2018 Hansdrien Inc.", 400, 700, m_pixelFont);
+	}
+	else
+	{
+		const std::string hans = "Hanseul SHIN";
+		const std::string adrien = "Adrien GIVRY";
+		std::string lines[] =
+		{
+			"PRODUCED BY",
+			adrien,
+			hans,
+			"",
+			"",
+			"DIRECTED BY",
+			adrien,
+			hans,
+			"",
+			"",
+			"GAME DESIGNER",
+			"No need lol",
+			"",
+			"",
+			"PROGRAMMERS",
+			adrien,
+			hans,
+			"",
+			"",
+			"GAMEPLAY PROGRAMMERS",
+			adrien,
+			"",
+			"",
+			"MATHS PROGRAMMERS",
+			hans,
+			"",
+			"",
+			"GRAPHICS PROGRAMMERS",
+			adrien,
+			"",
+			"",
+			"DIRECTED BY",
+			adrien,
+			hans,
+			"",
+			"",
+			"MUSIC BY",
+			"We don't care about Copyrights",
+			"",
+			"",
+			"IMAGES BY",
+			"Same shit bruh",
+			"",
+			"",
+			"SPECIAL THANKS",
+			"Bobby the duck for his support",
+			"Amélie for zelda textures"
+		};
+
+		for (uint8_t i = 0; i < 47; ++i)
+			DrawAt(lines[i], 380, (768 + i * 20) - m_sharedContext.appInfos.zelda.creditOffset, m_pixelFont);
+	}
 }
 
 void UserInterface::Close()

@@ -228,7 +228,10 @@ struct Zelda
 	float mat7_x, mat7_y, mat7_z;
 	float mat8_y;
 	float timer;
+	float creditOffset;
 	bool soundPlayed;
+	bool creditMusicPlayed;
+	bool thanksPlayed;
 
 	void Reset()
 	{
@@ -260,7 +263,11 @@ struct Zelda
 
 		mat8_y = -10;
 
+		creditOffset = 0;
+
 		soundPlayed = false;
+		creditMusicPlayed = false;
+		thanksPlayed = false;
 	}
 };
 
