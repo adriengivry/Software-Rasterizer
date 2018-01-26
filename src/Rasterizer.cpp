@@ -6,8 +6,7 @@ Rasterizer::Rasterizer(Texture& p_texture, SharedContext& p_sharedContext) :
 	m_rtexture(p_texture),
 	m_sharedContext(p_sharedContext),
 	m_zBufferOn(false),
-	m_zBuffer(new float[m_rtexture.GetWidth() * m_rtexture.GetHeight()]),
-	m_waveMovement(0)
+	m_zBuffer(new float[m_rtexture.GetWidth() * m_rtexture.GetHeight()])
 {
 	Rasterizer::Setup();
 }
@@ -285,22 +284,24 @@ void Rasterizer::RenderWave(Scene* p_pScene, Toolbox::Vec3& p_waveMovement, Tool
 	for (uint8_t entityID = 0; entityID < m_sharedContext.scene->entities.size(); ++entityID)
 	{
 		Mat4 positionMatrix = Mat4::CreatePerspective(60, float(m_rtexture.GetWidth()) / float(m_rtexture.GetHeight()), 0.1f, 100.0f);
-		m_waveMovement += 0.05f;
-		if (m_waveMovement == 359.8f)
-			m_waveMovement = 0.f;
+		float& waveOffset = m_sharedContext.appInfos.waveParams.waveOffset;
+
+		waveOffset += 0.05f;
+		if (waveOffset == 359.8f)
+			waveOffset = 0.f;
 		for (int i = 0; i < p_pScene->entities[entityID]->GetMesh()->GetIndices().size() - 2; i += 6)
 		{
-			float initWave = m_waveMovement;
+			float initWave = waveOffset;
 
-			Mat4 normalMatrix = Mat4::CreateTranslation(p_waveMovement.x, p_waveMovement.y + 0.8f *(sin( 0.8f * (m_waveMovement * DEG_TO_RAD))), 0) *
+			Mat4 normalMatrix = Mat4::CreateTranslation(p_waveMovement.x, p_waveMovement.y + 0.8f *(sin( 0.8f * (waveOffset * DEG_TO_RAD))), 0) *
 				Mat4::CreateTranslation(0, 0, p_waveMovement.z) *
 				Mat4::CreateRotation(p_waveRotation.x, p_waveRotation.y, 0);
 
-			Mat4 normalMatrix2 = Mat4::CreateTranslation(p_waveMovement.x, p_waveMovement.y + 0.8f *(sin(0.8f * ((m_waveMovement + 0.05f) * DEG_TO_RAD))), 0) *
+			Mat4 normalMatrix2 = Mat4::CreateTranslation(p_waveMovement.x, p_waveMovement.y + 0.8f *(sin(0.8f * ((waveOffset + 0.05f) * DEG_TO_RAD))), 0) *
 				Mat4::CreateTranslation(0, 0, p_waveMovement.z) *
 				Mat4::CreateRotation(p_waveRotation.x, p_waveRotation.y, 0);
 
-			Mat4 normalMatrix3 = Mat4::CreateTranslation(p_waveMovement.x, p_waveMovement.y + 0.8f * (sin( 0.8f * ((m_waveMovement + 0.06f) * DEG_TO_RAD))), 0) *
+			Mat4 normalMatrix3 = Mat4::CreateTranslation(p_waveMovement.x, p_waveMovement.y + 0.8f * (sin( 0.8f * ((waveOffset + 0.06f) * DEG_TO_RAD))), 0) *
 				Mat4::CreateTranslation(0, 0, p_waveMovement.z) *
 				Mat4::CreateRotation(p_waveRotation.x, p_waveRotation.y, 0);
 
@@ -322,10 +323,10 @@ void Rasterizer::RenderWave(Scene* p_pScene, Toolbox::Vec3& p_waveMovement, Tool
 			DrawTriangleTexture(v0, v1, v2, p_pScene->entities[entityID]->GetMesh()->GetImage());
 			DrawTriangleTexture(v3, v4, v5, p_pScene->entities[entityID]->GetMesh()->GetImage());
 
-			m_waveMovement += 0.05f;
+			waveOffset += 0.05f;
 			if(i == (sqrt(p_pScene->entities[entityID]->GetMesh()->GetIndices().size())))
 			{
-				m_waveMovement = initWave;
+				waveOffset = initWave;
 			}
 		}
 	}

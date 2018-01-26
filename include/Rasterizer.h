@@ -46,5 +46,4 @@ private:
 	SharedContext& m_sharedContext;
 	bool m_zBufferOn;
 	float* m_zBuffer;
-	float m_waveMovement;
 };

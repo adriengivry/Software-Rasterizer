@@ -132,11 +132,13 @@ struct WaveParams
 {
 	Toolbox::Vec3 waveMovement;
 	Toolbox::Vec3 waveRotation;
+	float waveOffset;
 	WaveParams() { Reset(); }
 	void Reset()
 	{
 		waveMovement = Toolbox::Vec3(0, 0, 0);
 		waveRotation = Toolbox::Vec3(0, 0, 0);
+		waveOffset = 0.f;
 	}
 };
 
