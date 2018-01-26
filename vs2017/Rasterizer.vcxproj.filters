@@ -139,11 +139,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="..\doc\coding_conventions.txt">
-      <Filter>Resource Files</Filter>
-    </Text>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="ClassDiagram.cd" />
   </ItemGroup>
 </Project>

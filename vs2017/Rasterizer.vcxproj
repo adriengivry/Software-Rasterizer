@@ -58,9 +58,6 @@
     <ClInclude Include="..\include\Window.h" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="..\doc\coding_conventions.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="ClassDiagram.cd" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

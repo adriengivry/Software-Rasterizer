@@ -30,13 +30,9 @@ void Application::Close()
 {
 	delete m_eventManager;
 	delete m_renderTexture;
+	delete m_userInterface;
 
 	m_soundEngine->drop();
-
-	/*
-	* TODO: WEIRD MEMORY ERROR NEED TO BE CORRECTED (Memory leak if this part is commented)
-	* delete m_userInterface;
-	*/
 }
 
 void Application::Update()
