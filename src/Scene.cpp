@@ -193,7 +193,8 @@ void Scene::InitEntities(const uint8_t p_rasterizerVersion,const uint8_t p_meshM
 	}
 }
 
-void Scene::InitLights()
+void Scene::InitLights(const uint8_t p_rasterizerVersion)
 {
-	lights.push_back(new Light(0, 0, 0));
+	if (p_rasterizerVersion == 2 || p_rasterizerVersion == 3)
+		lights.push_back(new Light(0, 0, 0));
 }

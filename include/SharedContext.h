@@ -314,6 +314,6 @@ struct SharedContext
 		scene->ClearScene();
 		scene->InitMeshes(appInfos.selectedVersion, appInfos.meshMode);
 		scene->InitEntities(appInfos.selectedVersion, appInfos.meshMode);
-		scene->InitLights();
+		scene->InitLights(appInfos.selectedVersion);
 	}
 };
