@@ -163,7 +163,7 @@ void EventManager::KeyInput(const SDL_Keysym& p_key, const bool p_state) const
 				if (m_sharedContext.appInfos.selectedAA > 4)
 					m_sharedContext.appInfos.selectedAA = 0;
 			}
-			else if (m_sharedContext.appInfos.selectedVersion >= 1 && m_sharedContext.appInfos.selectedVersion <= 3)
+			else if (m_sharedContext.appInfos.selectedVersion == 1)
 			{
 				if (m_sharedContext.appInfos.selectedAA == 3)
 					m_sharedContext.appInfos.selectedAA = 0;

@@ -218,14 +218,14 @@ void UserInterface::DrawLightProperties()
 
 			if (lightIsChanging) SetTextSelectedColor();
 			if (i == 0) SetTextTitleColor();
-			DrawAt(items[i], 0, 535 + i * 20);
+			DrawAt(items[i], 0, 465 + i * 20);
 		}
 	}
 }
 
 void UserInterface::DrawAntiAliasingProperties()
 {
-	if (m_sharedContext.appInfos.selectedVersion == 7 || (m_sharedContext.appInfos.selectedVersion >= 1 && m_sharedContext.appInfos.selectedVersion <= 3))
+	if (m_sharedContext.appInfos.selectedVersion == 7 || m_sharedContext.appInfos.selectedVersion == 1)
 	{
 		std::string currentMode;
 		switch (m_sharedContext.appInfos.selectedAA)
