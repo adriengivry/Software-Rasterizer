@@ -318,6 +318,7 @@ struct SharedContext
 
 	void RefreshScene() const
 	{
+		soundEngine->stopAllSounds();
 		scene->ClearScene();
 		scene->InitMeshes(appInfos.selectedVersion, appInfos.meshMode);
 		scene->InitEntities(appInfos.selectedVersion, appInfos.meshMode);

@@ -36,7 +36,14 @@ void EventManager::Update()
 void EventManager::KeyInput(const SDL_Keysym& p_key, const bool p_state) const
 {
 	if (m_sharedContext.appInfos.selectedVersion == 0)
+	{
+		if (p_key.sym == SDLK_ESCAPE && p_state)
+		{
+			m_sharedContext.appInfos.selectedVersion = m_sharedContext.appInfos.previousSelectedVersion;
+			m_sharedContext.RefreshScene();
+		}
 		return;
+	}
 
 	if (!p_state)
 	{

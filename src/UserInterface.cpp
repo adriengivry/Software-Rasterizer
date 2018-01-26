@@ -362,6 +362,10 @@ void UserInterface::DrawZelda()
 	}
 	else
 	{
+		if (m_sharedContext.appInfos.zelda.timer >= 58.f)
+		{
+			DrawAt("THANK YOU!", 480, 400, m_pixelFont);
+		}
 		const std::string hans = "Hanseul SHIN";
 		const std::string adrien = "Adrien GIVRY";
 		std::string lines[] =
@@ -376,12 +380,36 @@ void UserInterface::DrawZelda()
 			hans,
 			"",
 			"",
-			"GAME DESIGNER",
-			"No need lol",
-			"",
-			"",
-			"PROGRAMMERS",
+			"SUPERVISED BY",
 			adrien,
+			hans,
+			"",
+			"",
+			"IMAGINED BY",
+			adrien,
+			hans,
+			"",
+			"",
+			"CREATED BY",
+			adrien,
+			hans,
+			"",
+			"",
+			"DESIGNED BY",
+			adrien,
+			hans,
+			"",
+			"",
+			"DISTRIBUTED BY",
+			adrien,
+			hans,
+			"",
+			"",
+			"GAME DESIGNERS",
+			"Error 404",
+			"",
+			"",
+			"MATHS PROGRAMMERS",
 			hans,
 			"",
 			"",
@@ -389,34 +417,32 @@ void UserInterface::DrawZelda()
 			adrien,
 			"",
 			"",
-			"MATHS PROGRAMMERS",
-			hans,
-			"",
-			"",
-			"GRAPHICS PROGRAMMERS",
+			"UI PROGRAMMERS",
 			adrien,
-			"",
-			"",
-			"DIRECTED BY",
-			adrien,
-			hans,
 			"",
 			"",
 			"MUSIC BY",
 			"We don't care about Copyrights",
 			"",
 			"",
-			"IMAGES BY",
-			"Same shit bruh",
+			"TEXTURES BY",
+			"We don't care about Copyrights",
 			"",
 			"",
 			"SPECIAL THANKS",
-			"Bobby the duck for his support",
-			"Amélie for zelda textures"
+			"Adrien for his natural skill",
+			"Amélie for zelda textures",
+			"Hans for his determination",
+			"Stack Overflow for useless answers"
 		};
 
-		for (uint8_t i = 0; i < 47; ++i)
-			DrawAt(lines[i], 380, (768 + i * 20) - m_sharedContext.appInfos.zelda.creditOffset, m_pixelFont);
+		for (uint8_t i = 0; i < 64; ++i)
+		{
+			SetTextSelectedColor();
+			if ((i <= 35 && i % 5 == 0) || i == 39 || i == 43 || i == 47 || i == 51 || i == 55 || i == 59)
+				SetTextTitleColor();
+			DrawAt(lines[i], 450, (768 + i * 20) - m_sharedContext.appInfos.zelda.creditOffset, m_pixelFont);
+		}
 	}
 }
 

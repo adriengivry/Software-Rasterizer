@@ -352,13 +352,13 @@ void Application::UpdateZeldaAnimation()
 		zelda.soundPlayed = true;
 	}
 
-	if (zelda.timer >= 42.f)
+	if (zelda.timer >= 60.f)
 	{
 		m_sharedContext.appInfos.selectedVersion = m_sharedContext.appInfos.previousSelectedVersion;
 		m_sharedContext.RefreshScene();
 	}
 
-	if (zelda.timer >= 40.f)
+	if (zelda.timer >= 58.f)
 	{
 		if (!zelda.thanksPlayed)
 			m_sharedContext.soundEngine->play2D("../assets/sounds/thanks.wav");
@@ -368,7 +368,7 @@ void Application::UpdateZeldaAnimation()
 	if (zelda.timer >= 18.f)
 	{
 		if (!zelda.creditMusicPlayed)
-			m_sharedContext.soundEngine->play2D("../assets/sounds/zelda.wav");
+			m_sharedContext.soundEngine->play2D("../assets/sounds/credits.wav");
 		zelda.creditMusicPlayed = true;
 
 		const Mat4 away = Toolbox::Mat4::CreateScale(0, 0, 0);
@@ -377,7 +377,7 @@ void Application::UpdateZeldaAnimation()
 		m_scene.entities[2]->SetMatrix(away);
 		m_scene.entities[3]->SetMatrix(away);
 		m_scene.entities[4]->SetMatrix(away);
-		zelda.creditOffset += 80 * m_sharedContext.appInfos.deltaTime;
+		zelda.creditOffset += 50 * m_sharedContext.appInfos.deltaTime;
 		return;
 	}
 
