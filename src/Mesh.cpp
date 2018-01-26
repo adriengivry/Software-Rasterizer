@@ -386,23 +386,24 @@ Mesh* Mesh::CreateZelda()
 Mesh* Mesh::CreateWave()
 {
 	Mesh* wave = new Mesh();
-	for(int y = 0; y < 125; ++y)
+	for(int z = 0; z < 125; ++z)
 	{
 		for(int x = 0; x < 125; ++x)
 		{
-			wave->m_vertices.push_back(Vertex(x * 0.04f, y * 0.04f, 0));
-			wave->m_vertices.push_back(Vertex(x * 0.04f, (y + 1) * 0.04f, 0));
-			wave->m_vertices.push_back(Vertex((x + 1) * 0.04f, y * 0.04f, 0));
-			wave->m_vertices.push_back(Vertex(x * 0.04f, (y + 1) * 0.04f, 0));
-			wave->m_vertices.push_back(Vertex((x + 1) * 0.04f, (y + 1) * 0.04f, 0));
-			wave->m_vertices.push_back(Vertex((x + 1) * 0.04f, y * 0.04f, 0));
+			wave->m_vertices.push_back(Vertex(x * 0.04f, 0, -z * 0.04f));
+			wave->m_vertices.push_back(Vertex(x * 0.04f, 0, -(z + 1) * 0.04f));
+			wave->m_vertices.push_back(Vertex((x + 1) * 0.04f, 0, -z * 0.04f));
+			wave->m_vertices.push_back(Vertex(x * 0.04f, 0, -(z + 1) * 0.04f));
+			wave->m_vertices.push_back(Vertex((x + 1) * 0.04f, 0, -(z + 1) * 0.04f));
+			wave->m_vertices.push_back(Vertex((x + 1) * 0.04f, 0, -z * 0.04f));
 		}
-
 	}
+
 	for (int index = 0; index < wave->m_vertices.size(); ++index)
 	{
 		wave->m_indices.push_back(index);
 	}
+
 	for (int textureIndex = 0; textureIndex < wave->m_vertices.size(); textureIndex += 6)
 	{
 		wave->m_vertices[textureIndex].texCoordinate = Vec2(0, 0);

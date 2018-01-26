@@ -285,22 +285,22 @@ void Rasterizer::RenderWave(Scene* p_pScene, Toolbox::Vec3& p_waveMovement, Tool
 	for (uint8_t entityID = 0; entityID < m_sharedContext.scene->entities.size(); ++entityID)
 	{
 		Mat4 positionMatrix = Mat4::CreatePerspective(60, float(m_rtexture.GetWidth()) / float(m_rtexture.GetHeight()), 0.1f, 100.0f);
-		m_waveMovement += 0.1f;
+		m_waveMovement += 0.05f;
 		if (m_waveMovement == 359.8f)
 			m_waveMovement = 0.f;
 		for (int i = 0; i < p_pScene->entities[entityID]->GetMesh()->GetIndices().size() - 2; i += 6)
 		{
 			float initWave = m_waveMovement;
 
-			Mat4 normalMatrix = Mat4::CreateTranslation(p_waveMovement.x, p_waveMovement.y + sin(m_waveMovement * DEG_TO_RAD), 0).CreateInverse() *
+			Mat4 normalMatrix = Mat4::CreateTranslation(p_waveMovement.x, p_waveMovement.y + 0.8f *(sin( 0.8f * (m_waveMovement * DEG_TO_RAD))), 0) *
 				Mat4::CreateTranslation(0, 0, p_waveMovement.z) *
 				Mat4::CreateRotation(p_waveRotation.x, p_waveRotation.y, 0);
 
-			Mat4 normalMatrix2 = Mat4::CreateTranslation(p_waveMovement.x, p_waveMovement.y + sin((m_waveMovement + 0.1f) * DEG_TO_RAD), 0).CreateInverse() *
+			Mat4 normalMatrix2 = Mat4::CreateTranslation(p_waveMovement.x, p_waveMovement.y + 0.8f *(sin(0.8f * ((m_waveMovement + 0.05f) * DEG_TO_RAD))), 0) *
 				Mat4::CreateTranslation(0, 0, p_waveMovement.z) *
 				Mat4::CreateRotation(p_waveRotation.x, p_waveRotation.y, 0);
 
-			Mat4 normalMatrix3 = Mat4::CreateTranslation(p_waveMovement.x, p_waveMovement.y + sin((m_waveMovement + 0.2f) * DEG_TO_RAD), 0).CreateInverse() *
+			Mat4 normalMatrix3 = Mat4::CreateTranslation(p_waveMovement.x, p_waveMovement.y + 0.8f * (sin( 0.8f * ((m_waveMovement + 0.06f) * DEG_TO_RAD))), 0) *
 				Mat4::CreateTranslation(0, 0, p_waveMovement.z) *
 				Mat4::CreateRotation(p_waveRotation.x, p_waveRotation.y, 0);
 
@@ -322,8 +322,8 @@ void Rasterizer::RenderWave(Scene* p_pScene, Toolbox::Vec3& p_waveMovement, Tool
 			DrawTriangleTexture(v0, v1, v2, p_pScene->entities[entityID]->GetMesh()->GetImage());
 			DrawTriangleTexture(v3, v4, v5, p_pScene->entities[entityID]->GetMesh()->GetImage());
 
-			m_waveMovement += 0.1f;
-			if(i == (sqrt(p_pScene->entities[entityID]->GetMesh()->GetIndices().size()) - 1))
+			m_waveMovement += 0.05f;
+			if(i == (sqrt(p_pScene->entities[entityID]->GetMesh()->GetIndices().size())))
 			{
 				m_waveMovement = initWave;
 			}
