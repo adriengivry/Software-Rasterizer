@@ -130,13 +130,13 @@ struct CameraParams
 
 struct WaveParams
 {
-	float yMovement;
-	float sinAngle;
+	Toolbox::Vec3 waveMovement;
+	Toolbox::Vec3 waveRotation;
 	WaveParams() { Reset(); }
 	void Reset()
 	{
-		yMovement = 0;
-		sinAngle = 0;
+		waveMovement = Toolbox::Vec3(0, 0, 0);
+		waveRotation = Toolbox::Vec3(0, 0, 0);
 	}
 };
 

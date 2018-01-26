@@ -6,7 +6,8 @@ Rasterizer::Rasterizer(Texture& p_texture, SharedContext& p_sharedContext) :
 	m_rtexture(p_texture),
 	m_sharedContext(p_sharedContext),
 	m_zBufferOn(false),
-	m_zBuffer(new float[m_rtexture.GetWidth() * m_rtexture.GetHeight()])
+	m_zBuffer(new float[m_rtexture.GetWidth() * m_rtexture.GetHeight()]),
+	m_waveMovement(0)
 {
 	Rasterizer::Setup();
 }
@@ -229,27 +230,6 @@ void Rasterizer::RenderAntialiasing(Scene* p_pScene)
 	}
 }
 
-void Rasterizer::RenderRealCameraScene(Scene* p_pScene, Toolbox::Mat4& p_camera)
-{
-	m_zBufferOn = true;
-	for (uint8_t entityID = 0; entityID < m_sharedContext.scene->entities.size(); ++entityID)
-	{
-		const Mat4 normalMatrix = p_pScene->entities[entityID]->GetMatrix();
-		const Mat4 positionMatrix = Mat4::CreatePerspective(60, float(m_rtexture.GetWidth()) / float(m_rtexture.GetHeight()), 0.1f, 100.0f) *  p_camera * normalMatrix;
-		for (int i = 0; i < p_pScene->entities[0]->GetMesh()->GetIndices().size(); i += 3)
-		{
-			Vertex v0 = (p_pScene->entities[entityID]->GetMesh()->GetVertices()[p_pScene->entities[entityID]->GetMesh()->GetIndices()[i]]);
-			Vertex v1 = (p_pScene->entities[entityID]->GetMesh()->GetVertices()[p_pScene->entities[entityID]->GetMesh()->GetIndices()[i + 1]]);
-			Vertex v2 = (p_pScene->entities[entityID]->GetMesh()->GetVertices()[p_pScene->entities[entityID]->GetMesh()->GetIndices()[i + 2]]);
-			v0.VertexTransform(positionMatrix);
-			v1.VertexTransform(positionMatrix);
-			v2.VertexTransform(positionMatrix);
-			DrawTriangle(v0, v1, v2);
-		}
-	}
-}
-
-
 void Rasterizer::RenderZelda(Scene* p_pScene)
 {
 	m_zBufferOn = true;
@@ -295,6 +275,58 @@ void Rasterizer::RenderZelda(Scene* p_pScene)
 				DrawTriangleTexture(v0, v1, v2, p_pScene->entities[entityID]->GetMesh()->GetImage());
 			else
 				DrawTriangleBlinnPhong(v0, v1, v2, lightposition, Lightcomp);
+		}
+	}
+}
+
+void Rasterizer::RenderWave(Scene* p_pScene, Toolbox::Vec3& p_waveMovement, Toolbox::Vec3& p_waveRotation)
+{
+	m_zBufferOn = false;
+	for (uint8_t entityID = 0; entityID < m_sharedContext.scene->entities.size(); ++entityID)
+	{
+		Mat4 positionMatrix = Mat4::CreatePerspective(60, float(m_rtexture.GetWidth()) / float(m_rtexture.GetHeight()), 0.1f, 100.0f);
+		m_waveMovement += 0.1f;
+		if (m_waveMovement == 359.8f)
+			m_waveMovement = 0.f;
+		for (int i = 0; i < p_pScene->entities[entityID]->GetMesh()->GetIndices().size() - 2; i += 6)
+		{
+			float initWave = m_waveMovement;
+
+			Mat4 normalMatrix = Mat4::CreateTranslation(p_waveMovement.x, p_waveMovement.y + sin(m_waveMovement * DEG_TO_RAD), 0).CreateInverse() *
+				Mat4::CreateTranslation(0, 0, p_waveMovement.z) *
+				Mat4::CreateRotation(p_waveRotation.x, p_waveRotation.y, 0);
+
+			Mat4 normalMatrix2 = Mat4::CreateTranslation(p_waveMovement.x, p_waveMovement.y + sin((m_waveMovement + 0.1f) * DEG_TO_RAD), 0).CreateInverse() *
+				Mat4::CreateTranslation(0, 0, p_waveMovement.z) *
+				Mat4::CreateRotation(p_waveRotation.x, p_waveRotation.y, 0);
+
+			Mat4 normalMatrix3 = Mat4::CreateTranslation(p_waveMovement.x, p_waveMovement.y + sin((m_waveMovement + 0.2f) * DEG_TO_RAD), 0).CreateInverse() *
+				Mat4::CreateTranslation(0, 0, p_waveMovement.z) *
+				Mat4::CreateRotation(p_waveRotation.x, p_waveRotation.y, 0);
+
+			Vertex v0 = (p_pScene->entities[entityID]->GetMesh()->GetVertices()[p_pScene->entities[entityID]->GetMesh()->GetIndices()[i]]);
+			Vertex v1 = (p_pScene->entities[entityID]->GetMesh()->GetVertices()[p_pScene->entities[entityID]->GetMesh()->GetIndices()[i + 1]]);
+			Vertex v2 = (p_pScene->entities[entityID]->GetMesh()->GetVertices()[p_pScene->entities[entityID]->GetMesh()->GetIndices()[i + 2]]);
+
+			Vertex v3 = (p_pScene->entities[entityID]->GetMesh()->GetVertices()[p_pScene->entities[entityID]->GetMesh()->GetIndices()[i + 3]]);
+			Vertex v4 = (p_pScene->entities[entityID]->GetMesh()->GetVertices()[p_pScene->entities[entityID]->GetMesh()->GetIndices()[i + 4]]);
+			Vertex v5 = (p_pScene->entities[entityID]->GetMesh()->GetVertices()[p_pScene->entities[entityID]->GetMesh()->GetIndices()[i + 5]]);
+
+			v0.VertexTransform(positionMatrix * normalMatrix);
+			v1.VertexTransform(positionMatrix * normalMatrix2);
+			v2.VertexTransform(positionMatrix * normalMatrix2);
+			v3.VertexTransform(positionMatrix * normalMatrix2);
+			v4.VertexTransform(positionMatrix * normalMatrix3);
+			v5.VertexTransform(positionMatrix * normalMatrix2);
+
+			DrawTriangleTexture(v0, v1, v2, p_pScene->entities[entityID]->GetMesh()->GetImage());
+			DrawTriangleTexture(v3, v4, v5, p_pScene->entities[entityID]->GetMesh()->GetImage());
+
+			m_waveMovement += 0.1f;
+			if(i == (sqrt(p_pScene->entities[entityID]->GetMesh()->GetIndices().size()) - 1))
+			{
+				m_waveMovement = initWave;
+			}
 		}
 	}
 }

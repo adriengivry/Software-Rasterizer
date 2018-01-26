@@ -20,8 +20,8 @@ public:
 	void RenderTexture(Scene* p_pScene);
 	void RenderAlphaBlending(Scene* p_pScene);
 	void RenderAntialiasing(Scene* p_pScene);
-	void RenderRealCameraScene(Scene* p_pScene, Toolbox::Mat4& p_camera);
 	void RenderZelda(Scene* p_pScene);
+	void RenderWave(Scene* p_pScene, Toolbox::Vec3& p_waveMovement, Toolbox::Vec3& p_waveRotation);
 	void Update() override;
 	void Draw() const;
 	void DrawLine(const float p_x1, const float p_y1, const float p_x2, const float p_y2, Color& p_color1, Color& p_color2) const;
@@ -46,4 +46,5 @@ private:
 	SharedContext& m_sharedContext;
 	bool m_zBufferOn;
 	float* m_zBuffer;
+	float m_waveMovement;
 };
