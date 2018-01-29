@@ -13,8 +13,8 @@ Our rasterizer exploit the CPU.
 
 ## Project infos
 
-The project was made in 6 weeks in a group of 2. It is runnable in x86 and x64 on Windows OS.
-There is an hidden "konami code" in the documentation which start a cool animation.
+The project was made in 6 weeks in a group of 2. It is runnable in x86 and x64 on Windows OS. You should use Visual Studio (We used 2017 version) to build our project because everything is already setup. Libraries are included to the project, you don't need to add anything, just press play !
+There is an hidden "konami code" in the documentation which start a cool animation !
 
 ## Screenshots
 
