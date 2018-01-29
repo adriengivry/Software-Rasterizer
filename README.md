@@ -16,6 +16,11 @@ The project is divided into 7 main features :
 
 There is an hidden "konami code" in the documentation which start a secret animation.
 
+## Code Architecture
+
+Here is a class diagram of our project
+![alt text](doc/ClassDiagram.png?raw=true "Class diagram")
+
 ## How to build it
 
 If you plan to build our project in optimal conditions, you should have :
