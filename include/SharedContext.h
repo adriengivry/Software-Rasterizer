@@ -132,24 +132,42 @@ struct KeyHistory
 {
 	SDL_Keycode keys[10];
 	uint8_t buffer = 0;
-	SDL_Keycode code[10] = {
-		SDLK_z,
-		SDLK_e,
-		SDLK_l,
-		SDLK_d,
-		SDLK_a,
-		SDLK_s,
-		SDLK_u,
-		SDLK_c,
-		SDLK_k,
-		SDLK_s
+	uint64_t encryptedCode[10] =
+	{ 
+		2086359830674748229,
+		2004321373782642574,
+		2033423755486949702,
+		2000000000000000000,
+		1986771734266244851,
+		2060697840353611683,
+		2068185861746161643,
+		1995635194597549915,
+		2029383777685209640,
+		2060697840353611683
 	};
 
-	KeyHistory() { Reset(); }
+	SDL_Keycode code[10];
+
+	KeyHistory()
+	{
+		GenerateCode();
+		Reset();
+	}
+
+	SDL_Keycode Uncrypt(const uint64_t p_value) const
+	{
+		return SDL_Keycode(static_cast<uint8_t>(round(pow(10, p_value / pow(10, 18)))));
+	}
+
+	void GenerateCode()
+	{
+		for (uint8_t i = 0; i < 10; ++i)
+			code[i] = Uncrypt(encryptedCode[i]);
+	}
 
 	void AddKey(const SDL_Keycode key)
 	{
-		if (key == code[0])
+		if (key ==code[0])
 			Reset();
 
 		keys[buffer++] = key;
