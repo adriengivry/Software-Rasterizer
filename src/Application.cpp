@@ -90,9 +90,6 @@ void Application::RenderScene()
 		case 5: m_rasterizer.RenderTexture(&m_scene);			break;
 		case 6: m_rasterizer.RenderAlphaBlending(&m_scene);		break;
 		case 7: m_rasterizer.RenderAntialiasing(&m_scene);		break;
-		case 8: m_rasterizer.RenderWave(&m_scene, 
-				m_sharedContext.appInfos.waveParams.waveMovement, 
-				m_sharedContext.appInfos.waveParams.waveRotation);	
 																break;
 		case 0: m_rasterizer.RenderZelda(&m_scene);				break;
 	}
@@ -188,16 +185,6 @@ void Application::UpdateCamera()
 			Mat4::CreateTranslation(0, 0, m_sharedContext.appInfos.cameraParams.zoomOffset) *
 			Mat4::CreateRotation(0, 0, m_sharedContext.appInfos.cameraParams.zRotationOffset);
 	}
-	if (m_sharedContext.appInfos.selectedVersion == 8)
-	{
-		m_sharedContext.appInfos.waveParams.waveMovement.x = m_sharedContext.appInfos.cameraParams.xOffset;
-		m_sharedContext.appInfos.waveParams.waveMovement.y = m_sharedContext.appInfos.cameraParams.yOffset;
-		m_sharedContext.appInfos.waveParams.waveMovement.z = m_sharedContext.appInfos.cameraParams.zoomOffset;
-
-		m_sharedContext.appInfos.waveParams.waveRotation.x = m_sharedContext.appInfos.cameraParams.xRotationOffset;
-		m_sharedContext.appInfos.waveParams.waveRotation.y = m_sharedContext.appInfos.cameraParams.yRotationOffset;
-		m_sharedContext.appInfos.waveParams.waveRotation.z = 0;
-	}
 }
 
 void Application::UpdateLights()
@@ -256,7 +243,8 @@ void Application::UpdateMeshColor()
 		m_sharedContext.appInfos.meshParams.blue += blueOffset;
 		while (m_sharedContext.appInfos.meshParams.blue > 255.f) m_sharedContext.appInfos.meshParams.blue /= 255;
 
-		m_scene.entities[0]->SetColor(m_sharedContext.appInfos.meshParams.red, m_sharedContext.appInfos.meshParams.green, m_sharedContext.appInfos.meshParams.blue);
+		for (uint16_t i = 0; i < m_scene.entities.size(); ++i)
+			m_scene.entities[i]->SetColor(m_sharedContext.appInfos.meshParams.red, m_sharedContext.appInfos.meshParams.green, m_sharedContext.appInfos.meshParams.blue);
 	}
 
 	if (m_sharedContext.appInfos.selectedVersion == 6)

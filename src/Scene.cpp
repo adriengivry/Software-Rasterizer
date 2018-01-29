@@ -18,7 +18,6 @@ Scene::Scene()
 	zeldaImage = new Image("../assets/textures/zelda/logo.png");
 	transparent = new Image("../assets/textures/zelda/transparent.png");
 	background = new Image("../assets/textures/zelda/background.png");
-	waterWave = new Image("../assets/textures/wave/water.png");
 }
 
 Scene::~Scene()
@@ -34,7 +33,6 @@ Scene::~Scene()
 	delete zeldaImage;	
 	delete transparent;
 	delete background;
-	delete waterWave;
 }
 
 void Scene::ClearScene()
@@ -188,7 +186,6 @@ void Scene::InitEntities(const uint8_t p_rasterizerVersion,const uint8_t p_meshM
 		Entity* entity = new Entity();
 		entity->SetMesh(*meshes["WAVE"]);
 		entity->SetColor(255, 0, 0);
-		entity->GetMesh()->SetImage(waterWave);
 		entities.push_back(entity);
 	}
 }

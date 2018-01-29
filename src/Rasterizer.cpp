@@ -278,60 +278,6 @@ void Rasterizer::RenderZelda(Scene* p_pScene)
 	}
 }
 
-void Rasterizer::RenderWave(Scene* p_pScene, Toolbox::Vec3& p_waveMovement, Toolbox::Vec3& p_waveRotation)
-{
-	m_zBufferOn = false;
-	for (uint8_t entityID = 0; entityID < m_sharedContext.scene->entities.size(); ++entityID)
-	{
-		Mat4 positionMatrix = Mat4::CreatePerspective(60, float(m_rtexture.GetWidth()) / float(m_rtexture.GetHeight()), 0.1f, 100.0f);
-		float& waveOffset = m_sharedContext.appInfos.waveParams.waveOffset;
-
-		waveOffset += 0.05f;
-		if (waveOffset == 359.8f)
-			waveOffset = 0.f;
-		for (int i = 0; i < p_pScene->entities[entityID]->GetMesh()->GetIndices().size() - 2; i += 6)
-		{
-			float initWave = waveOffset;
-
-			Mat4 normalMatrix = Mat4::CreateTranslation(p_waveMovement.x, p_waveMovement.y + 0.8f *(sin( 0.8f * (waveOffset * DEG_TO_RAD))), 0) *
-				Mat4::CreateTranslation(0, 0, p_waveMovement.z) *
-				Mat4::CreateRotation(p_waveRotation.x, p_waveRotation.y, 0);
-
-			Mat4 normalMatrix2 = Mat4::CreateTranslation(p_waveMovement.x, p_waveMovement.y + 0.8f *(sin(0.8f * ((waveOffset + 0.05f) * DEG_TO_RAD))), 0) *
-				Mat4::CreateTranslation(0, 0, p_waveMovement.z) *
-				Mat4::CreateRotation(p_waveRotation.x, p_waveRotation.y, 0);
-
-			Mat4 normalMatrix3 = Mat4::CreateTranslation(p_waveMovement.x, p_waveMovement.y + 0.8f * (sin( 0.8f * ((waveOffset + 0.06f) * DEG_TO_RAD))), 0) *
-				Mat4::CreateTranslation(0, 0, p_waveMovement.z) *
-				Mat4::CreateRotation(p_waveRotation.x, p_waveRotation.y, 0);
-
-			Vertex v0 = (p_pScene->entities[entityID]->GetMesh()->GetVertices()[p_pScene->entities[entityID]->GetMesh()->GetIndices()[i]]);
-			Vertex v1 = (p_pScene->entities[entityID]->GetMesh()->GetVertices()[p_pScene->entities[entityID]->GetMesh()->GetIndices()[i + 1]]);
-			Vertex v2 = (p_pScene->entities[entityID]->GetMesh()->GetVertices()[p_pScene->entities[entityID]->GetMesh()->GetIndices()[i + 2]]);
-
-			Vertex v3 = (p_pScene->entities[entityID]->GetMesh()->GetVertices()[p_pScene->entities[entityID]->GetMesh()->GetIndices()[i + 3]]);
-			Vertex v4 = (p_pScene->entities[entityID]->GetMesh()->GetVertices()[p_pScene->entities[entityID]->GetMesh()->GetIndices()[i + 4]]);
-			Vertex v5 = (p_pScene->entities[entityID]->GetMesh()->GetVertices()[p_pScene->entities[entityID]->GetMesh()->GetIndices()[i + 5]]);
-
-			v0.VertexTransform(positionMatrix * normalMatrix);
-			v1.VertexTransform(positionMatrix * normalMatrix2);
-			v2.VertexTransform(positionMatrix * normalMatrix2);
-			v3.VertexTransform(positionMatrix * normalMatrix2);
-			v4.VertexTransform(positionMatrix * normalMatrix3);
-			v5.VertexTransform(positionMatrix * normalMatrix2);
-
-			DrawTriangleTexture(v0, v1, v2, p_pScene->entities[entityID]->GetMesh()->GetImage());
-			DrawTriangleTexture(v3, v4, v5, p_pScene->entities[entityID]->GetMesh()->GetImage());
-
-			waveOffset += 0.05f;
-			if(i == (sqrt(p_pScene->entities[entityID]->GetMesh()->GetIndices().size())))
-			{
-				waveOffset = initWave;
-			}
-		}
-	}
-}
-
 void Rasterizer::Update()
 {
 	SDL_UpdateTexture(m_sharedContext.window->GetTexture(), nullptr, m_rtexture.GetPixelBuffer(), m_rtexture.GetWidth() * sizeof(uint32_t));

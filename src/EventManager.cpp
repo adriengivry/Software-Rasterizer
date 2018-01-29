@@ -131,11 +131,6 @@ void EventManager::KeyInput(const SDL_Keysym& p_key, const bool p_state) const
 		m_sharedContext.appInfos.selectedVersion = 7;
 		m_sharedContext.RefreshScene();
 		break;
-	case SDLK_KP_8:
-	case SDLK_8:
-		m_sharedContext.appInfos.selectedVersion = 8;
-		m_sharedContext.RefreshScene();
-		break;
 	case SDLK_z:
 		m_sharedContext.actions.addAmbiant = p_state;
 		break;

@@ -128,20 +128,6 @@ struct CameraParams
 	}
 };
 
-struct WaveParams
-{
-	Toolbox::Vec3 waveMovement;
-	Toolbox::Vec3 waveRotation;
-	float waveOffset;
-	WaveParams() { Reset(); }
-	void Reset()
-	{
-		waveMovement = Toolbox::Vec3(0, 0, 0);
-		waveRotation = Toolbox::Vec3(0, 0, 0);
-		waveOffset = 0.f;
-	}
-};
-
 struct KeyHistory
 {
 	SDL_Keycode keys[10];
@@ -292,7 +278,6 @@ struct ApplicationInfos
 	LightParams lightParams;
 	MeshParams meshParams;
 	CameraParams cameraParams;
-	WaveParams waveParams;
 	uint8_t selectedAA = NOAA;
 	uint16_t polygons = 0;
 	uint8_t meshMode = CUBE;

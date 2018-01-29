@@ -29,7 +29,6 @@ void UserInterface::Setup()
 	m_labelsVersions[5] = "[5] Bilinear filtering";
 	m_labelsVersions[6] = "[6] Alpha-Blending";
 	m_labelsVersions[7] = "[7] Anti-aliasing";
-	m_labelsVersions[8] = "[8] Wave Movement";
 }
 
 void UserInterface::Update()
@@ -133,12 +132,12 @@ void UserInterface::DrawSceneInfo()
 
 void UserInterface::DrawVersionSelection()
 {
-	for (uint8_t i = 0; i < 9; ++i)
+	for (uint8_t i = 0; i < 8; ++i)
 	{
 		SetTextDefaultColor();
 		if (i == m_sharedContext.appInfos.selectedVersion) SetTextSelectedColor();
 		if (i == 0) SetTextTitleColor();
-		DrawAt(m_labelsVersions[i], 0, 127 + i * 20);
+		DrawAt(m_labelsVersions[i], 0, 147 + i * 20);
 	}
 }
 
@@ -441,7 +440,7 @@ void UserInterface::DrawZelda()
 			SetTextSelectedColor();
 			if ((i <= 35 && i % 5 == 0) || i == 39 || i == 43 || i == 47 || i == 51 || i == 55 || i == 59)
 				SetTextTitleColor();
-			DrawAt(lines[i], 450, (768 + i * 20) - m_sharedContext.appInfos.zelda.creditOffset, m_pixelFont);
+			DrawAt(lines[i], 450, static_cast<uint16_t>(768 + i * 20 - m_sharedContext.appInfos.zelda.creditOffset), m_pixelFont);
 		}
 	}
 }
