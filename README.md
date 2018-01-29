@@ -22,6 +22,7 @@ If you plan to build our project in optimal conditions, you should have :
 - Windows
 - Visual Studio 2017
 - C++ 17
+
 Libraries are included to the project, you don't need to setup anything, just press play.
 64-bits and 32-bits systems are both supported (Debug and Release mode)
 
