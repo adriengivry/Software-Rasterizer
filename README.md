@@ -14,7 +14,7 @@ The project is divided into 7 main features :
 - Alpha-Blending
 - Anti-aliasing
 
-There is an hidden "konami code" in the documentation which start a cool animation, have fun reading it !
+There is an hidden "konami code" in the documentation which start a secret animation.
 
 ## How to build it
 
@@ -32,7 +32,7 @@ For this project we used some external libraries :
 - SDL2 to draw pixels on screen
 - SDL2_ttf to draw UI
 - SDL2_Image to import PNG files
-- IrrKlang for audio (Yes, somewhere in the project there are some musics !)
+- IrrKlang for audio (Yes, somewhere in the project there are some musics)
 
 ## Screenshots
 
@@ -48,7 +48,7 @@ For this project we used some external libraries :
 ### Wireframe with Backface Culling
 ![alt text](screenshots/wireframe.PNG?raw=true "Wireframe with Backface Culling")
 
-### Bilinear filtering
+#### Bilinear filtering
 ![alt text](screenshots/bilinear-filtering.PNG?raw=true "Bilinear filtering")
 
 ### Alpha-Blending
