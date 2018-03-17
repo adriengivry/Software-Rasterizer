@@ -65,3 +65,7 @@ For this project we used some external libraries :
 ### Secret animation (Find the konami code in the doc to see it)
 ![alt text](screenshots/zelda.PNG?raw=true "Secret animation")
 
+
+## Download
+
+- 64 bits : http://adrien-givry.com/download/rasterizer-x64.zip
